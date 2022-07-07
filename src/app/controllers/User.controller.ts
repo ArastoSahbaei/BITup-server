@@ -1,7 +1,6 @@
 import StatusCode from "../../configurations/StatusCode"
 import UserModel from "../models/User.model"
 
-
 const createUser = async (request, response) => {
 	const user = new UserModel({
 		walletID: request.body.walletID,
