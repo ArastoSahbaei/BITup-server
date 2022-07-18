@@ -1,5 +1,5 @@
 import StatusCode from "../../configurations/StatusCode"
-import { encryptPassword, generateAccessToken } from "../../functions"
+import { comparePasswords, encryptPassword, generateAccessToken } from "../../functions"
 import UserModel from "../models/User.model"
 
 const createUser = async (request, response) => {
@@ -18,9 +18,32 @@ const createUser = async (request, response) => {
   }
 }
 
-const login = () => {
-  /*   const x = generateAccessToken(email)
-    console.log('x', x) */
+const login = async (request, response) => {
+  const { email, password } = request.body
+
+  try {
+    const user = await UserModel.findOne({ email: email })
+    if (!user) {
+      return response.status(StatusCode.NOT_FOUND).send({ message: "User not found" })
+    }
+
+    const passwordValidated = await comparePasswords(password, user.password)
+    if (!passwordValidated) {
+      return response.status(StatusCode.UNAUTHORIZED).send({ message: "Invalid password" })
+    }
+
+    if (user && passwordValidated) {
+      return response.status(StatusCode.OK).send({
+        _id: user._id,
+        email: user.email,
+        token: generateAccessToken(user.email),
+      })
+    }
+
+  } catch (error) {
+    response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+  }
+
 }
 
 const getAllUsers = async (request, response) => {

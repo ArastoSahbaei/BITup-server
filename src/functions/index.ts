@@ -1,4 +1,5 @@
 export { connectToPort } from './connectToPort'
+export { comparePasswords } from './comparePasswords'
 export { encryptPassword } from './encryptPassword'
 export { connectToDatabase } from './connectToDatabase'
 export { authenticateToken } from './authenticateToken'

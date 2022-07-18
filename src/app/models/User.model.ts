@@ -13,8 +13,6 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: false,
-    minlength: [8, 'password must be at least 8 characters'],
-    maxlength: [100, 'password can be at most 100 characters'],
   }
 }, { timestamps: true })
 
