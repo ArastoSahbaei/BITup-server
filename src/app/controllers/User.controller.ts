@@ -2,9 +2,13 @@ import StatusCode from "../../configurations/StatusCode"
 import UserModel from "../models/User.model"
 
 const createUser = async (request, response) => {
+  const { email, password } = request.body
+
   const user = new UserModel({
-    email: request.body.email,
+    email: email,
+    password: password
   })
+
   try {
     const databaseResponse = await user.save()
     response.status(StatusCode.CREATED).send(databaseResponse)
