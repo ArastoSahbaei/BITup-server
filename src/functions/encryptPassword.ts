@@ -4,6 +4,6 @@ import bcrypt from 'bcrypt'
 const BCRYPT_SALT_ROUNDS = 12
 
 export const encryptPassword = (password: string) => {
-  const hashedPassword = bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
-  return hashedPassword
+	const hashedPassword = bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
+	return hashedPassword
 }

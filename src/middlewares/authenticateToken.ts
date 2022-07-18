@@ -6,18 +6,18 @@ dotenv.config()
 const { TOKEN_SECRET } = process.env
 
 export const authenticateToken = (request, response, next) => {
-  const authHeader = request.headers['authorization']
-  const token = authHeader && authHeader.split(' ')[1]
+	const authHeader = request.headers['authorization']
+	const token = authHeader && authHeader.split(' ')[1]
 
-  if (token == null) {
-    return response.sendStatus(StatusCode.UNAUTHORIZED)
-  }
+	if (token == null) {
+		return response.sendStatus(StatusCode.UNAUTHORIZED)
+	}
 
-  jwt.verify(token, TOKEN_SECRET as string, (error: any, user: any) => {
-    if (error) {
-      return response.sendStatus(StatusCode.FORBIDDEN)
-    }
-    request.user = user
-    next()
-  })
+	jwt.verify(token, TOKEN_SECRET as string, (error: any, user: any) => {
+		if (error) {
+			return response.sendStatus(StatusCode.FORBIDDEN)
+		}
+		request.user = user
+		next()
+	})
 }
