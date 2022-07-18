@@ -5,5 +5,5 @@ dotenv.config()
 const { TOKEN_SECRET } = process.env
 
 export const generateAccessToken = (email: string) => {
-  return jwt.sign(email, TOKEN_SECRET);
+  return jwt.sign(email, TOKEN_SECRET as string)
 }
