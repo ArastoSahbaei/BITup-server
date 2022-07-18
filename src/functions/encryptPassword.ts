@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
+import dotenv from 'dotenv'
 
-//TODO: add this variable to secrets file
-const BCRYPT_SALT_ROUNDS = 12
+dotenv.config()
+const { BCRYPT_SALT_ROUNDS } = process.env
 
 export const encryptPassword = (password: string) => {
 	const hashedPassword = bcrypt.hash(password, BCRYPT_SALT_ROUNDS)
