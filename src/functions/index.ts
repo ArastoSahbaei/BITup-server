@@ -1,2 +1,5 @@
-export { connectToDatabase } from './connectToDatabase'
 export { connectToPort } from './connectToPort'
+export { encryptPassword } from './encryptPassword'
+export { connectToDatabase } from './connectToDatabase'
+export { authenticateToken } from './authenticateToken'
+export { generateAccessToken } from './generateAccessToken'

@@ -1,4 +1,5 @@
 import StatusCode from "../../configurations/StatusCode"
+import { encryptPassword, generateAccessToken } from "../../functions"
 import UserModel from "../models/User.model"
 
 const createUser = async (request, response) => {
@@ -6,7 +7,7 @@ const createUser = async (request, response) => {
 
   const user = new UserModel({
     email: email,
-    password: password
+    password: await encryptPassword(password)
   })
 
   try {
@@ -18,7 +19,8 @@ const createUser = async (request, response) => {
 }
 
 const login = () => {
-
+  /*   const x = generateAccessToken(email)
+    console.log('x', x) */
 }
 
 const getAllUsers = async (request, response) => {
