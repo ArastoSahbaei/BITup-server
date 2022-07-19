@@ -46,6 +46,10 @@ const login = async (request, response) => {
 
 }
 
+const retrieveLostPassword = async (request, response) => {
+	console.log('retrieveLostPassword')
+}
+
 const getAllUsers = async (request, response) => {
 	try {
 		const databaseResponse = await UserModel.find()
@@ -59,4 +63,5 @@ export default {
 	createUser,
 	login,
 	getAllUsers,
+	retrieveLostPassword
 }
