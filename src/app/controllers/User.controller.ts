@@ -4,11 +4,20 @@ import UserModel from '../models/User.model'
 
 const createUser = async (request, response) => {
 	const { email, password, storeID } = request.body
+	const { firstName, lastName, country, address, zipCode, phone } = request.body.personalDetails
 
 	const user = new UserModel({
 		email: email,
 		storeID: storeID,
-		password: password && await encryptPassword(password)
+		password: password && await encryptPassword(password),
+		personalDetails: {
+			firstName: firstName,
+			lastName: lastName,
+			country: country,
+			address: address,
+			zipCode: zipCode,
+			phone: phone,
+		}
 	})
 
 	//TODO: send email with link to verify email
