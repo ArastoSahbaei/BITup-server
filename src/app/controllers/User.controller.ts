@@ -11,6 +11,8 @@ const createUser = async (request, response) => {
 		password: await encryptPassword(password)
 	})
 
+	//TODO: send email with link to verify email
+
 	try {
 		const databaseResponse = await user.save()
 		response.status(StatusCode.CREATED).send(databaseResponse)
