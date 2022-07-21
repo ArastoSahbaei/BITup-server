@@ -38,6 +38,7 @@ const login = async (request, response) => {
 				_id: user._id,
 				email: user.email,
 				storeID: user.storeID,
+				role: user.role,
 				authenticated: true,
 				token: generateAccessToken(user.email),
 			})
