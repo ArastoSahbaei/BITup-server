@@ -27,12 +27,10 @@ const login = async (request, response) => {
 		if (!user) {
 			return response.status(StatusCode.NOT_FOUND).send({ message: 'User not found' })
 		}
-
 		const passwordValidated = await comparePasswords(password, user.password)
 		if (!passwordValidated) {
 			return response.status(StatusCode.UNAUTHORIZED).send({ message: 'Invalid password' })
 		}
-
 		if (user && passwordValidated) {
 			return response.status(StatusCode.OK).send({
 				_id: user._id,
@@ -43,11 +41,9 @@ const login = async (request, response) => {
 				token: generateAccessToken(user.email),
 			})
 		}
-
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
-
 }
 
 const retrieveLostPassword = async (request, response) => {
@@ -67,5 +63,5 @@ export default {
 	createUser,
 	login,
 	getAllUsers,
-	retrieveLostPassword
+	retrieveLostPassword,
 }
