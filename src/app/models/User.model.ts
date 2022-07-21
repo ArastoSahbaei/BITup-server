@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { userRoles } from '../../shared/enums'
 const { Schema } = mongoose
 
 const userSchema = new Schema({
@@ -25,8 +26,8 @@ const userSchema = new Schema({
 	},
 	role: {
 		type: String,
-		enum: ['shopOwner', 'admin'],
-		default: 'shopOwner'
+		enum: userRoles,
+		default: userRoles.shopOwner
 	},
 	personalDetails: {
 		firstName: { type: String, default: '' },
