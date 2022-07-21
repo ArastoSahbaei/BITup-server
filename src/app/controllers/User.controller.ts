@@ -8,7 +8,7 @@ const createUser = async (request, response) => {
 	const user = new UserModel({
 		email: email,
 		storeID: storeID,
-		password: await encryptPassword(password)
+		password: password && await encryptPassword(password)
 	})
 
 	//TODO: send email with link to verify email
