@@ -13,6 +13,11 @@ const userSchema = new Schema({
 	password: {
 		type: String,
 		required: false,
+	},
+	storeID: {
+		type: String,
+		required: [true, 'can\'t be blank'],
+		unique: [true, 'must be unique'],
 	}
 }, { timestamps: true })
 

@@ -3,10 +3,11 @@ import { comparePasswords, encryptPassword, generateAccessToken } from '../../fu
 import UserModel from '../models/User.model'
 
 const createUser = async (request, response) => {
-	const { email, password } = request.body
+	const { email, password, storeID } = request.body
 
 	const user = new UserModel({
 		email: email,
+		storeID: storeID,
 		password: await encryptPassword(password)
 	})
 
@@ -36,6 +37,8 @@ const login = async (request, response) => {
 			return response.status(StatusCode.OK).send({
 				_id: user._id,
 				email: user.email,
+				storeID: user.storeID,
+				authenticated: true,
 				token: generateAccessToken(user.email),
 			})
 		}
