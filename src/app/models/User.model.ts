@@ -7,12 +7,26 @@ const userSchema = new Schema({
 		lowercase: true,
 		required: [true, 'can\'t be blank'],
 		match: [/\S+@\S+\.\S+/, 'invalid email'],
+		allowNull: [false, 'can\'t be null'],
+		unique: true,
 		index: true,
-		unique: true
 	},
 	password: {
 		type: String,
+		allowNull: [false, 'can\'t be null'],
 		required: false,
+	},
+	accountValidation: {
+		isEmailVerified: { type: Boolean, default: false },
+		isAccountDisabled: { type: Boolean, default: false },
+		isAccountBanned: { type: Boolean, default: false },
+		resetPasswordToken: { type: String },
+		resetPasswordExpires: { type: Date },
+	},
+	role: {
+		type: String,
+		enum: ['shopOwner', 'admin'],
+		default: 'shopOwner'
 	},
 	storeID: {
 		type: String,
