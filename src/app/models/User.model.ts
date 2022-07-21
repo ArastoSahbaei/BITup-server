@@ -28,6 +28,16 @@ const userSchema = new Schema({
 		enum: ['shopOwner', 'admin'],
 		default: 'shopOwner'
 	},
+	personalDetails: {
+		firstName: { type: String, default: '' },
+		lastName: { type: String, default: '' },
+		country: { type: String, default: '' },
+		address: { type: String, default: '' },
+		secondaryAdress: { type: String, default: '' },
+		zipCode: { type: String, default: '' },
+		phone: { type: String, default: '' },
+		secondaryPhone: { type: String, default: '' }
+	},
 	storeID: {
 		type: String,
 		required: [true, 'can\'t be blank'],
