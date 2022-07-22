@@ -1,5 +1,5 @@
 import StatusCode from '../../configurations/StatusCode'
-import { comparePasswords, encryptPassword, generateAccessToken, sendPasswordRecoveryEmail } from '../../functions'
+import { comparePasswords, encryptPassword, generateAccessToken, sendAccountValidationEmail, sendPasswordRecoveryEmail } from '../../functions'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 
@@ -11,9 +11,8 @@ const createUser = async (request, response) => {
 		password: password && await encryptPassword(password),
 	})
 
-	//TODO: send email with link to verify email
-
 	try {
+		await sendAccountValidationEmail(email)
 		const databaseResponse = await user.save()
 		response.status(StatusCode.CREATED).send(databaseResponse)
 	} catch (error) {
@@ -78,7 +77,6 @@ const retrieveLostAccount = async (request, response) => {
 
 const resetPasswordWithToken = async (request, response) => {
 	const { token, newPassword } = request.body
-
 	try {
 		const user: any = await UserModel.findOne({ 'accountValidation.resetPasswordToken': token })
 		console.log(user.email)
