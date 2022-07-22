@@ -50,13 +50,13 @@ const login = async (request, response) => {
 
 const retrieveLostAccount = async (request, response) => {
 	const { email } = request.body
-	if (email === '') {
-		response.status(StatusCode.BAD_REQUEST).send('email required')
+	if (!email) {
+		return response.status(StatusCode.BAD_REQUEST).send({message: 'email required'})
 	}
 	console.error(email)
 	const databaseResponse = await UserModel.findOne({ email: email })
 	if (databaseResponse === null) {
-		response.status(StatusCode.FORBIDDEN).send({ message: 'Vi hittade inte den användaren' })
+		return response.status(StatusCode.FORBIDDEN).send({ message: 'Vi hittade inte den användaren' })
 	} else {
 		const token = crypto.randomBytes(20).toString('hex')
 		const expirationDate = Date.now() + 3600000
