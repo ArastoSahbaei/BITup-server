@@ -53,7 +53,6 @@ const retrieveLostAccount = async (request, response) => {
 	if (!email) {
 		return response.status(StatusCode.BAD_REQUEST).send({ message: 'email required' })
 	}
-	console.error(email)
 	const databaseResponse = await UserModel.findOne({ email: email })
 	if (databaseResponse === null) {
 		return response.status(StatusCode.FORBIDDEN).send({ message: 'Vi hittade inte den användaren' })
@@ -78,26 +77,31 @@ const retrieveLostAccount = async (request, response) => {
 }
 
 const resetPasswordWithToken = async (request, response) => {
-	const { token, password } = request.body
-	const user: any = await UserModel.findOne({ resetPasswordToken: token })
-	const currentTime = new Date()
-	const tokenExpired = currentTime < user.accountValidation.resetPasswordExpires
+	const { token, newPassword } = request.body
 
-	if (tokenExpired) {
-		return response.status(StatusCode.FORBIDDEN).send({ message: 'Token has expired' })
-	} else {
-		try {
-			await UserModel.findByIdAndUpdate(user._id, {
-				password: await encryptPassword(password),
-				accountValidation: {
-					resetPasswordToken: '',
-					resetPasswordExpires: 0,
-				}
-			})
-			response.status(StatusCode.OK).send({ message: 'Password reset' })
-		} catch (error) {
-			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	try {
+		const user: any = await UserModel.findOne({ 'accountValidation.resetPasswordToken': token })
+		console.log(user.email)
+		if (!user.email) {
+			return response.status(StatusCode.NOT_FOUND).send({ message: 'User not found' })
 		}
+
+		const currentTime = new Date()
+		const tokenTime = user.accountValidation.resetPasswordExpires
+		const tokenExpired = currentTime > tokenTime
+		if (tokenExpired) {
+			return response.status(StatusCode.FORBIDDEN).send({ message: 'Token has expired' })
+		}
+		await UserModel.findByIdAndUpdate(user._id, {
+			password: await encryptPassword(newPassword),
+			accountValidation: {
+				resetPasswordToken: '',
+				resetPasswordExpires: 0,
+			}
+		})
+		return response.status(StatusCode.OK).send({ message: 'Password reset' })
+	} catch (error) {
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
 }
 
