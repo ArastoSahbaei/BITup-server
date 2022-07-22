@@ -15,7 +15,7 @@ export const sendPasswordRecoveryEmail = async (databaseResponse: any, token: an
 		service: 'gmail',
 		auth: {
 			user: 'developmentwitharre@gmail.com',
-			pass: 'developmentwitharre123'
+			pass: 'udcpnsqapkxdkqpt',
 		}
 	})
 
@@ -28,16 +28,26 @@ export const sendPasswordRecoveryEmail = async (databaseResponse: any, token: an
       + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
       + `http://localhost:3000/reset/${token}\n\n`
       + 'If you did not request this, please ignore this email and your password will remain unchanged.\n',
+		html:
+      ' <h1> You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n'
+      + 'Please click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n'
+      + `http://localhost:3000/reset/${token}\n\n`
+      + 'If you did not request this, please ignore this email and your password will remain unchanged.\n </h1>',
 	}
 
-	console.log(`SENDING EMAIL TO: ${databaseResponse.email}`)
+	transporter.verify(function (error, success) {
+		if (error) {
+			console.log(error)
+		} else {
+			console.log('Server is ready to take our messages!')
+		}
+	})
 
 	transporter.sendMail(mailOptions, (error: any, response: any) => {
+		console.log(`SENDING EMAIL TO: ${databaseResponse.email}`)
 		if (error) {
 			console.error('there was an error: ', error)
-		} else {
-			console.log('here is the response: ', response)
-			response.status(StatusCode.OK).send(response)
 		}
+		return response.end()
 	})
 }

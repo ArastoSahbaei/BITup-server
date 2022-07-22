@@ -40,7 +40,7 @@ const userSchema = new Schema({
 	storeID: {
 		type: String,
 		required: [true, 'can\'t be blank'],
-		unique: [true, 'must be unique'],
+		unique: [true, 'store is already connected to an account'],
 	}
 }, { timestamps: true })
 

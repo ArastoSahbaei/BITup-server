@@ -5,20 +5,10 @@ import crypto from 'crypto'
 
 const createUser = async (request, response) => {
 	const { email, password, storeID } = request.body
-	const { firstName, lastName, country, address, zipCode, phone } = request.body.personalDetails
-
 	const user = new UserModel({
 		email: email,
 		storeID: storeID,
 		password: password && await encryptPassword(password),
-		personalDetails: {
-			firstName: firstName,
-			lastName: lastName,
-			country: country,
-			address: address,
-			zipCode: zipCode,
-			phone: phone,
-		}
 	})
 
 	//TODO: send email with link to verify email
@@ -59,21 +49,31 @@ const login = async (request, response) => {
 }
 
 const retrieveLostAccount = async (request, response) => {
-	if (request.body.email === '') {
+	const { email } = request.body
+	if (email === '') {
 		response.status(StatusCode.BAD_REQUEST).send('email required')
 	}
-	console.error(request.body.email)
-	const databaseResponse = await UserModel.findOne({ email: request.body.email })
+	console.error(email)
+	const databaseResponse = await UserModel.findOne({ email: email })
 	if (databaseResponse === null) {
-		response.status(StatusCode.FORBIDDEN).send('Vi hittade inte den användaren')
+		response.status(StatusCode.FORBIDDEN).send({ message: 'Vi hittade inte den användaren' })
 	} else {
 		const token = crypto.randomBytes(20).toString('hex')
+		const expirationDate = Date.now() + 3600000
+
 		await UserModel.findByIdAndUpdate(databaseResponse._id, {
-			resetPasswordToken: token,
-			resetPasswordExpires: Date.now() + 3600000,
+			accountValidation: {
+				resetPasswordToken: token,
+				resetPasswordExpires: expirationDate,
+			}
 		})
-		sendPasswordRecoveryEmail(databaseResponse, token)
-		response.status(StatusCode.OK).send({ message: 'ok' })
+
+		try {
+			await sendPasswordRecoveryEmail(databaseResponse, token)
+			response.status(StatusCode.OK).send({ message: 'email sucessfully sent' })
+		} catch (error) {
+			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+		}
 	}
 }
 
