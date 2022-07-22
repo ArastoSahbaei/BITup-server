@@ -6,6 +6,7 @@ const routes = (application: Application) => {
 	application.post('/register', UserController.createUser)
 	application.post('/login', UserController.login)
 	application.get('/user', authenticateToken, UserController.getAllUsers)
+	application.post('/retrieveaccount', UserController.retrieveLostAccount)
 }
 
 export default { routes }

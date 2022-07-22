@@ -1,6 +1,7 @@
 import StatusCode from '../../configurations/StatusCode'
-import { comparePasswords, encryptPassword, generateAccessToken } from '../../functions'
+import { comparePasswords, encryptPassword, generateAccessToken, sendPasswordRecoveryEmail } from '../../functions'
 import UserModel from '../models/User.model'
+import crypto from 'crypto'
 
 const createUser = async (request, response) => {
 	const { email, password, storeID } = request.body
@@ -57,8 +58,23 @@ const login = async (request, response) => {
 	}
 }
 
-const retrieveLostPassword = async (request, response) => {
-	console.log('retrieveLostPassword')
+const retrieveLostAccount = async (request, response) => {
+	if (request.body.email === '') {
+		response.status(StatusCode.BAD_REQUEST).send('email required')
+	}
+	console.error(request.body.email)
+	const databaseResponse = await UserModel.findOne({ email: request.body.email })
+	if (databaseResponse === null) {
+		response.status(StatusCode.FORBIDDEN).send('Vi hittade inte den användaren')
+	} else {
+		const token = crypto.randomBytes(20).toString('hex')
+		await UserModel.findByIdAndUpdate(databaseResponse._id, {
+			resetPasswordToken: token,
+			resetPasswordExpires: Date.now() + 3600000,
+		})
+		sendPasswordRecoveryEmail(databaseResponse, token)
+		response.status(StatusCode.OK).send({ message: 'ok' })
+	}
 }
 
 const getAllUsers = async (request, response) => {
@@ -74,5 +90,5 @@ export default {
 	createUser,
 	login,
 	getAllUsers,
-	retrieveLostPassword,
+	retrieveLostAccount,
 }
