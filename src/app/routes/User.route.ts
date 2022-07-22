@@ -7,6 +7,7 @@ const routes = (application: Application) => {
 	application.post('/login', UserController.login)
 	application.post('/register', UserController.createUser)
 	application.post('/retrieveaccount', UserController.retrieveLostAccount)
+	application.post('/resetpassword', UserController.resetPasswordWithToken)
 }
 
 export default { routes }

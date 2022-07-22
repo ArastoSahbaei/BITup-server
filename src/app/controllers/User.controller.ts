@@ -51,7 +51,7 @@ const login = async (request, response) => {
 const retrieveLostAccount = async (request, response) => {
 	const { email } = request.body
 	if (!email) {
-		return response.status(StatusCode.BAD_REQUEST).send({message: 'email required'})
+		return response.status(StatusCode.BAD_REQUEST).send({ message: 'email required' })
 	}
 	console.error(email)
 	const databaseResponse = await UserModel.findOne({ email: email })
@@ -77,6 +77,30 @@ const retrieveLostAccount = async (request, response) => {
 	}
 }
 
+const resetPasswordWithToken = async (request, response) => {
+	const { token, password } = request.body
+	const user: any = await UserModel.findOne({ resetPasswordToken: token })
+	const currentTime = new Date()
+	const tokenExpired = currentTime < user.accountValidation.resetPasswordExpires
+
+	if (tokenExpired) {
+		return response.status(StatusCode.FORBIDDEN).send({ message: 'Token has expired' })
+	} else {
+		try {
+			await UserModel.findByIdAndUpdate(user._id, {
+				password: await encryptPassword(password),
+				accountValidation: {
+					resetPasswordToken: '',
+					resetPasswordExpires: 0,
+				}
+			})
+			response.status(StatusCode.OK).send({ message: 'Password reset' })
+		} catch (error) {
+			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+		}
+	}
+}
+
 const getAllUsers = async (request, response) => {
 	try {
 		const databaseResponse = await UserModel.find()
@@ -91,4 +115,5 @@ export default {
 	login,
 	getAllUsers,
 	retrieveLostAccount,
+	resetPasswordWithToken
 }
