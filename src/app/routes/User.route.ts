@@ -1,9 +1,9 @@
 import { Application } from 'express'
 import { authenticateToken } from '../../middlewares'
-import AuthenticationController from '../controllers/Authentication.controller'
+import UserController from '../controllers/User.controller'
 
 const routes = (application: Application) => {
-	application.get('/user', authenticateToken, AuthenticationController.getAllUsers)
+	application.get('/user', authenticateToken, UserController.getAllUsers)
 }
 
 export default { routes }
