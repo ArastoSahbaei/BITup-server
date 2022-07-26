@@ -19,10 +19,11 @@ const userSchema = new Schema({
 	},
 	accountValidation: {
 		isEmailVerified: { type: Boolean, default: false },
-		isAccountDisabled: { type: Boolean, default: false },
 		isAccountBanned: { type: Boolean, default: false },
+		isAccountDisabled: { type: Boolean, default: false },
 		resetPasswordToken: { type: String },
 		resetPasswordExpires: { type: Date },
+		emailVerificationToken: { type: String, default: null },
 	},
 	role: {
 		type: String,

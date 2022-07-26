@@ -5,23 +5,34 @@ import crypto from 'crypto'
 
 const createUser = async (request, response) => {
 	const { email, password, storeID } = request.body
+	const tokenUUID = generateUUID()
 	const user = new UserModel({
 		email: email,
 		storeID: storeID,
 		password: password && await encryptPassword(password),
+		accountValidation: {
+			emailVerificationToken: tokenUUID,
+		}
 	})
 
 	try {
 		const databaseResponse = await user.save()
-		await sendAccountValidationEmail(email, generateUUID())
+		await sendAccountValidationEmail(email, tokenUUID)
 		response.status(StatusCode.CREATED).send(databaseResponse)
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
 }
 
-const verifyUserEmail = () => {
-	//TODO: verify email
+const verifyUserEmail = async (request, response) => {
+	const { token } = request.query
+	const user = await UserModel.findOne({ 'accountValidation.emailVerificationToken': token })
+
+	try {
+		response.status(StatusCode.OK).send({ message: 'Email verified' })
+	} catch (error) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	}
 }
 
 const login = async (request, response) => {
