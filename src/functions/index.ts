@@ -1,6 +1,8 @@
+export { generateUUID } from './generateUUID'
 export { connectToPort } from './connectToPort'
 export { encryptPassword } from './encryptPassword'
 export { comparePasswords } from './comparePasswords'
+export { determineBaseURL } from './determineBaseURL'
 export { connectToDatabase } from './connectToDatabase'
 export { generateAccessToken } from './generateAccessToken'
 export { sendPasswordRecoveryEmail } from './sendPasswordRecoveryEmail'

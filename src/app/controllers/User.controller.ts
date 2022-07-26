@@ -1,5 +1,5 @@
+import { comparePasswords, encryptPassword, generateAccessToken, generateUUID, sendAccountValidationEmail, sendPasswordRecoveryEmail } from '../../functions'
 import StatusCode from '../../configurations/StatusCode'
-import { comparePasswords, encryptPassword, generateAccessToken, sendAccountValidationEmail, sendPasswordRecoveryEmail } from '../../functions'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 
@@ -12,12 +12,16 @@ const createUser = async (request, response) => {
 	})
 
 	try {
-		await sendAccountValidationEmail(email)
 		const databaseResponse = await user.save()
+		await sendAccountValidationEmail(email, generateUUID())
 		response.status(StatusCode.CREATED).send(databaseResponse)
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
+}
+
+const verifyUserEmail = () => {
+	//TODO: verify email
 }
 
 const login = async (request, response) => {
