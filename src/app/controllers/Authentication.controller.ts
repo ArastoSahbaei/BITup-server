@@ -122,19 +122,13 @@ const resetPasswordWithToken = async (request, response) => {
 	}
 }
 
-const getAllUsers = async (request, response) => {
-	try {
-		const databaseResponse = await UserModel.find()
-		response.status(StatusCode.OK).send(databaseResponse)
-	} catch (error) {
-		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
-	}
+const changePassword = () => {
+	//TODO: write change password function
 }
 
 export default {
 	createUser,
 	login,
-	getAllUsers,
 	verifyUserEmail,
 	retrieveLostAccount,
 	resetPasswordWithToken
