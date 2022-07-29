@@ -116,13 +116,20 @@ const resetPasswordWithToken = async (request, response) => {
 				resetPasswordExpires: 0,
 			}
 		})
-		return response.status(StatusCode.OK).send({ message: 'Password reset' })
+		return response.status(StatusCode.OK).send({
+			_id: user._id,
+			email: user.email,
+			storeID: user.storeID,
+			role: user.role,
+			authenticated: true,
+			token: generateAccessToken(user.email),
+		})
 	} catch (error) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
 }
 
-const changePassword = () => {
+const updatePassword = () => {
 	//TODO: write change password function
 }
 
