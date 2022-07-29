@@ -66,6 +66,19 @@ const login = async (request, response) => {
 	}
 }
 
+const validateToken = async (request, response) => {
+	const { userID } = request.body
+	try {
+		const databaseResponse = await UserModel.findOne({ _id: userID })
+		response.status(StatusCode.OK).send(databaseResponse)
+	} catch (error) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({
+			message: 'Error occured while trying to retrieve user with ID: ' + request.params.userId,
+			error: error.message
+		})
+	}
+}
+
 const retrieveLostAccount = async (request, response) => {
 	const { email } = request.body
 	if (!email) {
