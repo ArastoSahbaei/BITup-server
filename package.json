@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "npx nodemon ./Server.ts",
     "windows": "nodemon --exec npx ts-node ./Server.ts",
-    "lint": "npx eslint . --ext .ts",
+    "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
     "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D"
   },
   "keywords": [],
