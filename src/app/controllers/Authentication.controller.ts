@@ -67,13 +67,20 @@ const login = async (request, response) => {
 }
 
 const validateToken = async (request, response) => {
-	const { userID } = request.body
+	const { email } = request.user
 	try {
-		const databaseResponse = await UserModel.findOne({ _id: userID })
-		response.status(StatusCode.OK).send(databaseResponse)
+		const databaseResponse = await UserModel.findOne({ email: email })
+		response.status(StatusCode.OK).send({
+			_id: databaseResponse._id,
+			email: databaseResponse.email,
+			storeID: databaseResponse.storeID,
+			role: databaseResponse.role,
+			authenticated: true,
+			token: generateAccessToken(databaseResponse.email)
+		})
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({
-			message: 'Error occured while trying to retrieve user with ID: ' + request.params.userId,
+			message: 'Error occured while trying to retrieve user with email: ' + email,
 			error: error.message
 		})
 	}
@@ -151,5 +158,6 @@ export default {
 	login,
 	verifyUserEmail,
 	retrieveLostAccount,
-	resetPasswordWithToken
+	resetPasswordWithToken,
+	validateToken
 }

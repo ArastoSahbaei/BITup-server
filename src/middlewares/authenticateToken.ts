@@ -6,9 +6,10 @@ dotenv.config()
 const { TOKEN_SECRET } = process.env
 
 export const authenticateToken = (request, response, next) => {
-	const authHeader = request.headers['authorization']
+	const authHeader = request.headers.authorization
+	console.log('authHeader', authHeader)
 	const token = authHeader && authHeader.split(' ')[1]
-
+	console.log('token', token)
 	if (token == null) {
 		return response.sendStatus(StatusCode.UNAUTHORIZED)
 	}
