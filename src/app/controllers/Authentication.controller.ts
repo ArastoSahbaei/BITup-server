@@ -149,15 +149,27 @@ const resetPasswordWithToken = async (request, response) => {
 	}
 }
 
-const updatePassword = () => {
-	//TODO: write change password function
+const updatePassword = async (request, response) => {
+	const { password } = request.body
+	const { email } = request.user
+
+	try {
+		await UserModel.findOneAndUpdate({ email: email }, {
+			password: await encryptPassword(password),
+		})
+		response.status(StatusCode.OK).send({ message: 'Password updated' })
+	} catch (error) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	}
+
 }
 
 export default {
-	createUser,
 	login,
+	createUser,
+	validateToken,
+	updatePassword,
 	verifyUserEmail,
 	retrieveLostAccount,
 	resetPasswordWithToken,
-	validateToken
 }
