@@ -13,7 +13,8 @@ const createUser = async (request, response) => {
 		if (!newStore.data.id) {
 			return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 		}
-		const isEmailOccupied = UserModel.findOne({ email: email })
+		const isEmailOccupied = await UserModel.findOne({ email: email })
+		console.log(isEmailOccupied)
 		if (isEmailOccupied) {
 			return response.status(StatusCode.FORBIDDEN).send({ message: 'Email is already in use' })
 		}
