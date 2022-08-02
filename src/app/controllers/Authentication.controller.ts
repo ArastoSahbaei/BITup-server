@@ -2,25 +2,30 @@ import { comparePasswords, encryptPassword, generateAccessToken, generateUUID, s
 import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
+import BTCPayService from '../../shared/api/services/BTCPayService'
 
 const createUser = async (request, response) => {
-	const { email, password, storeID } = request.body
+	const { email, password, storeName } = request.body
 	const tokenUUID = generateUUID()
-	const user = new UserModel({
-		email: email,
-		storeID: storeID,
-		password: password && await encryptPassword(password),
-		accountValidation: {
-			emailVerificationToken: tokenUUID,
-		}
-	})
 
 	try {
+		const newStore: any = await BTCPayService.createStore({ name: storeName })
+		if (!newStore.data.id) {
+			return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
+		}
+		const user = new UserModel({
+			email: email,
+			storeID: newStore.data.id,
+			password: password && await encryptPassword(password),
+			accountValidation: {
+				emailVerificationToken: tokenUUID,
+			}
+		})
 		const databaseResponse = await user.save()
 		await sendAccountValidationEmail(email, tokenUUID)
-		response.status(StatusCode.CREATED).send(databaseResponse)
+		return response.status(StatusCode.CREATED).send(databaseResponse)
 	} catch (error) {
-		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
 }
 
