@@ -1,7 +1,8 @@
 import http from '../BTCPayAPI'
+import { IcreateStore } from '../../interfaces'
 
-const createStore = () => {
-	return http.post('/api/v1/stores')
+const createStore = (data: IcreateStore) => {
+	return http.post('/api/v1/stores', { data })
 }
 
 const getStores = () => {
