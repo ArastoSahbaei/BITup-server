@@ -4,7 +4,7 @@
   "description": "",
   "main": "Server.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
     "start": "npx nodemon ./Server.ts",
     "windows": "nodemon --exec npx ts-node ./Server.ts",
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
