@@ -38,10 +38,17 @@ const userSchema = new Schema({
 		zipCode: { type: String, default: '' },
 		phone: { type: String, default: '' },
 	},
-	storeID: {
-		type: String,
-		required: [true, 'can\'t be blank'],
-		unique: [true, 'store is already connected to an account'],
+	store: {
+		id: {
+			type: String,
+			required: [true, 'can\'t be blank'],
+			unique: [true, 'store is already connected to an account'],
+		},
+		name: {
+			type: String,
+			required: [true, 'store name can\'t be blank'],
+			unique: [true, 'store name already exists'],
+		}
 	}
 }, { timestamps: true })
 
