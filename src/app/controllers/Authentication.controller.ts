@@ -47,7 +47,7 @@ const verifyUserEmail = async (request, response) => {
 			{ 'accountValidation.emailVerificationToken': token }, { 'accountValidation.isEmailVerified': true, 'accountValidation.emailVerificationToken': null }
 		)
 		if (!user) {
-			return response.status(StatusCode.BAD_REQUEST).send({ message: 'user was not found' })
+			return response.status(StatusCode.BAD_REQUEST).send({ message: 'Ditt konto kunde inte valideras.' })
 		}
 		response.status(StatusCode.OK).send({ message: 'Email verified' })
 	} catch (error) {
