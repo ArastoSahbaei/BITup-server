@@ -52,10 +52,12 @@ const verifyUserEmail = async (request, response) => {
 		response.status(StatusCode.OK).send({
 			_id: user._id,
 			email: user.email,
-			storeID: user.store.id,
 			role: user.role,
-			authenticated: true,
 			token: generateAccessToken(user.email),
+			authenticated: true,
+			store: {
+				id: user.store.id,
+			},
 		})
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
@@ -78,10 +80,12 @@ const login = async (request, response) => {
 			return response.status(StatusCode.OK).send({
 				_id: user._id,
 				email: user.email,
-				storeID: user.store.id,
 				role: user.role,
-				authenticated: true,
 				token: generateAccessToken(user.email),
+				authenticated: true,
+				store: {
+					id: user.store.id,
+				},
 			})
 		}
 	} catch (error) {
