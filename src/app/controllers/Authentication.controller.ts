@@ -49,7 +49,14 @@ const verifyUserEmail = async (request, response) => {
 		if (!user) {
 			return response.status(StatusCode.BAD_REQUEST).send({ message: 'Ditt konto kunde inte valideras.' })
 		}
-		response.status(StatusCode.OK).send({ message: 'Email verified' })
+		response.status(StatusCode.OK).send({
+			_id: user._id,
+			email: user.email,
+			storeID: user.store.id,
+			role: user.role,
+			authenticated: true,
+			token: generateAccessToken(user.email),
+		})
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
 	}
