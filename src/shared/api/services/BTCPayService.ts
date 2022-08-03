@@ -14,6 +14,10 @@ const getStores = () => {
 	return http.get('/api/v1/stores')
 }
 
+const getInvoices = (storeID: string) => {
+	return http.get(`/api/v1/stores/${storeID}/invoices`)
+}
+
 const createInvoice = (storeID: string, amount: string) => {
 	return http.post(`/api/v1/stores/${storeID}/invoices`, {
 		currency: 'SEK',
@@ -28,5 +32,6 @@ export default {
 	createStore,
 	getStores,
 	connectWalletToStore,
-	createInvoice
+	createInvoice,
+	getInvoices
 }
