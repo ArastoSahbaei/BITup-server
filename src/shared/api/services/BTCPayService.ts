@@ -5,6 +5,11 @@ const createStore = (data: IcreateStore) => {
 	return http.post('/api/v1/stores', data)
 }
 
+const connectWalletToStore = (storeID: string, cryptoCode?: string) => {
+	const chain = cryptoCode ? cryptoCode : 'BTC'
+	return http.post(`/api/v1/stores/${storeID}/payment-methods/onchain/${chain}/generate`, {})
+}
+
 const getStores = () => {
 	return http.get('/api/v1/stores')
 }
@@ -22,5 +27,6 @@ const createInvoice = (storeID: string, amount: string) => {
 export default {
 	createStore,
 	getStores,
+	connectWalletToStore,
 	createInvoice
 }

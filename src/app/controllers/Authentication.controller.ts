@@ -12,7 +12,10 @@ const createUser = async (request, response) => {
 		const newStore: any = await BTCPayService.createStore({ name: storeName })
 		if (!newStore.data.id) {
 			return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
+		} else {
+			await BTCPayService.connectWalletToStore(newStore.data.id)
 		}
+
 		const isEmailOccupied = await UserModel.findOne({ email: email })
 		console.log(isEmailOccupied)
 		if (isEmailOccupied) {
@@ -84,12 +87,14 @@ const validateToken = async (request, response) => {
 	try {
 		const databaseResponse = await UserModel.findOne({ email: email })
 		response.status(StatusCode.OK).send({
-			_id: databaseResponse._id,
 			email: databaseResponse.email,
-			storeID: databaseResponse.store.id,
 			role: databaseResponse.role,
+			_id: databaseResponse._id,
 			authenticated: true,
-			token: generateAccessToken(databaseResponse.email)
+			token: generateAccessToken(databaseResponse.email),
+			store: {
+				id: databaseResponse.store.id,
+			},
 		})
 	} catch (error) {
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({
