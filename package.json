@@ -5,7 +5,7 @@
   "main": "Server.ts",
   "scripts": {
     "build": "tsc",
-    "start": "npx nodemon ./Server.ts",
+    "start": "nodemon --exec npx ts-node ./Server.ts",
     "windows": "nodemon --exec npx ts-node ./Server.ts",
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
     "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D"
