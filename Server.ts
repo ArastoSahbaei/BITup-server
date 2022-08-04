@@ -1,20 +1,14 @@
 import cors from 'cors'
 import express from 'express'
-import BTCPayRoute from './src/app/routes/BTCPay.route'
-import AuthenticationRoute from './src/app/routes/Authentication.route'
-import UserRoute from './src/app/routes/User.route'
 import { errorHandler, notFound } from './src/middlewares'
 import { connectToDatabase, connectToPort, useMorgan } from './src/functions'
+import { RouteHandler } from './src/app/routes/RouteHandler'
 
 const application = express()
-application.use(cors({ credentials: true }))
 application.use(express.json())
+application.use(cors({ credentials: true }))
 useMorgan(application)
-
-AuthenticationRoute.routes(application)
-BTCPayRoute.routes(application)
-UserRoute.routes(application)
-
+RouteHandler(application)
 application.use(notFound)
 application.use(errorHandler)
 
