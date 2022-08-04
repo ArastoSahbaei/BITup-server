@@ -1,0 +1,26 @@
+name: install, build & deploy
+
+on:
+  pull_request:
+  push:
+    branches: 
+      - master
+
+jobs:
+  test:
+    name: install, build & deploy
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Install Project
+      run: npm install
+
+    - name: Build Project
+      run: CI=false npm run build
