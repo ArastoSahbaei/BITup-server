@@ -1,3 +1,4 @@
+export { useCors } from './useCors'
 export { useMorgan } from './useMorgan'
 export { generateUUID } from './generateUUID'
 export { connectToPort } from './connectToPort'
