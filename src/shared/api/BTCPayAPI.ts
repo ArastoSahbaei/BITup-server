@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 const { ENVIROMENT, BTCPay_PROD_TOKEN, BTCPay_DEV_TOKEN } = process.env
-const isEnvDevelopment = ENVIROMENT === 'PRODUCTION'
+const isEnvDevelopment = ENVIROMENT === 'DEVELOPMENT'
 
 const baseURL = () => {
 	const baseURLPROD = 'https://mainnet.demo.btcpayserver.org'
