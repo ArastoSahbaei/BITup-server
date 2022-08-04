@@ -1,3 +1,4 @@
+export { useMorgan } from './useMorgan'
 export { generateUUID } from './generateUUID'
 export { connectToPort } from './connectToPort'
 export { encryptPassword } from './encryptPassword'

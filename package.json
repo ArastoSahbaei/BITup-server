@@ -8,7 +8,8 @@
     "start": "ts-node ./Server.ts",
     "windows": "nodemon --exec npx ts-node ./Server.ts",
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
-    "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D"
+    "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D",
+    "deploy": "git push heroku master"
   },
   "keywords": [],
   "author": "",
