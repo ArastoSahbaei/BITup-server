@@ -66,15 +66,15 @@ const verifyUserEmail = async (request, response) => {
 
 const login = async (request, response) => {
 	const { email, password } = request.body
-
+	console.log('email: ' + email)
 	try {
 		const user = await UserModel.findOne({ email: email })
 		if (!user) {
-			return response.status(StatusCode.NOT_FOUND).send({ message: 'User not found' })
+			return response.status(StatusCode.NOT_FOUND).send({ message: `Kunde inte hitta konto med email: ${email}` })
 		}
 		const passwordValidated = await comparePasswords(password, user.password)
 		if (!passwordValidated) {
-			return response.status(StatusCode.UNAUTHORIZED).send({ message: 'Invalid password' })
+			return response.status(StatusCode.UNAUTHORIZED).send({ message: 'Ogiltiga inloggningsuppgifter' })
 		}
 		if (user && passwordValidated) {
 			return response.status(StatusCode.OK).send({
