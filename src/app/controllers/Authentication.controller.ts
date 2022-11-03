@@ -9,7 +9,7 @@ const createUser = async (request, response) => {
 	const tokenUUID = generateUUID()
 
 	try {
-		const newStore: any = await BTCPayService.createStore({ name: storeName })
+		const newStore = await BTCPayService.createStore({ name: storeName })
 		if (!newStore.data.id) {
 			return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 		} else {
@@ -17,11 +17,10 @@ const createUser = async (request, response) => {
 		}
 
 		const isEmailOccupied = await UserModel.findOne({ email: email })
-		console.log(isEmailOccupied)
 		if (isEmailOccupied) {
 			return response.status(StatusCode.FORBIDDEN).send({ message: 'Email is already in use' })
 		}
-		const user: any = new UserModel({
+		const user = new UserModel({
 			email: email,
 			password: password && await encryptPassword(password),
 			store: {

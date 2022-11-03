@@ -5,7 +5,6 @@ const getInvoices = async (request, response) => {
 	const { storeID } = request.body
 	try {
 		const { data } = await BTCPayService.getInvoices(storeID)
-		console.log(data)
 		return response.status(StatusCode.OK).send(data)
 	} catch (error) {
 		console.log(error.message)
