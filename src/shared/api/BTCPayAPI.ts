@@ -8,6 +8,7 @@ const isEnvDevelopment = ENVIROMENT === 'DEVELOPMENT'
 const baseURL = () => {
 	const baseURLPROD = 'https://mainnet.demo.btcpayserver.org'
 	const baseURLDEV = 'https://testnet.demo.btcpayserver.org'
+	//TODO: getEnvviroment from external function
 	return isEnvDevelopment ? baseURLDEV : baseURLPROD
 }
 
