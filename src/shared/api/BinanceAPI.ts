@@ -1,19 +1,23 @@
 import Axios from 'axios'
-import { determineEnviroment } from '../../functions'
+import dotenv from 'dotenv'
+import { isDevelopmentEnv } from '../../functions'
+
+dotenv.config()
+const { BINANCE_DEV_TOKEN } = process.env
 
 const baseURL = () => {
 	const baseURL_PROD = 'TBD'
 	const baseURL_DEV = 'https://testnet.binance.vision'
-	return determineEnviroment() ? baseURL_DEV : baseURL_PROD
+	return isDevelopmentEnv() ? baseURL_DEV : baseURL_PROD
 }
 
 const headers = {
 	'Content-Type': 'application/json',
-	'X-MBX-APIKEY': '6558cca0f3e4cf530c1375b639e459fe8e013dfcfdac37a8db7cb8f59aa98d26'
+	'X-MBX-APIKEY': BINANCE_DEV_TOKEN
 }
 
 const BinanceAPI = Axios.create({
-	baseURL: 'https://testnet.binance.vision',
+	baseURL: baseURL(),
 	headers: headers
 })
 
