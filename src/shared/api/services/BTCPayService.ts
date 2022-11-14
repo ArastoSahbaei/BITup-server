@@ -23,7 +23,9 @@ const createInvoice = (storeID: string, amount: string) => {
 		currency: 'SEK',
 		amount: amount,
 		checkout: {
-			defaultLanguage: 'sv'
+			defaultLanguage: 'sv',
+			redirectAutomatically: true,
+			redirectURL: 'https://bitup.se/{InvoiceId}/{OrderId}'
 		}
 	})
 }
