@@ -1,5 +1,14 @@
 import http from '../BTCPayAPI'
+import dotenv from 'dotenv'
 import { IcreateStore } from '../../interfaces'
+import { isDevelopmentEnv } from '../../../functions'
+
+dotenv.config()
+const { WEB_DEV_URL, WEB_PROD_URL } = process.env
+
+const baseURL = () => {
+	return isDevelopmentEnv() ? WEB_PROD_URL : WEB_DEV_URL
+}
 
 const createStore = (data: IcreateStore) => {
 	return http.post('/api/v1/stores', data)
@@ -25,15 +34,15 @@ const createInvoice = (storeID: string, amount: string) => {
 		checkout: {
 			defaultLanguage: 'sv',
 			redirectAutomatically: true,
-			redirectURL: 'https://bitup.se/{InvoiceId}/{OrderId}'
+			redirectURL: `${baseURL}/trade-successful/{InvoiceId}`, //TODO: Change this to the correct URL when we have a domain
 		}
 	})
 }
 
 export default {
-	createStore,
-	getStores,
 	connectWalletToStore,
 	createInvoice,
-	getInvoices
+	getInvoices,
+	createStore,
+	getStores,
 }
