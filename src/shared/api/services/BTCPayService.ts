@@ -7,7 +7,7 @@ dotenv.config()
 const { WEB_DEV_URL, WEB_PROD_URL } = process.env
 
 const baseURL = () => {
-	return isDevelopmentEnv() ? WEB_PROD_URL : WEB_DEV_URL
+	return isDevelopmentEnv() ? WEB_DEV_URL : WEB_PROD_URL
 }
 
 const createStore = (data: IcreateStore) => {
@@ -34,7 +34,7 @@ const createInvoice = (storeID: string, amount: string) => {
 		checkout: {
 			defaultLanguage: 'sv',
 			redirectAutomatically: true,
-			redirectURL: `${baseURL}/trade-successful/{InvoiceId}`, //TODO: Change this to the correct URL when we have a domain
+			redirectURL: `${baseURL()}/trade-successful/{InvoiceId}`,
 		}
 	})
 }
