@@ -1,11 +1,8 @@
 import http from '../BinanceAPI'
-import CryptoJS from 'crypto-js'
+import { signatureSHA256 } from '../../../functions'
 
 
 const dataQueryString = 'recvWindow=20000&timestamp=' + Date.now()
-const secret = 'zzhHWaOeQSNM18pzHwHtVXNgjZ0pqDiGOSbuN274cOTSQrDCBXJWh7PwIGa8Zzb5'
-const signature = CryptoJS.HmacSHA256(dataQueryString, secret).toString(CryptoJS.enc.Hex)
-const url = '/api/v3/account?' + dataQueryString + '&signature=' + signature
 
 
 const test = () => {
@@ -13,7 +10,8 @@ const test = () => {
 }
 
 const getAccountInformation = () => {
-	return http.get('/api/v3/account?' + dataQueryString + '&signature=' + signature)
+	const dataQueryString = 'recvWindow=20000&timestamp=' + Date.now()
+	return http.get('/api/v3/account?' + dataQueryString + signatureSHA256(dataQueryString))
 }
 
 const createSellOrder = () => {
