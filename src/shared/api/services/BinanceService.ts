@@ -1,17 +1,13 @@
 import http from '../BinanceAPI'
 import { signatureSHA256 } from '../../../functions'
 
-
-const dataQueryString = 'recvWindow=20000&timestamp=' + Date.now()
-
-
 const test = () => {
 	return http.get('/api/v3/ping')
 }
 
 const getAccountInformation = () => {
 	const dataQueryString = 'recvWindow=20000&timestamp=' + Date.now()
-	return http.get('/api/v3/account?' + dataQueryString + signatureSHA256(dataQueryString))
+	return http.get(`/api/v3/account?${dataQueryString + signatureSHA256(dataQueryString)}`)
 }
 
 const createSellOrder = () => {
