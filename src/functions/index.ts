@@ -1,6 +1,7 @@
 export { useCors } from './useCors'
 export { useMorgan } from './useMorgan'
 export { useHelmet } from './useHelmet'
+export { getTimeStamp } from './getTimeStamp'
 export { generateUUID } from './generateUUID'
 export { connectToPort } from './connectToPort'
 export { signatureSHA256 } from './signatureSHA256'
