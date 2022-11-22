@@ -28,7 +28,7 @@ const getAccountInformation = async (request, response) => {
 const createTrade = async (request, response) => {
 	//TODO: 1. Determine the amount of BTC to sell (get from orderId/invoiceId)
 	try {
-		const { data } = await BinanceService.createTrade()
+		const { data } = await BinanceService.createTrade('0.1')
 		console.log(data)
 		response.status(StatusCode.OK).send({ message: data })
 	} catch (error) {

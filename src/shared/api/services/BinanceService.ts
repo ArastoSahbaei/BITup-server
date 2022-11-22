@@ -1,17 +1,18 @@
 import http from '../BinanceAPI'
 import { signatureSHA256 } from '../../../functions'
+import { getTimeStamp } from '../../../functions/getTimeStamp'
 
 const test = () => {
 	return http.get('/api/v3/ping')
 }
 
 const getAccountInformation = () => {
-	const dataQueryString = 'recvWindow=60000&timestamp=' + Date.now()
+	const dataQueryString = `recvWindow=60000&${getTimeStamp()}`
 	return http.get(`/api/v3/account?${dataQueryString + signatureSHA256(dataQueryString)}`)
 }
 
-const createTrade = () => {
-	const dataQueryString = 'symbol=ETHBTC&side=SELL&type=MARKET&quantity=1&recvWindow=60000&timestamp=' + Date.now()
+const createTrade = (quantity: string) => {
+	const dataQueryString = `symbol=BTCUSDT&side=SELL&type=MARKET&quantity=${quantity}&recvWindow=60000&${getTimeStamp()}`
 	return http.post(`/api/v3/order?${dataQueryString + signatureSHA256(dataQueryString)}`)
 }
 
