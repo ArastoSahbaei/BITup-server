@@ -31,8 +31,19 @@ const createInvoice = async (request, response) => {
 	}
 }
 
+const getInvoicePaymentMethods = async (request, response) => {
+	const { storeID, invoiceID } = request.params
+	try {
+		const { data } = await BTCPayService.getInvoicePaymentMethods(storeID, invoiceID)
+		return response.status(StatusCode.OK).send(data)
+	} catch (error) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	}
+}
+
 export default {
 	getInvoice,
 	getInvoices,
-	createInvoice
+	createInvoice,
+	getInvoicePaymentMethods
 }

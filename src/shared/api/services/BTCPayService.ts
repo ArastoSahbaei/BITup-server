@@ -31,6 +31,10 @@ const getInvoices = (storeID: string) => {
 	return http.get(`/api/v1/stores/${storeID}/invoices`)
 }
 
+const getInvoicePaymentMethods = (storeID: string, invoiceID: string) => {
+	return http.get(`/api/v1/stores/${storeID}/invoices/${invoiceID}/payment-methods`)
+}
+
 const createInvoice = (storeID: string, amount: string) => {
 	return http.post(`/api/v1/stores/${storeID}/invoices`, {
 		currency: 'SEK',
@@ -38,12 +42,13 @@ const createInvoice = (storeID: string, amount: string) => {
 		checkout: {
 			defaultLanguage: 'sv',
 			redirectAutomatically: true,
-			redirectURL: `${baseURL()}/trade-successful/{InvoiceId}`,
+			redirectURL: `${baseURL()}/sell-order/store/{StoreId}/invoice/{InvoiceId}`,
 		}
 	})
 }
 
 export default {
+	getInvoicePaymentMethods,
 	connectWalletToStore,
 	createInvoice,
 	getInvoices,
