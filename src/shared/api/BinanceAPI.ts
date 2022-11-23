@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { isDevelopmentEnv } from '../../functions'
 
 dotenv.config()
-const { BINANCE_DEV_TOKEN, BINANCE_PROD_TOKEN } = process.env
+const { DEV_BINANCE_TOKEN, BINANCE_PROD_TOKEN } = process.env
 
 const baseURL = () => {
 	const baseURL_PROD = 'https://api.binance.com/api'
@@ -12,7 +12,7 @@ const baseURL = () => {
 }
 
 const token = () => {
-	return isDevelopmentEnv() ? BINANCE_DEV_TOKEN : BINANCE_PROD_TOKEN
+	return isDevelopmentEnv() ? DEV_BINANCE_TOKEN : BINANCE_PROD_TOKEN
 }
 
 const headers = {

@@ -4,10 +4,10 @@ import { IcreateStore } from '../../interfaces'
 import { isDevelopmentEnv } from '../../../functions'
 
 dotenv.config()
-const { WEB_DEV_URL, WEB_PROD_URL } = process.env
+const { DEV_WEB_URL, WEB_PROD_URL } = process.env
 
 const baseURL = () => {
-	return isDevelopmentEnv() ? WEB_DEV_URL : WEB_PROD_URL
+	return isDevelopmentEnv() ? DEV_WEB_URL : WEB_PROD_URL
 }
 
 const createStore = (data: IcreateStore) => {
