@@ -1,6 +1,16 @@
 import StatusCode from '../../configurations/StatusCode'
 import BTCPayService from '../../shared/api/services/BTCPayService'
 
+const getInvoice = async (request, response) => {
+	try {
+		const { data } = await BTCPayService.getInvoice(request.params.storeID, request.params.invoiceID)
+		console.log(data)
+		response.status(StatusCode.OK).send({ message: data })
+	} catch (error) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	}
+}
+
 const getInvoices = async (request, response) => {
 	const { storeID } = request.body
 	try {
@@ -22,6 +32,7 @@ const createInvoice = async (request, response) => {
 }
 
 export default {
+	getInvoice,
 	getInvoices,
 	createInvoice
 }

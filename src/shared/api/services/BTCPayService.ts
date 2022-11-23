@@ -23,6 +23,10 @@ const getStores = () => {
 	return http.get('/api/v1/stores')
 }
 
+const getInvoice = (storeID: string, invoiceID: string) => {
+	return http.get(`/api/v1/stores/${storeID}/invoices/${invoiceID}`)
+}
+
 const getInvoices = (storeID: string) => {
 	return http.get(`/api/v1/stores/${storeID}/invoices`)
 }
@@ -44,5 +48,6 @@ export default {
 	createInvoice,
 	getInvoices,
 	createStore,
+	getInvoice,
 	getStores,
 }
