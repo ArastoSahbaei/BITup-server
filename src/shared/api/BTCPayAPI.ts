@@ -3,7 +3,7 @@ import dotenv from 'dotenv'
 import { isDevelopmentEnv } from '../../functions'
 
 dotenv.config()
-const { DEV_BTCPAY_TOKEN, BTCPay_PROD_TOKEN } = process.env
+const { DEV_BTCPAY_TOKEN, PROD_BTCPAY_TOKEN } = process.env
 
 const baseURL = () => {
 	const baseURLPROD = 'https://mainnet.demo.btcpayserver.org'
@@ -12,7 +12,7 @@ const baseURL = () => {
 }
 
 const token = () => {
-	return isDevelopmentEnv() ? DEV_BTCPAY_TOKEN : BTCPay_PROD_TOKEN
+	return isDevelopmentEnv() ? DEV_BTCPAY_TOKEN : PROD_BTCPAY_TOKEN
 }
 
 const BitupAPI = Axios.create({

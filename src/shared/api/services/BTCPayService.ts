@@ -4,11 +4,8 @@ import { IcreateStore } from '../../interfaces'
 import { isDevelopmentEnv } from '../../../functions'
 
 dotenv.config()
-const { DEV_WEB_URL, WEB_PROD_URL } = process.env
-
-const baseURL = () => {
-	return isDevelopmentEnv() ? DEV_WEB_URL : WEB_PROD_URL
-}
+const { DEV_WEB_URL, PROD_WEB_URL } = process.env
+const baseURL = isDevelopmentEnv() ? DEV_WEB_URL : PROD_WEB_URL
 
 const createStore = (data: IcreateStore) => {
 	return http.post('/api/v1/stores', data)
@@ -42,7 +39,7 @@ const createInvoice = (storeID: string, amount: string) => {
 		checkout: {
 			defaultLanguage: 'sv',
 			redirectAutomatically: true,
-			redirectURL: `${baseURL()}/sell-order/store/{StoreId}/invoice/{InvoiceId}`,
+			redirectURL: `${baseURL}/sell-order/store/{StoreId}/invoice/{InvoiceId}`,
 		}
 	})
 }
