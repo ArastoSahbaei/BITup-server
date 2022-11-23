@@ -39,7 +39,8 @@ const createInvoice = (storeID: string, amount: string) => {
 		checkout: {
 			defaultLanguage: 'sv',
 			redirectAutomatically: true,
-			redirectURL: `${baseURL}/sell-order/store/{StoreId}/invoice/{InvoiceId}`,
+			redirectURL: `${baseURL}/sell-order/store/{storeId}/invoice/{InvoiceId}`,
+			/* "notificationUrl": "https://webhook.after.checkout.com/goeshere", TODO: This might be better, direct re-direction? */
 		}
 	})
 }
