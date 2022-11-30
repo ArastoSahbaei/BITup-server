@@ -9,7 +9,7 @@ const createUser = async (request, response) => {
 	const tokenUUID = generateUUID()
 
 	try {
-		const newStore = await BTCPayService.createStore({ name: storeName })
+		const newStore = await BTCPayService.createStore({ name: storeName, defaultCurrency: 'SEK' })
 		if (!newStore.data.id) {
 			return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 		} else {
