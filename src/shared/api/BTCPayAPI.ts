@@ -6,9 +6,9 @@ dotenv.config()
 const { DEV_BTCPAY_TOKEN, PROD_BTCPAY_TOKEN } = process.env
 
 const baseURL = () => {
-	const baseURLPROD = 'https://mainnet.demo.btcpayserver.org'
-	const baseURLDEV = 'https://testnet.demo.btcpayserver.org'
-	return isDevelopmentEnv() ? baseURLDEV : baseURLPROD
+	const PROD_baseURL = 'https://mainnet.demo.btcpayserver.org'
+	const DEV_baseURL = 'https://testnet.demo.btcpayserver.org'
+	return isDevelopmentEnv() ? DEV_baseURL : PROD_baseURL
 }
 
 const token = () => {
