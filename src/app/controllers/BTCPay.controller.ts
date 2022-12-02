@@ -31,8 +31,6 @@ const createInvoice = async (request, response) => {
 			BTCPAY_invoiceId: data.id,
 			amount: data.amount,
 			status: data.status,
-			createdTime: data.createdTime,
-			expirationTime: data.expirationTime,
 			checkoutLink: data.checkoutLink,
 		})
 		await invoice.save()
