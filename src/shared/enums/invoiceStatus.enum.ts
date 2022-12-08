@@ -1,3 +1,4 @@
 export enum invoiceStatus {
-  settled = 'settled',
+  inProcess = 'Processing',
+  settled = 'Settled',
 }
