@@ -15,11 +15,41 @@ const invoiceSchema = new Schema({
 	currency: {
 		type: String,
 	},
-	amount: {
+	amount_fiat: {
 		type: Number,
+	},
+	amount_BTC: {
+		type: Number,
+		default: null
 	},
 	checkoutLink: {
 		type: String,
+	},
+	totalPaid: {
+		type: Number,
+		default: null,
+	},
+	exchangeRate: {
+		type: String,
+		default: null
+	},
+	tradeData: {
+		amount_BTC: {
+			type: String,
+			default: null
+		},
+		orderId: {
+			type: Number,
+			default: null
+		},
+		clientOrderId: {
+			type: String,
+			default: null
+		},
+		price_USD: {
+			type: String,
+			default: null
+		}
 	}
 }, { timestamps: true })
 

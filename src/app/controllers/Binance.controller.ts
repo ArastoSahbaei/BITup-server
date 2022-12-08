@@ -30,18 +30,27 @@ const getAccountInformation = async (request, response) => {
 const createTrade = async (request, response) => {
 	const { storeID, invoiceID } = request.params
 	try {
-		//TODO: Why does invoiceResponse return an array? Shouldn't it return a single object? in what scenarios does it return multiple objects?
-		//TODO: Solve this by get the data from local backend instead of BTCPayServer. Find by invoiceID and then update the status field
+		//TODO: get invoice from BTCPay
 		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceID }, { status: invoiceStatus.settled })
 		if (databaseResponse.status === invoiceStatus.settled) {
 			return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
 		}
+
+		//TODO: Why does invoiceResponse return an array? Shouldn't it return a single object? in what scenarios does it return multiple objects?
 		const invoiceResponse = await BTCPayService.getInvoicePaymentMethods(storeID, invoiceID)
-		console.log(invoiceResponse.data[0].totalPaid)
-		//TODO: Too many decimels. write function to handle this?
-		//TODO: minimum order must be >10$USD - How to handle this?
-		const { data } = await BinanceService.createTrade('0.0007')
-		/* console.log(data) */
+		const roundedDecimals = Math.round(invoiceResponse.data[0].amount * 1000) / 1000
+		const { data } = await BinanceService.createTrade(roundedDecimals.toString())
+		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceID }, {
+			exchangeRate: invoiceResponse.data[0].rate,
+			totalPaid: invoiceResponse.data[0].totalPaid,
+			amount_BTC: invoiceResponse.data[0].amount,
+			tradeData: {
+				amount_BTC: roundedDecimals.toString(),
+				orderId: data.orderId,
+				clientOrderId: data.clientOrderId,
+				price_USD: data.fills[0]?.price,
+			}
+		})
 		response.status(StatusCode.OK).send({ message: data })
 	} catch (error) {
 		console.log(error)

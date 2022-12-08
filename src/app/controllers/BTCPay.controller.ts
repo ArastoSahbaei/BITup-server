@@ -29,8 +29,9 @@ const createInvoice = async (request, response) => {
 		const invoice = new InvoiceModel({
 			BTCPAY_storeId: data.storeId,
 			BTCPAY_invoiceId: data.id,
-			amount: data.amount,
+			amount_fiat: data.amount,
 			status: data.status,
+			currency: data.currency,
 			checkoutLink: data.checkoutLink,
 		})
 		await invoice.save()
