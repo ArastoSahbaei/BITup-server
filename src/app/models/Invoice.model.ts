@@ -25,6 +25,9 @@ const invoiceSchema = new Schema({
 	checkoutLink: {
 		type: String,
 	},
+	receiptLink: {
+		type: String,
+	},
 	totalPaid: {
 		type: Number,
 		default: null,

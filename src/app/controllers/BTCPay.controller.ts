@@ -1,4 +1,5 @@
 import StatusCode from '../../configurations/StatusCode'
+import { baseURL_BTCPay } from '../../functions'
 import BTCPayService from '../../shared/api/services/BTCPayService'
 import InvoiceModel from '../models/Invoice.model'
 
@@ -33,6 +34,7 @@ const createInvoice = async (request, response) => {
 			status: data.status,
 			currency: data.currency,
 			checkoutLink: data.checkoutLink,
+			receiptLink: `${baseURL_BTCPay()}/i/${data.id}/receipt`
 		})
 		await invoice.save()
 		return response.status(StatusCode.CREATED).send(data)
