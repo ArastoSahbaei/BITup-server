@@ -10,6 +10,6 @@ export const errorHandler = (error, request, response, next) => {
 	response.json({
 		statuscode: statuscode,
 		message: error.message,
-		stacktrace: ENVIROMENT === 'DEVELOPMENT' ? error.stack : null,
+		stacktrace: ENVIROMENT === 'PRODUCTION' ? null : error.stack,
 	})
 }
