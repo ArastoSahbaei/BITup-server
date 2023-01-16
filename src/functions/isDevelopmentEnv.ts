@@ -5,7 +5,7 @@ const { ENVIROMENT } = process.env
 
 //TODO: Re-write this to 'getEnv' and return the correct env
 export const isDevelopmentEnv = () => {
-	const isDevEnviroment = ENVIROMENT === 'DEVELOPMENT'
+	const isDevEnviroment = ENVIROMENT === 'DEVELOPMENT' || ENVIROMENT === 'STAGING'
 	return !!isDevEnviroment
 }
 
