@@ -5,7 +5,6 @@ dotenv.config()
 const { ENVIROMENT } = process.env
 
 export const errorHandler = (error, request, response, next) => {
-	console.log('ok lol')
 	const statuscode = (response.statusCode === StatusCode.OK) ? StatusCode.INTERNAL_SERVER_ERROR : response.statusCode
 	response.status(statuscode)
 	response.json({
