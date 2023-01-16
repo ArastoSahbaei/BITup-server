@@ -12,7 +12,7 @@ export const connectToDatabase = () => {
 	const DATABASE_URL = ENVIROMENT === 'DEVELOPMENT' ? DEV_DATABASE_URL : PROD_DATABASE_URL
 	try {
 		mongoose.connect(DATABASE_URL, {})
-		console.log(`✔️  SUCCESSFULLY CONNECTED TO ${ENVIROMENT} DATABASE..`)
+		console.log(`✔️  SUCCESSFULLY CONNECTED TO THE ${ENVIROMENT} DATABASE..`)
 	} catch (error) {
 		console.log('❌  ERROR OCCURED WHILE TRYING TO CONNECT TO THE DATABASE..')
 		process.exit()
