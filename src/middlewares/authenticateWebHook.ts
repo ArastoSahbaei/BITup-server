@@ -1,0 +1,23 @@
+import crypto from 'crypto'
+import StatusCode from '../configurations/StatusCode'
+
+export const authenticateWebHook = (request, response, next) => {
+
+	const payload = request.body // The webhook payload
+	const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B' // The secret key provided by BTCPay Server
+	const btcpaySig = request.headers['btcpay-sig'] // The BTCPAY-SIG header
+	const payloadBytes = JSON.stringify(payload) // Stringify payload to bytes
+
+	console.log('this is the payload', payload)
+	console.log('this is the payloadBytes', payloadBytes)
+	const calculatedSig = crypto.createHmac('sha256', secret).update(payloadBytes).digest('hex')
+	console.log(calculatedSig)
+	if (calculatedSig !== btcpaySig) {
+		return response.sendStatus(StatusCode.UNAUTHORIZED)
+	}
+	// The signature matches, the payload is valid
+	// Your code to handle the webhook payload goes here
+	// ...
+	next()
+
+}

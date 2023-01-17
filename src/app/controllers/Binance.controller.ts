@@ -69,26 +69,8 @@ const createTrade = async (request, response) => {
 }
 
 const test = (request, response) => {
-	try {
-		const payload = request.body // The webhook payload
-		console.log('this is the payload', payload)
-		const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B' // The secret key provided by BTCPay Server
-		const btcpaySig = request.headers['btcpay-sig'] // The BTCPAY-SIG header
-		console.log('this is the btcpaySig', btcpaySig)
-		const payloadBytes = JSON.stringify(payload) // Stringify payload to bytes
-		console.log('this is the payloadBytes', payloadBytes)
-		const calculatedSig = crypto.createHmac('sha256', secret).update(payloadBytes).digest('hex')
-		if (calculatedSig !== btcpaySig) {
-			// The signature does not match, the payload may have been tampered with or sent by an unauthorized source
-			return response.status(401).send('Unauthorized')
-		}
-		// The signature matches, the payload is valid
-		// Your code to handle the webhook payload goes here
-		// ...
-		response.send('Webhook received!')
-	} catch (error) {
-		console.log(error)
-	}
+	console.log('request.body', request.body)
+	response.status(201).send('Webhook received!')
 }
 
 export default {
