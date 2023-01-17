@@ -72,7 +72,7 @@ const test = (request, response) => {
 	try {
 		const payload = request.body // The webhook payload
 		console.log('this is the payload', payload)
-		const secret = 'yoursecretkey' // The secret key provided by BTCPay Server
+		const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B' // The secret key provided by BTCPay Server
 		const btcpaySig = request.headers['btcpay-sig'] // The BTCPAY-SIG header
 		console.log('this is the btcpaySig', btcpaySig)
 		const payloadBytes = JSON.stringify(payload) // Stringify payload to bytes
