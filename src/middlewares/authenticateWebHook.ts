@@ -11,8 +11,9 @@ export const authenticateWebHook = (request, response, next) => {
 	console.log('this is the payload', payload)
 	console.log('this is the payloadBytes', payloadBytes)
 	const calculatedSig = crypto.createHmac('sha256', secret).update(payloadBytes).digest('hex')
-	console.log(calculatedSig)
+	console.log(calculatedSig + ' + ' + btcpaySig)
 	if (calculatedSig !== btcpaySig) {
+		console.log('UNAUTHORIZED')
 		return response.sendStatus(StatusCode.UNAUTHORIZED)
 	}
 	// The signature matches, the payload is valid
