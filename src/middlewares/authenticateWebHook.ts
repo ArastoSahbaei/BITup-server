@@ -7,12 +7,13 @@ export const authenticateWebHook = (request, response, next) => {
 	const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B' // The secret key provided by BTCPay Server
 	const btcpaySig = request.headers['btcpay-sig'] // The BTCPAY-SIG header
 	const payloadBytes = JSON.stringify(payload) // Stringify payload to bytes
+	const btcpaySigWithoutAlgo = btcpaySig.split('=')[1] // remove the algorithm prefix
 
 	console.log('this is the payload', payload)
 	console.log('this is the payloadBytes', payloadBytes)
 	const calculatedSig = crypto.createHmac('sha256', secret).update(payloadBytes).digest('hex')
-	console.log(calculatedSig + ' + ' + btcpaySig)
-	if (calculatedSig !== btcpaySig) {
+	console.log(calculatedSig + ' + ' + btcpaySigWithoutAlgo)
+	if (calculatedSig !== btcpaySigWithoutAlgo) {
 		console.log('UNAUTHORIZED')
 		return response.sendStatus(StatusCode.UNAUTHORIZED)
 	}
