@@ -3,7 +3,7 @@ import StatusCode from '../configurations/StatusCode'
 
 const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B' // The secret key provided by BTCPay Server
 export const authenticateWebHook = (request, response, next) => {
-
+	console.log('wtf is going on?')
 
 	// Extract the signature from the headers
 	const signature = request.headers['btcpay-sig']
