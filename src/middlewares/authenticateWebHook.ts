@@ -2,11 +2,13 @@ import crypto from 'crypto'
 import StatusCode from '../configurations/StatusCode'
 
 export const authenticateWebHook = (request, response, next) => {
-	const payload = request.body
 	const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
+	const payload = request.body
+	const payloadBytes = Buffer.from(JSON.stringify(payload), 'utf8')
 	const signature = request.headers['btcpay-sig']
+	const hmac = crypto.createHmac('sha256', secret).update(payloadBytes).digest('hex')
 
-	const hmac = crypto.createHmac('sha256', secret).update(JSON.stringify(payload)).digest('hex')
+	console.log(hmac + ' + ' + signature)
 
 	if (hmac === signature) {
 		console.log('Payload is valid!')
