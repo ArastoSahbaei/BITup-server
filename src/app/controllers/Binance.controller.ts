@@ -3,7 +3,6 @@ import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
-import crypto from 'crypto'
 
 const testConnectivity = async (request, response) => {
 	try {
