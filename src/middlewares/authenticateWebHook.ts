@@ -2,7 +2,7 @@ import crypto from 'crypto'
 import StatusCode from '../configurations/StatusCode'
 
 export const authenticateWebHook = (request, response, next) => {
-	console.log('request.headers', request.headers)
+	console.log('request.headers', request.headers['btcpay-sig'])
 
 	const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
 	const payload = request.body
