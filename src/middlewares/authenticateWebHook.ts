@@ -6,9 +6,10 @@ export const authenticateWebHook = (request, response, next) => {
 	/* 	const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
     const signature = request.headers['btcpay-sig']
     const hmac = crypto.createHmac('sha256', secret).update(request.body).digest('hex') */
+	const hmac = crypto.createHmac('sha256', 'a4YthnHjwYJ8qjEzgA2w7pouq1B').update(request.body).digest('hex')
 	const signature = request.headers['btcpay-sig']
 
-	if ('hmac' === signature) {
+	if (hmac === signature) {
 		console.log('Payload is valid!')
 		return response.sendStatus(StatusCode.OK)
 	} else {
