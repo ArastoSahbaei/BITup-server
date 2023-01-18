@@ -5,6 +5,7 @@ export const authenticateWebHook = (request, response, next) => {
 	const secret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
 	const payload = request.body
 	const payloadBytes = Buffer.from(JSON.stringify(payload), 'utf8')
+	console.log(payloadBytes)
 	const signature = request.headers['btcpay-sig']
 	const hmac = crypto.createHmac('sha256', secret).update(payloadBytes).digest('hex')
 
