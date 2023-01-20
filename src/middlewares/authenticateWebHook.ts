@@ -28,6 +28,7 @@ export const authenticateWebHook = (request, response, next) => {
 	const webhookSecret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
 	console.log(request.rawBody)
 	if (!request.rawBody) {
+		console.log('Request body empty')
 		return next('Request body empty')
 	}
 	const sig = Buffer.from(request.get(sigHeaderName) || '', 'utf8')
