@@ -26,14 +26,16 @@ export const authenticateWebHook = (request, response, next) => {
 	const sigHashAlg = 'sha256'
 	const sigHeaderName = 'BTCPAY-SIG'
 	const webhookSecret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
-	console.log(request.body)
-	if (!request.body) {
+	const payload = request.body
+	const payloadBytes = Buffer.from(JSON.stringify(payload), 'utf8')
+
+	if (payload) {
 		console.log('Request body empty')
-		return next('Request body empty')
+		/* return next('Request body empty') */
 	}
 	const sig = Buffer.from(request.get(sigHeaderName) || '', 'utf8')
 	const hmac = crypto.createHmac(sigHashAlg, webhookSecret)
-	const digest = Buffer.from(sigHashAlg + '=' + hmac.update(request.body).digest('hex'), 'utf8')
+	const digest = Buffer.from(sigHashAlg + '=' + hmac.update(JSON.stringify(payload)).digest('hex'), 'utf8')
 	const checksum = Buffer.from(sig)
 	if (checksum.length !== digest.length || !crypto.timingSafeEqual(digest, checksum)) {
 		console.log(`Request body digest (${digest}) did not match ${sigHeaderName} (${checksum})`)
