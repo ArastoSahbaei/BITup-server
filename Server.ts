@@ -9,10 +9,6 @@ application.use(express.json())
 useCors(application)
 useHelmet(application)
 useMorgan(application)
-RouteHandler(application)
-application.use(notFound)
-application.use(errorHandler)
-
 application.use(bodyParser.json({
 	verify: (req: any, res, buf) => {
 		console.log(buf.toString('utf8'))
@@ -20,6 +16,10 @@ application.use(bodyParser.json({
 		req.rawBody = buf
 	}
 }))
+RouteHandler(application)
+application.use(notFound)
+application.use(errorHandler)
+
 
 connectToDatabase()
 connectToPort(application)
