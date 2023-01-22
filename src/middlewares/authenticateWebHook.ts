@@ -25,7 +25,7 @@ export const authenticateWebHook = (request, response, next) => {
 
 	const sigHashAlg = 'sha256'
 	const sigHeaderName = 'BTCPAY-SIG'
-	const webhookSecret = 'a4YthnHjwYJ8qjEzgA2w7pouq1B'
+	const webhookSecret = 'a4YthnHjwYJ8qjEzgA2w7pouq1Bx'
 	const payload = request.body
 	const payloadBytes = Buffer.from(JSON.stringify(payload), 'utf8')
 
