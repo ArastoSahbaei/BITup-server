@@ -29,16 +29,16 @@ export const authenticateWebHook = (request, response, next) => {
 	const payload = request.body
 	const payloadBytes = Buffer.from(JSON.stringify(payload), 'utf8')
 
-	if (payload) {
-		console.log('Request body empty')
-		/* return next('Request body empty') */
+	if (!request.rawBody) {
+		return next('Request body empty')
 	}
-	const sig = Buffer.from(request.get(sigHeaderName) || '', 'utf8')
+	const sig: any = Buffer.from(request.get(sigHeaderName) || '', 'utf8')
 	const hmac = crypto.createHmac(sigHashAlg, webhookSecret)
-	const digest = Buffer.from(sigHashAlg + '=' + hmac.update(JSON.stringify(payload)).digest('hex'), 'utf8')
-	const checksum = Buffer.from(sig)
+	const digest = Buffer.from(sigHashAlg + '=' + hmac.update(request.rawBody).digest('hex'), 'utf8')
+	const checksum: any = Buffer.from(sig, 'utf8')
 	if (checksum.length !== digest.length || !crypto.timingSafeEqual(digest, checksum)) {
 		console.log(`Request body digest (${digest}) did not match ${sigHeaderName} (${checksum})`)
+		return next(`Request body digest (${digest}) did not match ${sigHeaderName} (${checksum})`)
 	}
 	else {
 		// Do More Stuff here
