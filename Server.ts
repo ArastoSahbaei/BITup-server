@@ -15,6 +15,8 @@ application.use(errorHandler)
 
 application.use(bodyParser.json({
 	verify: (req: any, res, buf) => {
+		console.log(buf.toString('utf8'))
+		console.log(buf)
 		req.rawBody = buf
 	}
 }))
