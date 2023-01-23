@@ -1,18 +1,10 @@
-import { application } from '../../Server'
-import { getWebhookSecret } from '../functions'
 import crypto from 'crypto'
-import express from 'express'
 import StatusCode from '../configurations/StatusCode'
+import { getWebhookSecret } from '../functions'
 
+const webhookSecret = getWebhookSecret()
 
 export const authenticateWebHook = (request, response, next) => {
-	const webhookSecret = getWebhookSecret()
-	application.use(express.json({
-		verify: (request: any, response, buffer) => {
-			request.rawBody = buffer
-		}
-	}))
-
 	const signatureHashAlg = 'sha256'
 	const signatureHeaderName = 'BTCPAY-SIG'
 	const signature: any = Buffer.from(request.get(signatureHeaderName) || '', 'utf8')
