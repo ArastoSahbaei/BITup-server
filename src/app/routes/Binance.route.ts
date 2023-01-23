@@ -1,5 +1,5 @@
 import { Application } from 'express'
-import { authenticateWebHook } from '../../middlewares/authenticateWebHook'
+import { authenticateWebHook } from '../../middlewares'
 import BinanceController from '../controllers/Binance.controller'
 
 const routes = (application: Application) => {
