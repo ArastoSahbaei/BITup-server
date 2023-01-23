@@ -8,7 +8,7 @@ export const authenticateWebHook = (request, response, next) => {
 	const signatureHashAlg = 'sha256'
 	const signatureHeaderName = 'BTCPAY-SIG'
 	const signature: any = Buffer.from(request.get(signatureHeaderName) || '', 'utf8')
-	const hmac = crypto.createHmac(signatureHashAlg, 'a4YthnHjwYJ8qjEzgA2w7pouq1B')
+	const hmac = crypto.createHmac(signatureHashAlg, webhookSecret)
 	const digest = Buffer.from(signatureHashAlg + '=' + hmac.update(request.rawBody).digest('hex'), 'utf8')
 	const checksum = Buffer.from(signature, 'utf8')
 
