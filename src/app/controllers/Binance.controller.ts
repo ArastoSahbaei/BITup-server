@@ -31,8 +31,8 @@ const createTrade = async (request, response) => {
 	const { storeId, invoiceId } = request.body
 	//TODO: SERVICE: validate invoiceId. Does is exist?
 	//TODO: SERVICE: make sure a sell-order for that invoiceId has not already been done
-	verifyInvoice(storeId, invoiceId, response)
 	try {
+		await verifyInvoice(storeId, invoiceId, response)
 
 		//2. Save the invoice data to the database
 		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, { status: invoiceStatus.settled })
