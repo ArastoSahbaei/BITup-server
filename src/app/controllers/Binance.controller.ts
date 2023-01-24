@@ -27,9 +27,8 @@ const getAccountInformation = async (request, response) => {
 }
 
 const createTrade = async (request, response) => {
+	console.log('request.body', request.body)
 	const { storeId, invoiceId } = request.body
-	console.log('HAHAHHAHA')
-	console.log(request.body)
 	try {
 		//1. Verify that the invoice is legitimate. Only settled invoices can be used to create a trade. (To ensure that only truly settled invoices are used to create a trade)
 		const invoice = await BTCPayService.getInvoice(storeId, invoiceId)
