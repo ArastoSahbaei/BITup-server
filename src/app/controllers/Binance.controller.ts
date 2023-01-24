@@ -27,7 +27,7 @@ const getAccountInformation = async (request, response) => {
 }
 
 const createTrade = async (request, response) => {
-	console.log('request.body', request.body)
+	/* console.log('request.body', request.body) */
 	const { storeId, invoiceId } = request.body
 	console.log(storeId, invoiceId)
 	try {
