@@ -3,6 +3,7 @@ import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
+import { verifyInvoice } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -27,16 +28,12 @@ const getAccountInformation = async (request, response) => {
 }
 
 const createTrade = async (request, response) => {
-	/* console.log('request.body', request.body) */
 	const { storeId, invoiceId } = request.body
-	console.log(storeId, invoiceId)
+	//TODO: SERVICE: validate invoiceId. Does is exist?
+	//TODO: SERVICE: make sure a sell-order for that invoiceId has not already been done
+	verifyInvoice(storeId, invoiceId, response)
 	try {
-		//1. Verify that the invoice is legitimate. Only settled invoices can be used to create a trade. (To ensure that only truly settled invoices are used to create a trade)
-		const invoice = await BTCPayService.getInvoice(storeId, invoiceId)
-		const isInvoiceLegitimate: boolean = invoice.data.status === invoiceStatus.settled || invoice.data.status === invoiceStatus.inProcess
-		if (!isInvoiceLegitimate) {
-			return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice not settled' })
-		}
+
 		//2. Save the invoice data to the database
 		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, { status: invoiceStatus.settled })
 
