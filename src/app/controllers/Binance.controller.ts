@@ -32,7 +32,38 @@ const createTrade = async (request, response) => {
 	//TODO: SERVICE: validate invoiceId. Does is exist?
 	//TODO: SERVICE: make sure a sell-order for that invoiceId has not already been done
 	verifyInvoice(storeId, invoiceId, response)
+	try {
 
+		//2. Save the invoice data to the database
+		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, { status: invoiceStatus.settled })
+
+		//3. Verify that the invoice has not already been used to create a trade (To ensure that the invoice is not used twice)
+		/* if (databaseResponse.status === invoiceStatus.settled) {
+			return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
+		} */
+
+		//3.5 Verify that the quanntity is high enough to create a trade order
+		//4. Create a trade
+		//TODO: Why does invoiceResponse return an array? Shouldn't it return a single object? in what scenarios does it return multiple objects?
+		const invoiceResponse = await BTCPayService.getInvoicePaymentMethods(storeId, invoiceId)
+		const roundedDecimals = Math.round(invoiceResponse.data[0].amount * 1000) / 1000
+		const { data } = await BinanceService.createTrade(roundedDecimals.toString())
+		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, {
+			exchangeRate: invoiceResponse.data[0].rate,
+			totalPaid: invoiceResponse.data[0].totalPaid,
+			amount_BTC: invoiceResponse.data[0].amount,
+			tradeData: {
+				amount_BTC: roundedDecimals.toString(),
+				orderId: data.orderId,
+				clientOrderId: data.clientOrderId,
+				price_USD: data.fills[0]?.price,
+			}
+		})
+		response.status(StatusCode.OK).send({ message: data })
+	} catch (error) {
+		console.log(error)
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	}
 }
 
 const test = (request, response) => {
