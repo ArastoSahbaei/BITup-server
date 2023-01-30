@@ -17,7 +17,9 @@ export const checkTransactionHistory = async (invoiceId: string) => {
 	//TODO: test this function
 	try {
 		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, { status: invoiceStatus.settled })
+		console.log('databaseResponse: ', databaseResponse)
 		const isAlreadySettled = databaseResponse.status === invoiceStatus.settled
+		console.log('isAlreadySettled: ', isAlreadySettled)
 		return isAlreadySettled
 	} catch (error) {
 		console.log(error)
