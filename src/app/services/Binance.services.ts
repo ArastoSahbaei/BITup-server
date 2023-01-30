@@ -24,3 +24,13 @@ export const checkTransactionHistory = async (invoiceId: string) => {
 		return false
 	}
 }
+
+export const getInvoicePaymentMethods = async (storeId: string, invoiceId: string) => {
+	try {
+		const invoice = await BTCPayService.getInvoicePaymentMethods(storeId, invoiceId)
+		return invoice
+	} catch (error) {
+		console.log(error)
+		return false
+	}
+}

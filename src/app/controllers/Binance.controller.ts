@@ -3,7 +3,7 @@ import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
-import { checkTransactionHistory, validateInvoice } from '../services/Binance.services'
+import { checkTransactionHistory, getInvoicePaymentMethods, validateInvoice } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -29,21 +29,31 @@ const getAccountInformation = async (request, response) => {
 
 const createTrade = async (request, response) => {
 	const { storeId, invoiceId } = request.body
+	console.log('storeId: ', storeId)
+	console.log('invoiceId: ', invoiceId)
 
-	const isInvoiceValid = validateInvoice(storeId, invoiceId)
+	const isInvoiceValid = await validateInvoice(storeId, invoiceId)
 	if (!isInvoiceValid) {
+		console.log('Invoice not found')
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice not found' })
 	}
 
-	const hasPreviousSellOrder = checkTransactionHistory(invoiceId)
+	const hasPreviousSellOrder = await checkTransactionHistory(invoiceId)
 	if (hasPreviousSellOrder) {
+		console.log('Invoice already settled')
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
 	}
 
-	try {
-		//2. Save the invoice data to the database.
+	const invoicePaymentData = await getInvoicePaymentMethods(storeId, invoiceId)
+	if (!invoicePaymentData) {
+		console.log('Invoice payment data not found')
+		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
+	}
 
-		//3.5 Verify that the quanntity is high enough to create a trade order
+	try {
+		//2. Save the invoice data to the database. This already happens inside the checkTransactionHistory function. But might be better to do it here
+
+		//3 Verify that the quanntity is high enough to create a trade order
 
 		//4. Create a trade
 
