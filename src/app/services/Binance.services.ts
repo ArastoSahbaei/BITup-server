@@ -36,3 +36,13 @@ export const getInvoicePaymentMethods = async (storeId: string, invoiceId: strin
 		return false
 	}
 }
+
+export const updateInvoiceStatus = async (invoiceId: string, status: string) => {
+	try {
+		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPay_invoiceId: invoiceId }, { status: status })
+		return !!databaseResponse
+	} catch (error) {
+		console.log(error)
+		return false
+	}
+}

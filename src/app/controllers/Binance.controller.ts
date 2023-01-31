@@ -3,7 +3,7 @@ import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
-import { checkTransactionHistory, getInvoicePaymentMethods, validateInvoice } from '../services/Binance.services'
+import { checkTransactionHistory, getInvoicePaymentMethods, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -44,7 +44,11 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
 	}
 
+	updateInvoiceStatus(invoiceId, invoiceStatus.inProcess)
+
 	const invoicePaymentData = await getInvoicePaymentMethods(storeId, invoiceId)
+	console.log('INVOICERESPONSE: ', invoicePaymentData)
+
 	if (!invoicePaymentData) {
 		console.log('Invoice payment data not found')
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
@@ -59,6 +63,7 @@ const createTrade = async (request, response) => {
 
 		//TODO: Why does invoiceResponse return an array? Shouldn't it return a single object? in what scenarios does it return multiple objects?
 		const invoiceResponse = await BTCPayService.getInvoicePaymentMethods(storeId, invoiceId)
+		console.log('INVOICERESPONSE: ', invoiceResponse)
 		const roundedDecimals = Math.round(invoiceResponse.data[0].amount * 1000) / 1000
 		const { data } = await BinanceService.createTrade(roundedDecimals.toString())
 		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, {
