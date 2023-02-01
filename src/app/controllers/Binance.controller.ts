@@ -1,9 +1,8 @@
-import BTCPayService from '../../shared/api/services/BTCPayService'
 import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
-import { checkTransactionHistory, getInvoicePaymentMethods, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
+import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -52,30 +51,27 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
 	}
 
+	const roundedDecimals: number = getRoundedDecimals(0.00060413)
+
 	try {
-		//2. Save the invoice data to the database. This already happens inside the checkTransactionHistory function. But might be better to do it here
+		//tODO: Create a function that verifies that the quantity is high enough to create a trade order
+		/* TODO: Keep this!! const roundedDecimals = getRoundedDecimals(invoicePaymentData.data[0].amount) */
+		/* 		const { data } = await BinanceService.createTrade(roundedDecimals.toString()) */
 
-		//3 Verify that the quanntity is high enough to create a trade order
+		const createdSellOrder: any = createNewSellOrder(invoicePaymentData.data[0].amount)
 
-		//4. Create a trade
-
-		//TODO: Why does invoiceResponse return an array? Shouldn't it return a single object? in what scenarios does it return multiple objects?
-		const invoiceResponse = await BTCPayService.getInvoicePaymentMethods(storeId, invoiceId)
-		/* TODO: Keep this!! const roundedDecimals = Math.round(invoiceResponse.data[0].amount * 1000) / 1000 */
-		const roundedDecimals = Math.round(0.00060413 * 1000) / 1000
-		const { data } = await BinanceService.createTrade(roundedDecimals.toString())
 		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, {
-			exchangeRate: invoiceResponse.data[0].rate,
-			totalPaid: invoiceResponse.data[0].totalPaid,
-			amount_BTC: invoiceResponse.data[0].amount,
+			exchangeRate: invoicePaymentData.data[0].rate,
+			totalPaid: invoicePaymentData.data[0].totalPaid,
+			amount_BTC: invoicePaymentData.data[0].amount,
 			tradeData: {
 				amount_BTC: roundedDecimals.toString(),
-				orderId: data.orderId,
-				clientOrderId: data.clientOrderId,
-				price_USD: data.fills[0]?.price,
+				orderId: createdSellOrder.orderId,
+				clientOrderId: createdSellOrder.clientOrderId,
+				price_USD: createdSellOrder.fills[0]?.price,
 			}
 		})
-		response.status(StatusCode.OK).send({ message: data })
+		response.status(StatusCode.OK).send({ message: createdSellOrder })
 	} catch (error) {
 		console.log(error)
 		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
