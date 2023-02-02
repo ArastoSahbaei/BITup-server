@@ -55,8 +55,7 @@ export const getRoundedDecimals = (amount: number) => {
 
 export const createNewSellOrder = async (amount: number) => {
 	try {
-		const roundedDecimals = getRoundedDecimals(amount)
-		const { data } = await BinanceService.createTrade(roundedDecimals.toString())
+		const { data } = await BinanceService.createTrade(amount.toString())
 		return data
 	} catch (error) {
 		console.log(error)

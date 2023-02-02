@@ -51,14 +51,14 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
 	}
 
-	const roundedDecimals: number = getRoundedDecimals(0.00060413)
+	/* TODO: Keep this!! const roundedDecimals = getRoundedDecimals(invoicePaymentData.data[0].amount) */
+	const roundedDecimals: number = getRoundedDecimals(0.00090413)
+	const createdSellOrder: any = createNewSellOrder(roundedDecimals) //TODO: Swap to invoicePaymentData.data[0].amount
 
 	try {
 		//tODO: Create a function that verifies that the quantity is high enough to create a trade order
-		/* TODO: Keep this!! const roundedDecimals = getRoundedDecimals(invoicePaymentData.data[0].amount) */
 		/* 		const { data } = await BinanceService.createTrade(roundedDecimals.toString()) */
 
-		const createdSellOrder: any = createNewSellOrder(invoicePaymentData.data[0].amount)
 
 		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, {
 			exchangeRate: invoicePaymentData.data[0].rate,
