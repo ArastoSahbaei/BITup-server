@@ -2,7 +2,7 @@ import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
-import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
+import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, saveTradeData, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -51,35 +51,27 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
 	}
 
-	/* TODO: Keep this!! const roundedDecimals = getRoundedDecimals(invoicePaymentData.data[0].amount) */
-	const roundedDecimals: number = getRoundedDecimals(0.00090413)
-	const createdSellOrder: any = await createNewSellOrder(roundedDecimals) //TODO: Swap to invoicePaymentData.data[0].amount
-	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder)
-	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.orderId)
-	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.clientOrderId)
-	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.fills[0]?.price)
-	try {
-		//tODO: Create a function that verifies that the quantity is high enough to create a trade order
-		/* 		const { data } = await BinanceService.createTrade(roundedDecimals.toString()) */
+	const roundedDecimals: number = getRoundedDecimals(0.00090413) //TODO: Swap to invoicePaymentData.data[0].amount
+	//TODO: Create a function that verifies that the quantity is high enough to create a trade order
+	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
 
+	const savedTradeData = await saveTradeData(invoiceId, {
+		status: invoiceStatus.completed,
+		exchangeRate: invoicePaymentData.data[0].rate,
+		totalPaid: invoicePaymentData.data[0].totalPaid,
+		amount_BTC: invoicePaymentData.data[0].amount,
+		tradeData: {
+			amount_BTC: roundedDecimals.toString(),
+			orderId: createdSellOrder.orderId,
+			clientOrderId: createdSellOrder.clientOrderId,
+			price_USD: createdSellOrder.fills[0]?.price,
+		}
+	})
 
-		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, {
-			status: invoiceStatus.completed,
-			exchangeRate: invoicePaymentData.data[0].rate,
-			totalPaid: invoicePaymentData.data[0].totalPaid,
-			amount_BTC: invoicePaymentData.data[0].amount,
-			tradeData: {
-				amount_BTC: roundedDecimals.toString(),
-				orderId: createdSellOrder.orderId,
-				clientOrderId: createdSellOrder.clientOrderId,
-				price_USD: createdSellOrder.fills[0]?.price,
-			}
-		})
-		response.status(StatusCode.OK).send({ message: createdSellOrder })
-	} catch (error) {
-		console.log(error)
-		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	if (!savedTradeData) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'could not save trade data' })
 	}
+	return response.status(StatusCode.OK).send({ message: savedTradeData })
 }
 
 const test = (request, response) => {
