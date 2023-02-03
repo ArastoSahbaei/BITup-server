@@ -64,6 +64,7 @@ const createTrade = async (request, response) => {
 
 
 		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, {
+			status: invoiceStatus.completed,
 			exchangeRate: invoicePaymentData.data[0].rate,
 			totalPaid: invoicePaymentData.data[0].totalPaid,
 			amount_BTC: invoicePaymentData.data[0].amount,
