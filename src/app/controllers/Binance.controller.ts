@@ -53,7 +53,7 @@ const createTrade = async (request, response) => {
 
 	/* TODO: Keep this!! const roundedDecimals = getRoundedDecimals(invoicePaymentData.data[0].amount) */
 	const roundedDecimals: number = getRoundedDecimals(0.00090413)
-	const createdSellOrder: any = createNewSellOrder(roundedDecimals) //TODO: Swap to invoicePaymentData.data[0].amount
+	const createdSellOrder: any = await createNewSellOrder(roundedDecimals) //TODO: Swap to invoicePaymentData.data[0].amount
 	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder)
 	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.orderId)
 	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.clientOrderId)
