@@ -66,7 +66,7 @@ export const createNewSellOrder = async (amount: number) => {
 
 export const saveTradeData = async (invoiceId: string, data: any) => {
 	try {
-		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, { data })
+		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, data)
 		return true
 	} catch (error) {
 		console.log(error)
