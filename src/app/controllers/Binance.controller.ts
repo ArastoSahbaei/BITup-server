@@ -55,6 +55,9 @@ const createTrade = async (request, response) => {
 	const roundedDecimals: number = getRoundedDecimals(0.00090413)
 	const createdSellOrder: any = createNewSellOrder(roundedDecimals) //TODO: Swap to invoicePaymentData.data[0].amount
 	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder)
+	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.orderId)
+	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.clientOrderId)
+	console.log('CREATEDS3LL0RD3RRRRRRRRRR, ', createdSellOrder.fills[0]?.price)
 	try {
 		//tODO: Create a function that verifies that the quantity is high enough to create a trade order
 		/* 		const { data } = await BinanceService.createTrade(roundedDecimals.toString()) */
@@ -68,7 +71,7 @@ const createTrade = async (request, response) => {
 				amount_BTC: roundedDecimals.toString(),
 				orderId: createdSellOrder.orderId,
 				clientOrderId: createdSellOrder.clientOrderId,
-				price_USD: createdSellOrder.fills?.[0]?.price,
+				price_USD: createdSellOrder.fills[0]?.price,
 			}
 		})
 		response.status(StatusCode.OK).send({ message: createdSellOrder })
