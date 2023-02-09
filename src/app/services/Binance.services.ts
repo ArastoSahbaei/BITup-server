@@ -1,7 +1,7 @@
-import BTCPayService from '../../shared/api/services/BTCPayService'
 import InvoiceModel from '../models/Invoice.model'
-import { invoiceStatus } from '../../shared/enums'
+import BTCPayService from '../../shared/api/services/BTCPayService'
 import BinanceService from '../../shared/api/services/BinanceService'
+import { invoiceStatus } from '../../shared/enums'
 
 export const validateInvoice = async (storeId: string, invoiceId: string) => {
 	try {

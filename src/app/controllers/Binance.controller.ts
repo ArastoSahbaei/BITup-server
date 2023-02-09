@@ -1,6 +1,5 @@
 import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
-import InvoiceModel from '../models/Invoice.model'
 import { invoiceStatus } from '../../shared/enums'
 import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, saveTradeData, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
 
@@ -43,7 +42,7 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
 	}
 
-	updateInvoiceStatus(invoiceId, invoiceStatus.inProcess)
+	updateInvoiceStatus(invoiceId, invoiceStatus.queuedTrade)
 
 	const invoicePaymentData = await getInvoicePaymentMethods(storeId, invoiceId)
 	if (!invoicePaymentData) {
@@ -56,7 +55,7 @@ const createTrade = async (request, response) => {
 	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
 
 	const savedTradeData = await saveTradeData(invoiceId, {
-		status: invoiceStatus.completed,
+		status: invoiceStatus.completedTrade,
 		exchangeRate: invoicePaymentData.data[0].rate,
 		totalPaid: invoicePaymentData.data[0].totalPaid,
 		amount_BTC: invoicePaymentData.data[0].amount,

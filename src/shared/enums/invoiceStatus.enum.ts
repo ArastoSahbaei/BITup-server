@@ -1,5 +1,7 @@
 export enum invoiceStatus {
-  inProcess = 'Processing',
   settled = 'Settled',
-  completed = 'Completed',
+  inProcess = 'Processing',
+  queuedTrade = 'Queued for Trade',
+  completedTrade = 'Completed Trade',
+  fiatPayout = 'Fiat Payout',
 }
