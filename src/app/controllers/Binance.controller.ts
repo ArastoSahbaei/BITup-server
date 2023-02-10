@@ -1,7 +1,7 @@
 import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import { invoiceStatus } from '../../shared/enums'
-import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, saveTradeData, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
+import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, isAmountSufticient, saveTradeData, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -51,7 +51,9 @@ const createTrade = async (request, response) => {
 	}
 
 	const roundedDecimals: number = getRoundedDecimals(0.00090413) //TODO: Swap to invoicePaymentData.data[0].amount
-	//TODO: Create a function that verifies that the quantity is high enough to create a trade order
+
+	const isEligableForInstantSell = isAmountSufticient(roundedDecimals, invoicePaymentData.data[0].amount) //TODO: the btc price here is not from binance? (its from coingecko?)
+
 	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
 
 	const savedTradeData = await saveTradeData(invoiceId, {
