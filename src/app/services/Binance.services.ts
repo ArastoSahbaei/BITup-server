@@ -56,7 +56,6 @@ export const getRoundedDecimals = (amount: number) => {
 export const createNewSellOrder = async (amount: number) => {
 	try {
 		const { data } = await BinanceService.createTrade(amount.toString())
-		console.log('THIS IS TH333333 DATA: ', data)
 		return data
 	} catch (error) {
 		console.log(error)
@@ -74,7 +73,14 @@ export const saveTradeData = async (invoiceId: string, data: any) => {
 	}
 }
 
-export const isAmountSufticient = (satoshis: number, rate: number) => {
+export const isAmountSufticient = async (satoshis: number, rate: number) => {
+	try {
+		const { data } = await BinanceService.getPrice()
+		console.log('W0000000000000000000000000000000000000000000000000000000', data)
+	} catch (error) {
+		console.log(error)
+		return false
+	}
 	//TODO: get rate from binance
 	const MIN_SATOSHIS = 50
 	const MIN_TRADE_VALUE_USD = 10

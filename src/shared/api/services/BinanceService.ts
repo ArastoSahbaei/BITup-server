@@ -16,8 +16,13 @@ const createTrade = (quantity: string) => {
 	return http.post(`/api/v3/order?${dataQueryString + signatureSHA256(dataQueryString)}`)
 }
 
+const getPrice = () => {
+	return http.get('/api/v3/ticker/price?symbol=BTCUSDT')
+}
+
 export default {
 	test,
 	createTrade,
 	getAccountInformation,
+	getPrice,
 }
