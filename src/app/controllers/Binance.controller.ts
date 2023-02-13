@@ -27,31 +27,25 @@ const getAccountInformation = async (request, response) => {
 
 const createTrade = async (request, response) => {
 	const { storeId, invoiceId } = request.body
-	console.log('storeId: ', storeId)
-	console.log('invoiceId: ', invoiceId)
 
 	const isInvoiceValid = await validateInvoice(storeId, invoiceId)
 	if (!isInvoiceValid) {
-		console.log('Invoice not found')
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice not found' })
 	}
 
 	const hasPreviousSellOrder = await checkTransactionHistory(invoiceId)
 	if (hasPreviousSellOrder) {
-		console.log('Invoice already settled')
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
 	}
 
-	updateInvoiceStatus(invoiceId, invoiceStatus.queuedTrade)
 
 	const invoicePaymentData = await getInvoicePaymentMethods(storeId, invoiceId)
 	if (!invoicePaymentData) {
-		console.log('Invoice payment data not found')
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
 	}
 
 	const roundedDecimals: number = getRoundedDecimals(0.00090413) //TODO: Swap to invoicePaymentData.data[0].amount
-
+	updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
 	const isEligableForInstantSell = isAmountSufticient(roundedDecimals, invoicePaymentData.data[0].amount) //TODO: the btc price here is not from binance? (its from coingecko?)
 
 	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
@@ -70,8 +64,9 @@ const createTrade = async (request, response) => {
 	})
 
 	if (!savedTradeData) {
-		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'could not save trade data' })
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
 	}
+
 	return response.status(StatusCode.OK).send({ message: savedTradeData })
 }
 

@@ -32,7 +32,6 @@ export const getInvoicePaymentMethods = async (storeId: string, invoiceId: strin
 	//TODO: Why does invoiceResponse return an array? Shouldn't it return a single object? in what scenarios does it return multiple objects?
 	try {
 		const invoice = await BTCPayService.getInvoicePaymentMethods(storeId, invoiceId)
-		console.log('MWHUAHAHHAHA: ', invoice)
 		return invoice
 	} catch (error) {
 		console.log(error)
@@ -75,10 +74,13 @@ export const saveTradeData = async (invoiceId: string, data: any) => {
 	}
 }
 
-export const isAmountSufticient = (satoshis: number, price: number) => {
+export const isAmountSufticient = (satoshis: number, rate: number) => {
+	//TODO: get rate from binance
 	const MIN_SATOSHIS = 50
 	const MIN_TRADE_VALUE_USD = 10
-	const minTradeValueSatoshis = MIN_TRADE_VALUE_USD / price //TODO: this calculation is wrong?
-	const isEligableForInstantSell: boolean = satoshis >= MIN_SATOSHIS && satoshis >= minTradeValueSatoshis
+	const minTradeValueSatoshis = satoshis * rate
+	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
+	const minimumTradeValueRequired = minTradeValueSatoshis >= MIN_TRADE_VALUE_USD
+	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
 	return isEligableForInstantSell
 }
