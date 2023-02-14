@@ -55,6 +55,7 @@ export const getRoundedDecimals = (amount: number) => {
 
 export const createNewSellOrder = async (amount: number) => {
 	try {
+		//TODO: Ensure that the amount is not sold for less than required, but higher is ok.
 		const { data } = await BinanceService.createTrade(amount.toString())
 		return data
 	} catch (error) {
@@ -73,20 +74,18 @@ export const saveTradeData = async (invoiceId: string, data: any) => {
 	}
 }
 
-export const isAmountSufticient = async (satoshis: number, rate: number) => {
+export const isAmountSufticient = async (satoshis: number) => {
 	try {
 		const { data } = await BinanceService.getPrice()
-		console.log('W0000000000000000000000000000000000000000000000000000000', data)
+		const MIN_SATOSHIS = 50
+		const MIN_TRADE_VALUE_USD = 10
+		const minTradeValueSatoshis = satoshis * data.price
+		const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
+		const minimumTradeValueRequired = minTradeValueSatoshis >= MIN_TRADE_VALUE_USD
+		const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
+		return isEligableForInstantSell
 	} catch (error) {
 		console.log(error)
 		return false
 	}
-	//TODO: get rate from binance
-	const MIN_SATOSHIS = 50
-	const MIN_TRADE_VALUE_USD = 10
-	const minTradeValueSatoshis = satoshis * rate
-	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
-	const minimumTradeValueRequired = minTradeValueSatoshis >= MIN_TRADE_VALUE_USD
-	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
-	return isEligableForInstantSell
 }

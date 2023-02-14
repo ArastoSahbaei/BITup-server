@@ -38,7 +38,6 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
 	}
 
-
 	const invoicePaymentData = await getInvoicePaymentMethods(storeId, invoiceId)
 	if (!invoicePaymentData) {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
@@ -46,28 +45,29 @@ const createTrade = async (request, response) => {
 
 	const roundedDecimals: number = getRoundedDecimals(0.00090413) //TODO: Swap to invoicePaymentData.data[0].amount
 	updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
-	const isEligableForInstantSell = isAmountSufticient(roundedDecimals, invoicePaymentData.data[0].amount) //TODO: the btc price here is not from binance? (its from coingecko?)
+	const isEligableForInstantSell = await isAmountSufticient(roundedDecimals)
 
-	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
-
-	const savedTradeData = await saveTradeData(invoiceId, {
-		status: invoiceStatus.completedTrade,
-		exchangeRate: invoicePaymentData.data[0].rate,
-		totalPaid: invoicePaymentData.data[0].totalPaid,
-		amount_BTC: invoicePaymentData.data[0].amount,
-		tradeData: {
-			amount_BTC: roundedDecimals.toString(),
-			orderId: createdSellOrder.orderId,
-			clientOrderId: createdSellOrder.clientOrderId,
-			price_USD: createdSellOrder.fills[0]?.price,
+	if (isEligableForInstantSell) {
+		const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
+		const savedTradeData = await saveTradeData(invoiceId, {
+			status: invoiceStatus.completedTrade,
+			exchangeRate: invoicePaymentData.data[0].rate,
+			totalPaid: invoicePaymentData.data[0].totalPaid,
+			amount_BTC: invoicePaymentData.data[0].amount,
+			tradeData: {
+				amount_BTC: roundedDecimals.toString(),
+				orderId: createdSellOrder.orderId,
+				clientOrderId: createdSellOrder.clientOrderId,
+				price_USD: createdSellOrder.fills[0]?.price,
+			}
+		})
+		if (!savedTradeData) {
+			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
 		}
-	})
-
-	if (!savedTradeData) {
-		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
+		return response.status(StatusCode.OK).send({ message: savedTradeData })
 	}
 
-	return response.status(StatusCode.OK).send({ message: savedTradeData })
+	//TODO: add to sell queue, save data and return 200 ok
 }
 
 const test = (request, response) => {
