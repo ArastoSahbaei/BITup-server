@@ -1,7 +1,17 @@
 import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import { invoiceStatus } from '../../shared/enums'
-import { checkTransactionHistory, createNewSellOrder, getInvoicePaymentMethods, getRoundedDecimals, isAmountSufticient, saveTradeData, updateInvoiceStatus, validateInvoice } from '../services/Binance.services'
+import {
+	getInvoicePaymentMethods,
+	checkTransactionHistory,
+	updateInvoiceStatus,
+	createNewSellOrder,
+	getRoundedDecimals,
+	isAmountSufficient,
+	getBitcoinPrice,
+	validateInvoice,
+	saveTradeData,
+} from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
 	try {
@@ -45,27 +55,28 @@ const createTrade = async (request, response) => {
 
 	const roundedDecimals: number = getRoundedDecimals(0.00090413) //TODO: Swap to invoicePaymentData.data[0].amount
 	updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
-	const isEligableForInstantSell = await isAmountSufticient(roundedDecimals)
+	const bitcoinExchangeRate = await getBitcoinPrice()
+	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, bitcoinExchangeRate.price)
 
-	if (isEligableForInstantSell) {
-		const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
-		const savedTradeData = await saveTradeData(invoiceId, {
-			status: invoiceStatus.completedTrade,
-			exchangeRate: invoicePaymentData.data[0].rate,
-			totalPaid: invoicePaymentData.data[0].totalPaid,
-			amount_BTC: invoicePaymentData.data[0].amount,
-			tradeData: {
-				amount_BTC: roundedDecimals.toString(),
-				orderId: createdSellOrder.orderId,
-				clientOrderId: createdSellOrder.clientOrderId,
-				price_USD: createdSellOrder.fills[0]?.price,
-			}
-		})
-		if (!savedTradeData) {
-			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
+	/* if (isEligableForInstantSell) { */
+	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
+	const savedTradeData = await saveTradeData(invoiceId, {
+		status: invoiceStatus.completedTrade,
+		exchangeRate: invoicePaymentData.data[0].rate,
+		totalPaid: invoicePaymentData.data[0].totalPaid,
+		amount_BTC: invoicePaymentData.data[0].amount,
+		tradeData: {
+			amount_BTC: roundedDecimals.toString(),
+			orderId: createdSellOrder.orderId,
+			clientOrderId: createdSellOrder.clientOrderId,
+			price_USD: createdSellOrder.fills[0]?.price,
 		}
-		return response.status(StatusCode.OK).send({ message: savedTradeData })
+	})
+	if (!savedTradeData) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
 	}
+	return response.status(StatusCode.OK).send({ message: savedTradeData })
+	/* } */
 
 	//TODO: add to sell queue, save data and return 200 ok
 }

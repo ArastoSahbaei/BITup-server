@@ -9,7 +9,7 @@ export const validateInvoice = async (storeId: string, invoiceId: string) => {
 		const isInvoiceLegitimate: boolean = invoice.data.status === invoiceStatus.settled || invoice.data.status === invoiceStatus.inProcess
 		return isInvoiceLegitimate
 	} catch (error) {
-		console.log(error)
+		console.log(error) //TODO: set status to error and send email
 		return false
 	}
 }
@@ -23,7 +23,7 @@ export const checkTransactionHistory = async (invoiceId: string) => {
 		console.log('isAlreadySettled: ', isAlreadySettled)
 		return isAlreadySettled
 	} catch (error) {
-		console.log(error)
+		console.log(error) //TODO: set status to error and send email
 		return false
 	}
 }
@@ -34,7 +34,7 @@ export const getInvoicePaymentMethods = async (storeId: string, invoiceId: strin
 		const invoice = await BTCPayService.getInvoicePaymentMethods(storeId, invoiceId)
 		return invoice
 	} catch (error) {
-		console.log(error)
+		console.log(error) //TODO: set status to error and send email
 		return false
 	}
 }
@@ -44,7 +44,7 @@ export const updateInvoiceStatus = async (invoiceId: string, status: string) => 
 		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPay_invoiceId: invoiceId }, { status: status })
 		return !!databaseResponse
 	} catch (error) {
-		console.log(error)
+		console.log(error) //TODO: set status to error and send email
 		return false
 	}
 }
@@ -59,7 +59,7 @@ export const createNewSellOrder = async (amount: number) => {
 		const { data } = await BinanceService.createTrade(amount.toString())
 		return data
 	} catch (error) {
-		console.log(error)
+		console.log(error) //TODO: set status to error and send email
 		return false
 	}
 }
@@ -69,23 +69,27 @@ export const saveTradeData = async (invoiceId: string, data: any) => {
 		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, data)
 		return true
 	} catch (error) {
-		console.log(error)
+		console.log(error) //TODO: set status to error and send email
 		return false
 	}
 }
 
-export const isAmountSufticient = async (satoshis: number) => {
+export const getBitcoinPrice = async () => {
 	try {
 		const { data } = await BinanceService.getPrice()
-		const MIN_SATOSHIS = 50
-		const MIN_TRADE_VALUE_USD = 10
-		const minTradeValueSatoshis = satoshis * data.price
-		const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
-		const minimumTradeValueRequired = minTradeValueSatoshis >= MIN_TRADE_VALUE_USD
-		const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
-		return isEligableForInstantSell
+		return data
 	} catch (error) {
-		console.log(error)
-		return false
+		console.log(error) //TODO: set status to error and send email
+		return { price: 0 }
 	}
+}
+
+export const isAmountSufficient = (satoshis: number, rate: number) => {
+	const MIN_SATOSHIS = 50
+	const MIN_TRADE_VALUE_USD = 10
+	const minTradeValueUSD = satoshis * rate
+	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
+	const minimumTradeValueRequired = minTradeValueUSD >= MIN_TRADE_VALUE_USD
+	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
+	return isEligableForInstantSell
 }
