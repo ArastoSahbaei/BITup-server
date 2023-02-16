@@ -13,6 +13,15 @@ useCors(application)
 useHelmet(application)
 useMorgan(application)
 RouteHandler(application)
+
+function myFunction() {
+	// code to be executed every minute
+	console.log('This function is executed every minute.')
+}
+
+// Call the function every minute
+setInterval(myFunction, 60 * 1000)
+
 application.use(notFound)
 application.use(errorHandler)
 
