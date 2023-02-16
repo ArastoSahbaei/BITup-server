@@ -4,11 +4,7 @@ import { connectToDatabase, connectToPort, useCors, useHelmet, useMorgan } from 
 import { RouteHandler } from './src/app/routes/RouteHandler'
 
 const application = express()
-application.use(express.json({
-	verify: (request: any, response, buffer) => {
-		request.rawBody = buffer
-	}
-}))
+application.use(express.json())
 useCors(application)
 useHelmet(application)
 useMorgan(application)
@@ -20,7 +16,7 @@ function myFunction() {
 }
 
 // Call the function every minute
-setInterval(myFunction, 60 * 1000)
+//setInterval(myFunction, 60 * 1000)
 
 application.use(notFound)
 application.use(errorHandler)
