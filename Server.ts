@@ -4,7 +4,11 @@ import { connectToDatabase, connectToPort, useCors, useHelmet, useMorgan } from 
 import { RouteHandler } from './src/app/routes/RouteHandler'
 
 const application = express()
-application.use(express.json())
+application.use(express.json({
+	verify: (request: any, response, buffer) => {
+		request.rawBody = buffer
+	}
+}))
 useCors(application)
 useHelmet(application)
 useMorgan(application)
