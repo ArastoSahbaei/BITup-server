@@ -53,32 +53,42 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice payment data not found' })
 	}
 
-	const roundedDecimals: number = getRoundedDecimals(0.00090413) //TODO: Swap to invoicePaymentData.data[0].amount
+	const roundedDecimals: number = getRoundedDecimals(invoicePaymentData.data[0].amount)
 	updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
-	const bitcoinExchangeRate = await getBitcoinPrice()
-	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, bitcoinExchangeRate.price)
+	const { price } = await getBitcoinPrice() //TODO: does this work?
+	console.log('price', price)
+	console.log('price', price)
+	console.log('price', price)
+	console.log('price', price)
+	console.log('price', price)
+	console.log('price', price)
+	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, price)
 
-	/* if (isEligableForInstantSell) { */
-	const createdSellOrder: any = await createNewSellOrder(roundedDecimals)
-	const savedTradeData = await saveTradeData(invoiceId, {
-		status: invoiceStatus.completedTrade,
-		exchangeRate: invoicePaymentData.data[0].rate,
-		totalPaid: invoicePaymentData.data[0].totalPaid,
-		amount_BTC: invoicePaymentData.data[0].amount,
-		tradeData: {
-			amount_BTC: roundedDecimals.toString(),
-			orderId: createdSellOrder.orderId,
-			clientOrderId: createdSellOrder.clientOrderId,
-			price_USD: createdSellOrder.fills[0]?.price,
+	if (isEligableForInstantSell) {
+		const createdSellOrder = await createNewSellOrder(roundedDecimals)
+		const savedTradeData = await saveTradeData(invoiceId, {
+			status: invoiceStatus.completedTrade,
+			exchangeRate: invoicePaymentData.data[0].rate,
+			totalPaid: invoicePaymentData.data[0].totalPaid,
+			amount_BTC: invoicePaymentData.data[0].amount,
+			tradeData: {
+				amount_BTC: roundedDecimals.toString(),
+				orderId: createdSellOrder.orderId,
+				clientOrderId: createdSellOrder.clientOrderId,
+				price_USD: createdSellOrder.fills[0]?.price,
+			}
+		})
+		if (!savedTradeData) {
+			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
 		}
-	})
-	if (!savedTradeData) {
-		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not save trade data' })
+		return response.status(StatusCode.OK).send({ message: savedTradeData })
 	}
-	return response.status(StatusCode.OK).send({ message: savedTradeData })
-	/* } */
 
 	//TODO: add to sell queue, save data and return 200 ok
+}
+
+const createBulkTrade = async (request, response) => {
+	// 	const { storeId, invoiceId } = request.body
 }
 
 const test = (request, response) => {

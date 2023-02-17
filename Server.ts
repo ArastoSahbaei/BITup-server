@@ -14,8 +14,11 @@ useHelmet(application)
 useMorgan(application)
 RouteHandler(application)
 
-function myFunction() {
+const myFunction = () => {
 	// code to be executed every minute
+	//get the queue list from the database
+	//calculate the list
+	//create the sell order
 	console.log('This function is executed every minute.')
 }
 
