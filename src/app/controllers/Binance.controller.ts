@@ -11,6 +11,7 @@ import {
 	getBitcoinPrice,
 	validateInvoice,
 	saveTradeData,
+	addToQueue,
 } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
@@ -45,7 +46,7 @@ const createTrade = async (request, response) => {
 
 	const hasPreviousSellOrder = await checkTransactionHistory(invoiceId)
 	if (hasPreviousSellOrder) {
-		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice already settled' })
+		return response.status(StatusCode.METHOD_NOT_ALLOWED).send({ message: 'Invoice has already been settled' })
 	}
 
 	const invoicePaymentData = await getInvoicePaymentMethods(storeId, invoiceId)
@@ -55,17 +56,14 @@ const createTrade = async (request, response) => {
 
 	const roundedDecimals: number = getRoundedDecimals(invoicePaymentData.data[0].amount)
 	updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
-	const { price } = await getBitcoinPrice() //TODO: does this work?
-	console.log('price', price)
-	console.log('price', price)
-	console.log('price', price)
-	console.log('price', price)
-	console.log('price', price)
-	console.log('price', price)
+	const { price } = await getBitcoinPrice()
 	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, price)
 
 	if (isEligableForInstantSell) {
 		const createdSellOrder = await createNewSellOrder(roundedDecimals)
+		if (!createdSellOrder) {
+			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not create sell order' })
+		}
 		const savedTradeData = await saveTradeData(invoiceId, {
 			status: invoiceStatus.completedTrade,
 			exchangeRate: invoicePaymentData.data[0].rate,
@@ -84,8 +82,26 @@ const createTrade = async (request, response) => {
 		return response.status(StatusCode.OK).send({ message: savedTradeData })
 	}
 
-	//TODO: add to sell queue, save data and return 200 ok
+	const addedToQueue = await addToQueue(invoiceId, {
+		status: invoiceStatus.completedTrade,
+		exchangeRate: invoicePaymentData.data[0].rate,
+		totalPaid: invoicePaymentData.data[0].totalPaid,
+		amount_BTC: invoicePaymentData.data[0].amount,
+		tradeData: {
+			amount_BTC: roundedDecimals.toString(),
+			orderId: null,
+			clientOrderId: null,
+			price_USD: null,
+		}
+	})
+
+	if (!addedToQueue) {
+		response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not add to queue' })
+	}
+	response.status(StatusCode.OK).send({ message: addedToQueue })
 }
+
+
 
 const createBulkTrade = async (request, response) => {
 	// 	const { storeId, invoiceId } = request.body
