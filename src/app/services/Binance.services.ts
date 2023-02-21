@@ -95,21 +95,13 @@ export const getBitcoinPrice = async () => {
 }
 
 export const isAmountSufficient = (satoshis: number, rate: number) => {
-	console.log('satoshis: ', satoshis)
-	console.log('rate: ', rate)
-	const MIN_SATOSHIS = 50
+	const MIN_SATOSHIS = 0.00000050
 	const MIN_TRADE_VALUE_USD = 10
-
 	const tradeValueUSD = satoshis * rate
-	console.log('tradeValueUSD: ', tradeValueUSD)
-
 	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
-	console.log('minimumSatoshisRequired: ', minimumSatoshisRequired)
+	const minimumUSDTradeValueRequired = tradeValueUSD >= MIN_TRADE_VALUE_USD
 
-	const minimumTradeValueRequired = tradeValueUSD >= MIN_TRADE_VALUE_USD
-	console.log('minimumTradeValueRequired: ', minimumTradeValueRequired)
-
-	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
+	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumUSDTradeValueRequired
 	console.log('isEligableForInstantSell: ', isEligableForInstantSell)
 	return isEligableForInstantSell
 }
