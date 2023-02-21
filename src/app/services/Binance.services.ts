@@ -100,13 +100,13 @@ export const isAmountSufficient = (satoshis: number, rate: number) => {
 	const MIN_SATOSHIS = 50
 	const MIN_TRADE_VALUE_USD = 10
 
-	const minTradeValueUSD = satoshis * rate
-	console.log('minTradeValueUSD: ', minTradeValueUSD)
+	const tradeValueUSD = satoshis * rate
+	console.log('tradeValueUSD: ', tradeValueUSD)
 
 	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
 	console.log('minimumSatoshisRequired: ', minimumSatoshisRequired)
 
-	const minimumTradeValueRequired = minTradeValueUSD >= MIN_TRADE_VALUE_USD
+	const minimumTradeValueRequired = tradeValueUSD >= MIN_TRADE_VALUE_USD
 	console.log('minimumTradeValueRequired: ', minimumTradeValueRequired)
 
 	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
