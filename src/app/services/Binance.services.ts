@@ -17,7 +17,7 @@ export const validateInvoice = async (storeId: string, invoiceId: string) => {
 export const checkTransactionHistory = async (invoiceId: string) => {
 	//TODO: test this function
 	try {
-		const databaseResponse = await InvoiceModel.findOne({ BTCPAY_invoiceId: invoiceId })
+		const databaseResponse = await InvoiceModel.findOne({ 'btcpay.invoiceId': invoiceId })
 		console.log('databaseResponse: ', databaseResponse)
 		const isAlreadySettled = databaseResponse.status === invoiceStatus.settled
 		console.log('isAlreadySettled: ', isAlreadySettled)
@@ -41,7 +41,7 @@ export const getInvoicePaymentMethods = async (storeId: string, invoiceId: strin
 
 export const updateInvoiceStatus = async (invoiceId: string, status: string) => {
 	try {
-		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPay_invoiceId: invoiceId }, { status: status })
+		const databaseResponse = await InvoiceModel.findOneAndUpdate({ 'btcpay.invoiceId': invoiceId }, { status: status })
 		return !!databaseResponse
 	} catch (error) {
 		console.log(error) //TODO: set status to error and send email
@@ -66,7 +66,7 @@ export const createNewSellOrder = async (amount: number) => {
 
 export const addToQueue = async (invoiceId: string, data: any) => {
 	try {
-		const databaseResponse = await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, data)
+		const databaseResponse = await InvoiceModel.findOneAndUpdate({ 'btcpay.invoiceId': invoiceId }, data)
 		return !!databaseResponse
 	} catch (error) {
 		console.log(error) //TODO: set status to error and send email
@@ -76,7 +76,7 @@ export const addToQueue = async (invoiceId: string, data: any) => {
 
 export const saveTradeData = async (invoiceId: string, data: any) => {
 	try {
-		await InvoiceModel.findOneAndUpdate({ BTCPAY_invoiceId: invoiceId }, data)
+		await InvoiceModel.findOneAndUpdate({ 'btcpay.invoiceId': invoiceId }, data)
 		return true
 	} catch (error) {
 		console.log(error) //TODO: set status to error and send email
