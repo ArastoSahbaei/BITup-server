@@ -2,20 +2,35 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const invoiceSchema = new Schema({
+	status: {
+		type: String,
+	},
 	btcpay: {
 		invoiceId: {
 			type: String,
 			unique: [true, 'invoice id already exists'],
-		}
+		},
+		storeId: {
+			type: String,
+		},
+		currency: {
+			type: String,
+		},
+		amount_fiat: {
+			type: Number,
+		},
+		checkoutLink: {
+			type: String,
+		},
+		receiptLink: {
+			type: String,
+		},
 	},
 	BTCPAY_invoiceId: {
 		type: String,
 		unique: [true, 'invoice id already exists'],
 	},
 	BTCPAY_storeId: {
-		type: String,
-	},
-	status: {
 		type: String,
 	},
 	currency: {
