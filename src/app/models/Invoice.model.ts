@@ -25,6 +25,40 @@ const invoiceSchema = new Schema({
 		receiptLink: {
 			type: String,
 		},
+		exchangeRate: {
+			type: String,
+			default: null
+		},
+		totalPaid: {
+			type: Number,
+			default: null,
+		},
+		amount_BTC: {
+			type: Number,
+			default: null
+		},
+	},
+	exchange: {
+		name: {
+			type: String,
+			default: null
+		},
+		amount_BTC: {
+			type: String,
+			default: null
+		},
+		orderId: {
+			type: Number,
+			default: null
+		},
+		clientOrderId: {
+			type: String,
+			default: null
+		},
+		price_USD: {
+			type: String,
+			default: null
+		}
 	},
 	BTCPAY_invoiceId: {
 		type: String,
