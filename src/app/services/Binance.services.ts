@@ -101,5 +101,6 @@ export const isAmountSufficient = (satoshis: number, rate: number) => {
 	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
 	const minimumTradeValueRequired = minTradeValueUSD >= MIN_TRADE_VALUE_USD
 	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumTradeValueRequired
+	console.log('isEligableForInstantSell: ', isEligableForInstantSell)
 	return isEligableForInstantSell
 }

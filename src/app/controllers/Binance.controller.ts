@@ -55,7 +55,7 @@ const createTrade = async (request, response) => {
 	}
 
 	const roundedDecimals: number = getRoundedDecimals(invoicePaymentData.data[0].amount)
-	updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
+	await updateInvoiceStatus(invoiceId, invoiceStatus.determinatingTradeType)
 	const { price } = await getBitcoinPrice()
 	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, price)
 
