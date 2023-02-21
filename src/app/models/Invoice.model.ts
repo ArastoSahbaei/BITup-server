@@ -2,6 +2,12 @@ import mongoose from 'mongoose'
 const { Schema } = mongoose
 
 const invoiceSchema = new Schema({
+	btcpay: {
+		invoiceId: {
+			type: String,
+			unique: [true, 'invoice id already exists'],
+		}
+	},
 	BTCPAY_invoiceId: {
 		type: String,
 		unique: [true, 'invoice id already exists'],

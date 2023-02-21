@@ -28,6 +28,7 @@ const createInvoice = async (request, response) => {
 	try {
 		const { data } = await BTCPayService.createInvoice(storeID, amount)
 		const invoice = new InvoiceModel({
+			'btcpay.invoiceId': data.id,
 			BTCPAY_storeId: data.storeId,
 			BTCPAY_invoiceId: data.id,
 			amount_fiat: data.amount,
