@@ -95,6 +95,8 @@ export const getBitcoinPrice = async () => {
 }
 
 export const isAmountSufficient = (satoshis: number, rate: number) => {
+	console.log('satoshis: ', satoshis)
+	console.log('rate: ', rate)
 	const MIN_SATOSHIS = 50
 	const MIN_TRADE_VALUE_USD = 10
 
