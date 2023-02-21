@@ -66,6 +66,11 @@ const createTrade = async (request, response) => {
 		}
 		const savedTradeData = await saveTradeData(invoiceId, {
 			status: invoiceStatus.completedTrade,
+			btcpay: {
+				amount_BTC: invoicePaymentData.data[0].amount,
+				exchangeRate: invoicePaymentData.data[0].rate,
+				totalPaid: invoicePaymentData.data[0].totalPaid,
+			},
 			exchange: {
 				name: 'Binance',
 				amount_BTC: roundedDecimals.toString(),
