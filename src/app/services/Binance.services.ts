@@ -50,7 +50,7 @@ export const updateInvoiceStatus = async (invoiceId: string, status: string) => 
 }
 
 export const getRoundedDecimals = (amount: number) => {
-	return Math.round(amount * 1000) / 1000
+	return Math.round(amount * 10000) / 10000
 }
 
 export const createNewSellOrder = async (amount: number) => {

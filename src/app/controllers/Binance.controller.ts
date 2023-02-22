@@ -85,10 +85,11 @@ const createTrade = async (request, response) => {
 
 	const addedToQueue = await addToQueue(invoiceId, {
 		status: invoiceStatus.queuedTrade,
-		exchangeRate: invoicePaymentData.data[0].rate,
-		totalPaid: invoicePaymentData.data[0].totalPaid,
-		amount_BTC: invoicePaymentData.data[0].amount,
-		tradeData: {
+		'btcpay.amount_BTC': invoicePaymentData.data[0].amount,
+		'btcpay.exchangeRate': invoicePaymentData.data[0].rate,
+		'btcpay.totalPaid': invoicePaymentData.data[0].totalPaid,
+		exchange: {
+			name: null,
 			amount_BTC: roundedDecimals.toString(),
 			orderId: null,
 			clientOrderId: null,
