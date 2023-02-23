@@ -94,6 +94,16 @@ export const getBitcoinPrice = async () => {
 	}
 }
 
+export const getAllQueuedOrders = async () => {
+	try {
+		const documents = await InvoiceModel.find({ status: invoiceStatus.queuedTrade })
+		return documents
+	} catch (error) {
+		console.log(error) //TODO: set status to error and send email
+		return false
+	}
+}
+
 export const isAmountSufficient = (satoshis: number, rate: number) => {
 	const MIN_SATOSHIS = 0.00000050
 	const MIN_TRADE_VALUE_USD = 10

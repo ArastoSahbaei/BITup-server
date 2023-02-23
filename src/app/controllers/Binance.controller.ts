@@ -1,6 +1,7 @@
 import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import { invoiceStatus } from '../../shared/enums'
+import InvoiceModel from '../models/Invoice.model'
 import {
 	getInvoicePaymentMethods,
 	checkTransactionHistory,
@@ -12,6 +13,7 @@ import {
 	validateInvoice,
 	saveTradeData,
 	addToQueue,
+	getAllQueuedOrders,
 } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
@@ -105,8 +107,19 @@ const createTrade = async (request, response) => {
 
 
 
-const createBulkTrade = async (request, response) => {
-	// 	const { storeId, invoiceId } = request.body
+export const createBulkTrade = async () => {
+	try {
+		const orders = await getAllQueuedOrders()
+		console.log(orders)
+	} catch (error) {
+		console.log(error)
+	}
+
+	// code to be executed every minute
+	//get the queue list from the database
+	//calculate the list
+	//create the sell order
+	console.log('This function is executed every minute.')
 }
 
 const test = (request, response) => {
