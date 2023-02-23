@@ -109,8 +109,10 @@ const createTrade = async (request, response) => {
 
 export const createBulkTrade = async () => {
 	const orders = await getAllQueuedOrders()
+	const totalSatoshis = orders.reduce((totalSatoshis, order) => totalSatoshis + order.btcpay.totalPaid)
 	console.log(orders)
 	console.log(orders.length)
+	console.log(totalSatoshis)
 
 	// code to be executed every minute
 	//get the queue list from the database
