@@ -108,12 +108,9 @@ const createTrade = async (request, response) => {
 
 
 export const createBulkTrade = async () => {
-	try {
-		const orders = await getAllQueuedOrders()
-		console.log(orders)
-	} catch (error) {
-		console.log(error)
-	}
+	const orders = await getAllQueuedOrders()
+	console.log(orders)
+	console.log(orders.length)
 
 	// code to be executed every minute
 	//get the queue list from the database

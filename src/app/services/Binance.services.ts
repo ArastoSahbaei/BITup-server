@@ -96,7 +96,7 @@ export const getBitcoinPrice = async () => {
 
 export const getAllQueuedOrders = async () => {
 	try {
-		const documents = await InvoiceModel.find({ status: invoiceStatus.queuedTrade })
+		const documents: any = await InvoiceModel.find({ status: invoiceStatus.queuedTrade })
 		return documents
 	} catch (error) {
 		console.log(error) //TODO: set status to error and send email
