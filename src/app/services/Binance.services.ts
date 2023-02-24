@@ -74,9 +74,12 @@ export const addToQueue = async (invoiceId: string, data: any) => {
 	}
 }
 
-export const saveTradeData = async (invoiceId: string, data: any) => {
+export const saveTradeData = async (invoiceId: string | Array<string>, data: any) => {
+	const isSingleInvoice = typeof invoiceId === 'string'
 	try {
-		await InvoiceModel.findOneAndUpdate({ 'btcpay.invoiceId': invoiceId }, data)
+		isSingleInvoice
+			? await InvoiceModel.findOneAndUpdate({ 'btcpay.invoiceId': invoiceId }, data)
+			: await InvoiceModel.updateMany({ 'btcpay.invoiceId': { $in: invoiceId } }, data)
 		return true
 	} catch (error) {
 		console.log(error) //TODO: set status to error and send email
