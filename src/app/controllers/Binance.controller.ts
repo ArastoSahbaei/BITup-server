@@ -118,6 +118,11 @@ export const createBulkTrade = async () => {
 
 	console.log(orders.length)
 	console.log(totalSats)
+	const invoiceIds = orders.map(order => order.btcpay.invoiceId).reduce((accumulator, current) => {
+		accumulator.push(current)
+		return accumulator
+	}, [])
+	console.log('invoiceIds', invoiceIds)
 
 	if (!isEligableForInstantSell) {
 		return
@@ -129,11 +134,6 @@ export const createBulkTrade = async () => {
 	}
 
 
-	const invoiceIds = orders.map(order => order.btcpay.invoiceId).reduce((accumulator, current) => {
-		accumulator.push(current)
-		return accumulator
-	}, [])
-	console.log(invoiceIds)
 	/* 
 	TODO: save this data to all the orders in the queue
 		exchange: {
