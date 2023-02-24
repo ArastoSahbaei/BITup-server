@@ -118,11 +118,6 @@ export const createBulkTrade = async () => {
 
 	console.log(orders.length)
 	console.log(totalSats)
-	const invoiceIds = orders.map(order => order.btcpay.invoiceId).reduce((accumulator, current) => {
-		accumulator.push(current)
-		return accumulator
-	}, [])
-	console.log('invoiceIds', invoiceIds)
 
 	if (!isEligableForInstantSell) {
 		return
@@ -134,15 +129,22 @@ export const createBulkTrade = async () => {
 	}
 
 
-	/* 
-	TODO: save this data to all the orders in the queue
+	const invoiceIds = orders.map(order => order.btcpay.invoiceId).reduce((accumulator, current) => {
+		accumulator.push(current)
+		return accumulator
+	}, [])
+	console.log('invoiceIds', invoiceIds)
+
+	await saveTradeData(invoiceIds, {
+		status: invoiceStatus.completedTrade,
 		exchange: {
 			name: 'binance',
 			amount_BTC: roundedDecimals.toString(),
 			orderId: createdSellOrder.orderId,
 			clientOrderId: createdSellOrder.clientOrderId,
 			price_USD: createdSellOrder.fills[0]?.price,
-		} */
+		}
+	})
 
 	console.log('This function is executed every minute.')
 }
