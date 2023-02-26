@@ -12,7 +12,7 @@ const getAccountInformation = () => {
 }
 
 const createTrade = (quantity: string) => {
-	const dataQueryString = `symbol=BTCUSDT&side=SELL&type=MARKET&quantity=${quantity}&recvWindow=60000&${getTimeStamp()}`
+	const dataQueryString = `symbol=BTCSEK&side=SELL&type=MARKET&quantity=${quantity}&recvWindow=60000&${getTimeStamp()}`
 	return http.post(`/api/v3/order?${dataQueryString + signatureSHA256(dataQueryString)}`)
 }
 

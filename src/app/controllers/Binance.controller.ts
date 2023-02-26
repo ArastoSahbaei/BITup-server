@@ -1,7 +1,6 @@
 import StatusCode from '../../configurations/StatusCode'
 import BinanceService from '../../shared/api/services/BinanceService'
 import { invoiceStatus } from '../../shared/enums'
-import InvoiceModel from '../models/Invoice.model'
 import {
 	getInvoicePaymentMethods,
 	checkTransactionHistory,
@@ -134,6 +133,8 @@ export const createBulkTrade = async () => {
 		return accumulator
 	}, [])
 	console.log('invoiceIds', invoiceIds)
+
+	//TODO: calculate the orders so that the total amount is sold for profit
 
 	await saveTradeData(invoiceIds, {
 		status: invoiceStatus.completedTrade,

@@ -15,16 +15,6 @@ useHelmet(application)
 useMorgan(application)
 RouteHandler(application)
 
-/* const createBulkTrade = async () => {
-
-	// code to be executed every minute
-	//get the queue list from the database
-	//calculate the list
-	//create the sell order
-	console.log('This function is executed every minute.')
-} */
-
-// Call the function every minute
 setInterval(createBulkTrade, 60 * 1000)
 
 application.use(notFound)
