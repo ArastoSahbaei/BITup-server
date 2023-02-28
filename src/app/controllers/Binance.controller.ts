@@ -62,6 +62,7 @@ const createTrade = async (request, response) => {
 
 	if (isEligableForInstantSell) {
 		const createdSellOrder = await createNewSellOrder(roundedDecimals)
+		console.log('CREATED SELL ORDERRRRRRRRRR: ', createdSellOrder)
 		if (!createdSellOrder) {
 			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not create sell order' })
 		}
