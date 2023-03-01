@@ -12,7 +12,7 @@ const getAccountInformation = () => {
 
 const createTrade = (quantity: string) => {
 	const params = {
-		symbol: 'BTCUSDT',
+		symbol: 'BTCSEK',
 		side: 'SELL',
 		type: 'MARKET',
 		quantity: quantity,
@@ -23,7 +23,7 @@ const createTrade = (quantity: string) => {
 }
 
 const getPrice = () => {
-	return http.get('/api/v3/ticker/price?symbol=BTCUSDT')
+	return http.get('/api/v3/ticker/price?symbol=BTCSEK')
 }
 
 export default {
