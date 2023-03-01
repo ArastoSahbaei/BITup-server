@@ -1,7 +1,6 @@
 export { useCors } from './useCors'
 export { useMorgan } from './useMorgan'
 export { useHelmet } from './useHelmet'
-export { getTimeStamp } from './getTimeStamp'
 export { generateUUID } from './generateUUID'
 export { satoshiToUSD } from './satoshiToUSD'
 export { connectToPort } from './connectToPort'
