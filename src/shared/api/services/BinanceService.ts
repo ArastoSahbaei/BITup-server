@@ -12,8 +12,20 @@ const getAccountInformation = () => {
 }
 
 const createTrade = (quantity: string) => {
-	const dataQueryString = `symbol=BTCUSDT&side=SELL&type=MARKET&quantity=${quantity}&recvWindow=60000&${getTimeStamp()}`
-	return http.post(`/api/v3/order?${dataQueryString + signatureSHA256(dataQueryString)}`)
+	const params = {
+		symbol: 'BTCUSDT',
+		side: 'SELL',
+		type: 'MARKET',
+		quantity: quantity,
+		timestamp: Date.now()
+	}
+
+	const queryString = Object.keys(params)
+		.map(key => `${key}=${params[key]}`)
+		.join('&')
+	console.log(queryString)
+	/* 	const dataQueryString = `symbol=BTCUSDT&side=SELL&type=MARKET&quantity=${quantity}&recvWindow=60000&${getTimeStamp()}` */
+	return http.post(`/api/v3/order?${queryString + signatureSHA256(queryString)}`)
 }
 
 const getPrice = () => {
