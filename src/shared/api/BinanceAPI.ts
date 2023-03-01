@@ -11,13 +11,13 @@ const baseURL = () => {
 	return isDevelopmentEnv() ? baseURL_DEV : baseURL_PROD
 }
 
-const token = () => {
+const getBinanceSecretToken = () => {
 	return isDevelopmentEnv() ? DEV_BINANCE_TOKEN : PROD_BINANCE_TOKEN
 }
 
 const headers = {
 	'Content-Type': 'application/json',
-	'X-MBX-APIKEY': token()
+	'X-MBX-APIKEY': getBinanceSecretToken()
 }
 
 const BinanceAPI = Axios.create({
