@@ -6,7 +6,7 @@ dotenv.config()
 const { DEV_BINANCE_TOKEN, PROD_BINANCE_TOKEN } = process.env
 
 const baseURL = () => {
-	const baseURL_PROD = 'https://api.binance.com/api'
+	const baseURL_PROD = 'https://api.binance.com'
 	const baseURL_DEV = 'https://testnet.binance.vision'
 	return isDevelopmentEnv() ? baseURL_DEV : baseURL_PROD
 }
