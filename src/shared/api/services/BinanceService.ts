@@ -14,11 +14,9 @@ const createTrade = (quantity: string) => {
 	const params = {
 		symbol: 'BTCUSDT',
 		side: 'SELL',
-		type: 'STOP_LOSS_LIMIT',
-		quantity: quantity,
-		stopPrice: 20000,  // set the minimum price you want your order to execute at
-		price: null,  // allow the order to be executed at the current market price when the stopPrice is reached
-		timeInForce: 'GTC',  // set the order to remain open until executed or manually cancelled
+		type: 'STOP_LOSS',
+		quantity: 1,
+		stopPrice: 20000, // Set the stop price to 20K
 		timestamp: Date.now()
 	}
 
