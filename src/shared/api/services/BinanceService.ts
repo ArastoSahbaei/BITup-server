@@ -15,8 +15,8 @@ const createTrade = (quantity: string) => {
 		symbol: 'BTCUSDT',
 		side: 'SELL',
 		type: 'STOP_LOSS',
-		quantity: 1,
-		stopPrice: 20000, // Set the stop price to 20K
+		quantity: quantity,
+		stopPrice: 20000,
 		timestamp: Date.now()
 	}
 
