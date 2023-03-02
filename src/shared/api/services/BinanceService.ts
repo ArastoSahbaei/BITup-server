@@ -16,8 +16,9 @@ const createTrade = (quantity: string) => {
 		side: 'SELL',
 		type: 'STOP_LOSS_LIMIT',
 		quantity: quantity,
-		stopPrice: 60000,
-		timeInForce: 'GTC', // Set time in force to Good Till Cancel
+		stopPrice: 20000,  // set the minimum price you want your order to execute at
+		price: null,  // allow the order to be executed at the current market price when the stopPrice is reached
+		timeInForce: 'GTC',  // set the order to remain open until executed or manually cancelled
 		timestamp: Date.now()
 	}
 
