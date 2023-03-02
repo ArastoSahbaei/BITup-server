@@ -14,10 +14,13 @@ const createTrade = (quantity: string) => {
 	const params = {
 		symbol: 'BTCUSDT',
 		side: 'SELL',
-		type: 'MARKET',
+		type: 'STOP_LOSS_LIMIT',
 		quantity: quantity,
+		stopPrice: 60000,
+		timeInForce: 'GTC', // Set time in force to Good Till Cancel
 		timestamp: Date.now()
 	}
+
 	const queryString = Object.keys(params).map(key => `${key}=${params[key]}`).join('&')
 	return http.post(`/api/v3/order?${queryString + signatureSHA256(queryString)}`)
 }
