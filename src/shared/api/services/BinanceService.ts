@@ -14,9 +14,10 @@ const createTrade = (quantity: string) => {
 	const params = {
 		symbol: 'BTCUSDT',
 		side: 'SELL',
-		type: 'STOP_LOSS',
+		type: 'LIMIT',
+		timeInForce: 'GTC',
 		quantity: quantity,
-		stopPrice: 20000,
+		price: 20000,
 		timestamp: Date.now()
 	}
 
