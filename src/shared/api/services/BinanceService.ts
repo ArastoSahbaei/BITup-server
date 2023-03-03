@@ -10,14 +10,14 @@ const getAccountInformation = () => {
 	return http.get(`/api/v3/account?${dataQueryString + signatureSHA256(dataQueryString)}`)
 }
 
-const createTrade = (quantity: string) => {
+const createTrade = (quantity: string, price?: number) => {
 	const params = {
 		symbol: 'BTCUSDT',
 		side: 'SELL',
 		type: 'LIMIT',
 		timeInForce: 'GTC',
 		quantity: quantity,
-		price: 20000,
+		price: price || 0,
 		timestamp: Date.now()
 	}
 
