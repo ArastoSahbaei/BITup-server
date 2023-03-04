@@ -13,6 +13,7 @@ import {
 	saveTradeData,
 	addToQueue,
 	getAllQueuedOrders,
+	calculcateSellingPrice,
 } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
@@ -61,8 +62,9 @@ const createTrade = async (request, response) => {
 	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, price)
 
 	if (isEligableForInstantSell) {
+		const sellingPrice = calculcateSellingPrice(roundedDecimals, 150) //TODO: make this dynamic
 		const createdSellOrder = await createNewSellOrder(roundedDecimals)
-		console.log('CREATED SELL ORDERRRRRRRRRR: ', createdSellOrder)
+		console.log('createdSellOrdercreatedSellOrdercreatedSellOrdercreatedSellOrder', createdSellOrder)
 		if (!createdSellOrder) {
 			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not create sell order' })
 		}

@@ -53,10 +53,14 @@ export const getRoundedDecimals = (amount: number) => {
 	return Math.round(amount * 10000) / 10000
 }
 
+export const calculcateSellingPrice = (satoshis: number, amountSEK: number) => {
+	/* How many SEK do i need from selling amount ? and then calculcate the exchange rate required to make that happend. */
+}
+
 export const createNewSellOrder = async (amount: number) => {
 	try {
 		//TODO: Ensure that the amount is not sold for less than required, but higher is ok.
-		const { data } = await BinanceService.createTrade(amount.toString())
+		const { data } = await BinanceService.createTrade(amount.toString(), 20000)
 		return data
 	} catch (error) {
 		console.log(error) //TODO: set status to error and send email
