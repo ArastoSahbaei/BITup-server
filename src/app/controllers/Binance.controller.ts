@@ -63,7 +63,7 @@ const createTrade = async (request, response) => {
 	const isEligableForInstantSell = isAmountSufficient(roundedDecimals, price)
 
 	if (isEligableForInstantSell) {
-		const sellingPrice = calculcateSellingPrice(roundedDecimals, 150) //TODO: make this dynamic
+		/* const sellingPrice = calculcateSellingPrice(roundedDecimals, 150) */ //TODO: make this dynamic
 		const createdSellOrder = await createNewSellOrder(roundedDecimals)
 		console.log('createdSellOrdercreatedSellOrdercreatedSellOrdercreatedSellOrder', createdSellOrder)
 		if (!createdSellOrder) {
