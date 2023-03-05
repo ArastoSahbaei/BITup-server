@@ -9,5 +9,5 @@ export const getWebhookSecret = () => {
 	//1. Save in database? - Can anyone call the webhook if the secret is based on the store?
 
 	/* return isDevelopmentEnv() ? DEV_WEBHOOK_SECRET : PROD_WEBHOOK_SECRET */
-	return 'fz4QZQ7Wf95277Q5Co9CVqYjwrp'
+	return '2bBgC89LvGCbbXdrrXKq2pjZ6enE'
 }
