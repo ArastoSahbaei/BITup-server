@@ -40,6 +40,7 @@ const getAccountInformation = async (request, response) => {
 
 const createTrade = async (request, response) => {
 	const { storeId, invoiceId } = request.body
+	console.log('CREATE_TRADE_API_CALL', storeId, invoiceId)
 
 	const isInvoiceValid = await validateInvoice(storeId, invoiceId)
 	if (!isInvoiceValid) {
