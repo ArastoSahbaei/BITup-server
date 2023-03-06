@@ -64,7 +64,6 @@ const createTrade = async (request, response) => {
 	if (isEligableForInstantSell) {
 		/* const sellingPrice = calculcateSellingPrice(roundedDecimals, 150) */ //TODO: make this dynamic
 		const createdSellOrder = await createNewSellOrder(roundedDecimals)
-		console.log('createdSellOrdercreatedSellOrdercreatedSellOrdercreatedSellOrder', createdSellOrder)
 		if (!createdSellOrder) {
 			response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Could not create sell order' })
 		}
@@ -153,14 +152,8 @@ export const createBulkTrade = async () => {
 	console.log('This function is executed every minute.')
 }
 
-const test = (request, response) => {
-	console.log('request.body', request.body)
-	response.status(201).send('Webhook received!')
-}
-
 export default {
 	testConnectivity,
-	test,
 	getAccountInformation,
 	createTrade,
 }
