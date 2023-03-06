@@ -21,7 +21,7 @@ const createUser = async (request, response) => {
 			if (!newStore.data.id) {
 				return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 			} else { */
-	await BTCPayService.connectWalletToStore(storeeee.data.id)
+	await BTCPayService.connectWalletToStore(storeeee.id)
 	/* 	} */
 
 	const isEmailOccupied = await UserModel.findOne({ email: email })
