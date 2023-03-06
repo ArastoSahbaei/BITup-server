@@ -5,7 +5,6 @@ import { getWebhookSecret } from '../functions'
 const webhookSecret = getWebhookSecret()
 
 export const authenticateWebHook = (request, response, next) => {
-	console.log('AUTHENTICATE_WEBHOOK............................................')
 	const signatureHashAlg = 'sha256'
 	const signatureHeaderName = 'BTCPAY-SIG'
 	const signature: any = Buffer.from(request.get(signatureHeaderName) || '', 'utf8')
