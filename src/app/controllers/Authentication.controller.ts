@@ -3,40 +3,48 @@ import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 import BTCPayService from '../../shared/api/services/BTCPayService'
+import { createNewStore } from '../services/Authentication.services'
 
 const createUser = async (request, response) => {
 	const { email, password, storeName } = request.body
 	const tokenUUID = generateUUID()
 
-	try {
-		const newStore = await BTCPayService.createStore({ name: storeName, defaultCurrency: 'SEK', defaultLang: 'sv' })
-		if (!newStore.data.id) {
-			return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
-		} else {
-			await BTCPayService.connectWalletToStore(newStore.data.id)
-		}
-
-		const isEmailOccupied = await UserModel.findOne({ email: email })
-		if (isEmailOccupied) {
-			return response.status(StatusCode.FORBIDDEN).send({ message: 'Email is already in use' })
-		}
-		const user = new UserModel({
-			email: email,
-			password: password && await encryptPassword(password),
-			store: {
-				id: newStore.data.id,
-				name: storeName,
-			},
-			accountValidation: {
-				emailVerificationToken: tokenUUID,
-			}
-		})
-		const databaseResponse = await user.save()
-		await sendAccountValidationEmail(email, tokenUUID)
-		return response.status(StatusCode.CREATED).send(databaseResponse)
-	} catch (error) {
-		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	const storeeee = await createNewStore(storeName)
+	console.log(storeeee)
+	if (!storeeee) {
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
+
+
+	/* 	try { */
+	/* 		const newStore = await BTCPayService.createStore({ name: storeName, defaultCurrency: 'SEK', defaultLang: 'sv' })
+			if (!newStore.data.id) {
+				return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
+			} else { */
+	await BTCPayService.connectWalletToStore(storeeee.data.id)
+	/* 	} */
+
+	const isEmailOccupied = await UserModel.findOne({ email: email })
+	if (isEmailOccupied) {
+		return response.status(StatusCode.FORBIDDEN).send({ message: 'Email is already in use' })
+	}
+	const user = new UserModel({
+		email: email,
+		password: password && await encryptPassword(password),
+		store: {
+			id: storeeee.data.id,
+			name: storeName,
+		},
+		accountValidation: {
+			emailVerificationToken: tokenUUID,
+		}
+	})
+	const databaseResponse = await user.save()
+	await sendAccountValidationEmail(email, tokenUUID)
+	return response.status(StatusCode.CREATED).send(databaseResponse)
+	/* } catch (error) {
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
+	} */
 }
 
 const verifyUserEmail = async (request, response) => {
