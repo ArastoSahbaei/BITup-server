@@ -32,7 +32,7 @@ const createUser = async (request, response) => {
 		email: email,
 		password: encryptPassword(password),
 		store: {
-			id: storeeee.data.id,
+			id: storeeee.id,
 			name: storeName,
 		},
 		accountValidation: {
