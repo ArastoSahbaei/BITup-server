@@ -30,7 +30,7 @@ const createUser = async (request, response) => {
 	}
 	const user = new UserModel({
 		email: email,
-		password: encryptPassword(password),
+		password: password && await encryptPassword(password),
 		store: {
 			id: storeeee.id,
 			name: storeName,
