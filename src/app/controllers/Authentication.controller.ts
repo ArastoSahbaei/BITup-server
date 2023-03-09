@@ -30,7 +30,7 @@ const createUser = async (request, response) => {
 	}
 	const user = new UserModel({
 		email: email,
-		password: password && await encryptPassword(password),
+		password: encryptPassword(password),
 		store: {
 			id: storeeee.data.id,
 			name: storeName,
@@ -40,6 +40,7 @@ const createUser = async (request, response) => {
 		}
 	})
 	const databaseResponse = await user.save()
+	console.log(databaseResponse)
 	/* await sendAccountValidationEmail(email, tokenUUID) */
 	return response.status(StatusCode.CREATED).send(databaseResponse)
 	/* } catch (error) {
