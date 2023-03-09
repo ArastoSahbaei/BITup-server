@@ -3,11 +3,15 @@ import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 import BTCPayService from '../../shared/api/services/BTCPayService'
-import { createNewStore, isEmailOccupied } from '../services/Authentication.services'
+import { createNewStore, isEmailOccupied, isStoreNameOccupied } from '../services/Authentication.services'
 
 const createUser = async (request, response) => {
 	const { email, password, storeName } = request.body
 	const tokenUUID = generateUUID()
+
+	if (await isStoreNameOccupied(storeName)) {
+		return response.status(StatusCode.FORBIDDEN).send({ message: 'Store name is already in use' })
+	}
 
 	const newStore = await createNewStore(storeName)
 	if (!newStore) {

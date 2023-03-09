@@ -11,6 +11,15 @@ export const createNewStore = async (storeName: string) => {
 	}
 }
 
+export const isStoreNameOccupied = async (storeName: string) => {
+	try {
+		const isStoreNameOccupied = await UserModel.findOne({ 'store.name': storeName })
+		return !!isStoreNameOccupied
+	} catch (error) {
+		return false
+	}
+}
+
 export const isEmailOccupied = async (email: string) => {
 	try {
 		const isEmailOccupied = await UserModel.findOne({ email: email })
