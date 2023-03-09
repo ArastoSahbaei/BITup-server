@@ -3,36 +3,28 @@ import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 import BTCPayService from '../../shared/api/services/BTCPayService'
-import { createNewStore } from '../services/Authentication.services'
+import { createNewStore, isEmailOccupied } from '../services/Authentication.services'
 
 const createUser = async (request, response) => {
 	const { email, password, storeName } = request.body
 	const tokenUUID = generateUUID()
 
-	const storeeee = await createNewStore(storeName)
-	console.log(storeeee)
-	if (!storeeee) {
+	const newStore = await createNewStore(storeName)
+	if (!newStore) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
+	await BTCPayService.connectWalletToStore(newStore.id) //TODO: wtf does this do really?
 
-	/* 	try { */
-	/* 		const newStore = await BTCPayService.createStore({ name: storeName, defaultCurrency: 'SEK', defaultLang: 'sv' })
-			if (!newStore.data.id) {
-				return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
-			} else { */
-	await BTCPayService.connectWalletToStore(storeeee.id)
-	/* 	} */
-
-	const isEmailOccupied = await UserModel.findOne({ email: email })
-	if (isEmailOccupied) {
+	/* 	const isEmailOccupied = await UserModel.findOne({ email: email }) */
+	if (await isEmailOccupied(email)) {
 		return response.status(StatusCode.FORBIDDEN).send({ message: 'Email is already in use' })
 	}
 	const user = new UserModel({
 		email: email,
 		password: password && await encryptPassword(password),
 		store: {
-			id: storeeee.id,
+			id: newStore.id,
 			name: storeName,
 		},
 		accountValidation: {
@@ -41,11 +33,8 @@ const createUser = async (request, response) => {
 	})
 	const databaseResponse = await user.save()
 	console.log(databaseResponse)
-	/* await sendAccountValidationEmail(email, tokenUUID) */
+	await sendAccountValidationEmail(email, tokenUUID)
 	return response.status(StatusCode.CREATED).send(databaseResponse)
-	/* } catch (error) {
-		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
-	} */
 }
 
 const verifyUserEmail = async (request, response) => {
