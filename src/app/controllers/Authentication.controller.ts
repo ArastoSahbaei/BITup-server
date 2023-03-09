@@ -40,7 +40,7 @@ const createUser = async (request, response) => {
 		}
 	})
 	const databaseResponse = await user.save()
-	await sendAccountValidationEmail(email, tokenUUID)
+	/* await sendAccountValidationEmail(email, tokenUUID) */
 	return response.status(StatusCode.CREATED).send(databaseResponse)
 	/* } catch (error) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: error.message })
