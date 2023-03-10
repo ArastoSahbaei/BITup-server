@@ -33,6 +33,7 @@ export const addWallet = async (storeId: string) => {
 	//requires the BTCPay server to already have a BTC wallet configured
 	try {
 		const { data } = await BTCPayService.connectWalletToStore(storeId)
+		console.log(data)
 		return !!data
 	} catch (error) {
 		console.log(error)
