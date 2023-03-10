@@ -29,11 +29,28 @@ export const isEmailOccupied = async (email: string) => {
 	}
 }
 
-const changeExchangeRate = async (request, response) => {
-	//TODO: implement
+export const addWallet = async (storeId: string) => {
+	//requires the BTCPay server to already have a BTC wallet configured
+	try {
+		const { data } = await BTCPayService.connectWalletToStore(storeId)
+		return !!data
+	} catch (error) {
+		console.log(error)
+		return false
+	}
 }
 
-const addWallet = async (request, response) => {
-	//TODO: implement
+
+export const changeExchangeRate = async (storeId: string) => {
+	try {
+		const { data } = await BTCPayService.updateStoreRateSettings(storeId)
+		return !!data
+	} catch (error) {
+		console.log(error)
+		return false
+	}
 }
 
+const addWebHook = async (request, response) => {
+	//TODO: implement
+}

@@ -3,7 +3,7 @@ import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 import BTCPayService from '../../shared/api/services/BTCPayService'
-import { createNewStore, isEmailOccupied, isStoreNameOccupied } from '../services/Authentication.services'
+import { addWallet, changeExchangeRate, createNewStore, isEmailOccupied, isStoreNameOccupied } from '../services/Authentication.services'
 
 const createUser = async (request, response) => {
 	const { email, password, storeName } = request.body
@@ -21,8 +21,16 @@ const createUser = async (request, response) => {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
-	const OK = await BTCPayService.connectWalletToStore(newStore.id) //TODO: wtf does this do really?
-	console.log(OK)
+	const successfullyConnectedWallet = await addWallet(newStore.id)
+	if (!successfullyConnectedWallet) {
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to connect wallet to store' })
+	}
+
+	const successfullyChangedExchangeRate = await changeExchangeRate(newStore.id)
+	if (!successfullyChangedExchangeRate) {
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to change exchange rate' })
+	}
+
 
 	const user = new UserModel({
 		email: email,

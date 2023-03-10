@@ -16,6 +16,16 @@ const connectWalletToStore = (storeID: string, cryptoCode?: string) => {
 	return http.post(`/api/v1/stores/${storeID}/payment-methods/onchain/${chain}/generate`, {})
 }
 
+const updateStoreRateSettings = (storeId: string) => {
+	return http.put(`/api/v1/stores/${storeId}/rates/configuration`, {
+		spread: '0.1', //10% spread
+		/* preferredSource: 'CoinAverage', */
+		isCustomScript: false,
+		effectiveScript: ''
+	})
+}
+
+
 const getStores = () => {
 	return http.get('/api/v1/stores')
 }
@@ -52,4 +62,5 @@ export default {
 	createStore,
 	getInvoice,
 	getStores,
+	updateStoreRateSettings
 }
