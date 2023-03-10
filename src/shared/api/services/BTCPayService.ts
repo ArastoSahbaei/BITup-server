@@ -13,7 +13,7 @@ const createStore = (data: IcreateStore) => {
 
 const connectWalletToStore = (storeID: string, cryptoCode?: string) => {
 	const chain = cryptoCode ? cryptoCode : 'BTC'
-	return http.post(`/api/v1/stores/${storeID}/payment-methods/onchain/${chain}/generate`, {})
+	return http.post(`/api/v1/stores/${storeID}/payment-methods/onchain/${chain}/generate`)
 }
 
 const getStores = () => {

@@ -9,8 +9,11 @@ const createUser = async (request, response) => {
 	const { email, password, storeName } = request.body
 	const tokenUUID = generateUUID()
 
+	if (await isEmailOccupied(email)) {
+		return response.status(StatusCode.DUBLICATE_RESOURCE).send({ message: 'Email is already in use' })
+	}
 	if (await isStoreNameOccupied(storeName)) {
-		return response.status(StatusCode.FORBIDDEN).send({ message: 'Store name is already in use' })
+		return response.status(StatusCode.DUBLICATE_RESOURCE).send({ message: 'Store name is already in use' })
 	}
 
 	const newStore = await createNewStore(storeName)
@@ -18,12 +21,9 @@ const createUser = async (request, response) => {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
-	await BTCPayService.connectWalletToStore(newStore.id) //TODO: wtf does this do really?
+	const OK = await BTCPayService.connectWalletToStore(newStore.id) //TODO: wtf does this do really?
+	console.log(OK)
 
-	/* 	const isEmailOccupied = await UserModel.findOne({ email: email }) */
-	if (await isEmailOccupied(email)) {
-		return response.status(StatusCode.FORBIDDEN).send({ message: 'Email is already in use' })
-	}
 	const user = new UserModel({
 		email: email,
 		password: password && await encryptPassword(password),
@@ -36,7 +36,6 @@ const createUser = async (request, response) => {
 		}
 	})
 	const databaseResponse = await user.save()
-	console.log(databaseResponse)
 	await sendAccountValidationEmail(email, tokenUUID)
 	return response.status(StatusCode.CREATED).send(databaseResponse)
 }
