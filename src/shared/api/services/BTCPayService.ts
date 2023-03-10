@@ -19,7 +19,7 @@ const connectWalletToStore = (storeID: string, cryptoCode?: string) => {
 const updateStoreRateSettings = (storeId: string) => {
 	return http.put(`/api/v1/stores/${storeId}/rates/configuration`, {
 		spread: '10', //10% spread
-		preferredSource: 'CoinAverage', 
+		preferredSource: 'CoinGecko', 
 		isCustomScript: false,
 		effectiveScript: ''
 	})
