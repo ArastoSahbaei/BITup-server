@@ -26,7 +26,7 @@ const createUser = async (request, response) => {
 	}
 
 	const successfullyChangedExchangeRate = await changeExchangeRate(newStore.id)
-	if (!successfullyChangedExchangeRate) {
+	if (!await changeExchangeRate(newStore.id)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to change exchange rate' })
 	}
 
