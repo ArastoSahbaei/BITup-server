@@ -16,7 +16,7 @@ const createUser = async (request, response) => {
 	}
 
 	const newStore = await createNewStore(storeName)
-	if (!await createNewStore(storeName)) {
+	if (!newStore) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
