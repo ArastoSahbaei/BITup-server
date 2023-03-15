@@ -52,6 +52,7 @@ export const changeExchangeRate = async (storeId: string) => {
 	}
 }
 
-const addWebHook = async (request, response) => {
+export const addWebHooks = async (storeId: string) => {
 	//TODO: implement
+	return true
 }

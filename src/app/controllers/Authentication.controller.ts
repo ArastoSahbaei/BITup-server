@@ -1,5 +1,5 @@
 import { comparePasswords, encryptPassword, generateAccessToken, generateUUID, sendAccountValidationEmail, sendPasswordRecoveryEmail } from '../../functions'
-import { addWallet, changeExchangeRate, createNewStore, isEmailOccupied, isStoreNameOccupied } from '../services/Authentication.services'
+import { addWallet, addWebHooks, changeExchangeRate, createNewStore, isEmailOccupied, isStoreNameOccupied } from '../services/Authentication.services'
 import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
@@ -15,26 +15,28 @@ const createUser = async (request, response) => {
 		return response.status(StatusCode.DUBLICATE_RESOURCE).send({ message: 'Store name is already in use' })
 	}
 
-	const newStore = await createNewStore(storeName)
-	if (!newStore) {
+	const store = await createNewStore(storeName)
+	if (!store) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
-	/* const successfullyConnectedWallet = await addWallet(newStore.id) */
-	if (!await addWallet(newStore.id)) {
+	if (!await addWallet(store.id)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to connect wallet to store' })
 	}
 
-	if (!await changeExchangeRate(newStore.id)) {
+	if (!await changeExchangeRate(store.id)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to change exchange rate' })
 	}
 
+	if (!await addWebHooks(store.id)) {
+		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to add webhooks' })
+	}
 
 	const user = new UserModel({
 		email: email,
 		password: password && await encryptPassword(password),
 		store: {
-			id: newStore.id,
+			id: store.id,
 			name: storeName,
 		},
 		accountValidation: {
