@@ -20,7 +20,7 @@ const createUser = async (request, response) => {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
-	const successfullyConnectedWallet = await addWallet(newStore.id)
+	/* const successfullyConnectedWallet = await addWallet(newStore.id) */
 	if (!await addWallet(newStore.id)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to connect wallet to store' })
 	}
