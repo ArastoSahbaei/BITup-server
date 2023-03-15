@@ -16,16 +16,15 @@ const createUser = async (request, response) => {
 	}
 
 	const newStore = await createNewStore(storeName)
-	if (!newStore) {
+	if (!await createNewStore(storeName)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to create store' })
 	}
 
 	const successfullyConnectedWallet = await addWallet(newStore.id)
-	if (!successfullyConnectedWallet) {
+	if (!await addWallet(newStore.id)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to connect wallet to store' })
 	}
 
-	const successfullyChangedExchangeRate = await changeExchangeRate(newStore.id)
 	if (!await changeExchangeRate(newStore.id)) {
 		return response.status(StatusCode.INTERNAL_SERVER_ERROR).send({ message: 'Error occured while trying to change exchange rate' })
 	}
