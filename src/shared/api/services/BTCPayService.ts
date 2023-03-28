@@ -19,7 +19,7 @@ const connectWalletToStore = (storeID: string, cryptoCode?: string) => {
 const updateStoreRateSettings = (storeId: string) => {
 	return http.put(`/api/v1/stores/${storeId}/rates/configuration`, {
 		spread: '10',
-		preferredSource: 'CoinGecko', 
+		preferredSource: 'CoinGecko',
 		isCustomScript: false,
 		effectiveScript: ''
 	})
@@ -54,10 +54,29 @@ const createInvoice = (storeID: string, amount: string) => {
 	})
 }
 
+const createWebHook = (storeID: string) => {
+	return http.post(`/api/v1/stores/${storeID}/webhooks`, {
+		id: 'my-webhook-id',
+		enabled: true,
+		automaticRedelivery: true,
+		url: 'https://your-callback-url.com',
+		authorizedEvents: {
+			InvoiceCreated: true,
+			InvoiceReceivedPayment: true,
+			InvoiceProcessing: true,
+			InvoiceExpired: true,
+			InvoiceSettled: true,
+			InvoiceInvalid: true,
+		},
+		secret: 'my-webhook-secret'
+	})
+}
+
 export default {
 	getInvoicePaymentMethods,
 	connectWalletToStore,
 	createInvoice,
+	createWebHook,
 	getInvoices,
 	createStore,
 	getInvoice,
