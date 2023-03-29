@@ -1,0 +1,1 @@
+export { enviromentOptions } from './enviromentOptions'

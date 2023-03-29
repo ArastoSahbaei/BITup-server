@@ -1,13 +1,19 @@
-import { isDevelopmentEnv } from './isDevelopmentEnv'
 import dotenv from 'dotenv'
+import { getEnviroment } from './getEnviroment'
+import { enviromentOptions } from '../shared/constants'
 
 dotenv.config()
-const { DEV_WEBHOOK_SECRET, PROD_WEBHOOK_SECRET } = process.env
+const { DEV_WEBHOOK_SECRET, PROD_WEBHOOK_SECRET, STAGING_WEBHOOK_SECRET } = process.env
 
 export const getWebhookSecret = () => {
-	//TODO: so apperently every store has its own webhook secret, so we need to get the secret from the store in the database and return it here
-	//1. Save in database? - Can anyone call the webhook if the secret is based on the store?
-
-	/* return isDevelopmentEnv() ? DEV_WEBHOOK_SECRET : PROD_WEBHOOK_SECRET */
-	return '2bBgC89LvGCbbXdrrXKq2pjZ6enE'
+	switch (getEnviroment()) {
+	case enviromentOptions.development:
+		return DEV_WEBHOOK_SECRET
+	case enviromentOptions.staging:
+		return STAGING_WEBHOOK_SECRET
+	case enviromentOptions.production:
+		return PROD_WEBHOOK_SECRET
+	default:
+		return null
+	}
 }

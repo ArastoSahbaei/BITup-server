@@ -1,7 +1,7 @@
 import http from '../BTCPayAPI'
 import dotenv from 'dotenv'
 import { IcreateStore } from '../../interfaces'
-import { getEnviromentBaseURL, isDevelopmentEnv } from '../../../functions'
+import { getEnviromentBaseURL, getWebhookSecret, isDevelopmentEnv } from '../../../functions'
 
 dotenv.config()
 const { DEV_WEB_URL, PROD_WEB_URL } = process.env
@@ -71,7 +71,7 @@ const createWebHook = (storeID: string, endpoint: string) => {
 			InvoiceSettled: true,
 			InvoiceInvalid: true,
 		},
-		secret: 'my-webhook-secret' //TODO: get from .env? - dont think this is required to be saved in db.
+		secret: getWebhookSecret()
 	})
 }
 
