@@ -61,7 +61,7 @@ const createWebHook = (storeID: string, endpoint: string) => {
 
 		enabled: true,
 		automaticRedelivery: true,
-		url: getEnviromentBaseURL() + endpoint, //TODO: Make generic + baseURL?
+		url: getEnviromentBaseURL() + endpoint,
 		//TODO: make this generic so this can be used for other events as well.
 		authorizedEvents: {
 			InvoiceCreated: true,
