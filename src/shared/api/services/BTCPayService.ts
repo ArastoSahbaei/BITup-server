@@ -73,7 +73,7 @@ const createWebHook = (storeID: string, endpoint: string) => {
 			InvoiceSettled: true,
 			InvoiceInvalid: true,
 		},
-		secret: 'getWebhookSecret()'
+		secret: getWebhookSecret()
 	})
 }
 
