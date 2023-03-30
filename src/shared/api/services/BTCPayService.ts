@@ -57,6 +57,8 @@ const createInvoice = (storeID: string, amount: string) => {
 //TODO: for this to be generic the event types need to be dynamic.
 //TODO: add datatype for event types.
 const createWebHook = (storeID: string, endpoint: string) => {
+	const x = getWebhookSecret()
+	console.log('getWebhookSecret()', x)
 	return http.post(`/api/v1/stores/${storeID}/webhooks`, {
 		id: 'my-webhook-id', //TODO: is this required?
 		enabled: true,
@@ -71,7 +73,7 @@ const createWebHook = (storeID: string, endpoint: string) => {
 			InvoiceSettled: true,
 			InvoiceInvalid: true,
 		},
-		secret: getWebhookSecret()
+		secret: 'getWebhookSecret()'
 	})
 }
 
