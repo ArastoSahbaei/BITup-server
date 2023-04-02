@@ -54,7 +54,7 @@ export const changeExchangeRate = async (storeId: string) => {
 
 export const addWebHooks = async (storeId: string) => {
 	try {
-		const { data } = await BTCPayService.createWebHook(storeId, '/sell-order')
+		const { data } = await BTCPayService.createWebHook(storeId, '/sell-order', { InvoiceSettled: true })
 		console.log('CREATED WEBHOOK FOR STORE: ' + storeId)
 		console.log(data)
 		return data

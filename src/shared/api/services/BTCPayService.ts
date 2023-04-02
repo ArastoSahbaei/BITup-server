@@ -1,6 +1,6 @@
 import http from '../BTCPayAPI'
 import dotenv from 'dotenv'
-import { IcreateStore } from '../../interfaces'
+import { IcreateStore, webHookEvents } from '../../interfaces'
 import { getEnviromentBaseURL, getWebhookSecret, isDevelopmentEnv } from '../../../functions'
 
 dotenv.config()
@@ -54,23 +54,12 @@ const createInvoice = (storeID: string, amount: string) => {
 	})
 }
 
-//TODO: for this to be generic the event types need to be dynamic.
-//TODO: add datatype for event types.
-const createWebHook = (storeID: string, endpoint: string) => {
+const createWebHook = (storeID: string, endpoint: string, authorizedEvents: webHookEvents) => {
 	return http.post(`/api/v1/stores/${storeID}/webhooks`, {
-
 		enabled: true,
 		automaticRedelivery: true,
 		url: getEnviromentBaseURL() + endpoint,
-		//TODO: make this generic so this can be used for other events as well.
-		authorizedEvents: {
-			InvoiceCreated: true,
-			InvoiceReceivedPayment: true,
-			InvoiceProcessing: true,
-			InvoiceExpired: true,
-			InvoiceSettled: true,
-			InvoiceInvalid: true,
-		},
+		authorizedEvents: { authorizedEvents },
 		secret: getWebhookSecret()
 	})
 }
