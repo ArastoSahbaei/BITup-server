@@ -59,7 +59,7 @@ const createWebHook = (storeID: string, endpoint: string, webHookEvents: webHook
 		enabled: true,
 		automaticRedelivery: true,
 		url: getEnviromentBaseURL() + endpoint,
-		authorizedEvents: { authorizedEvents: webHookEvents },
+		authorizedEvents: webHookEvents,
 		secret: getWebhookSecret()
 	})
 }
