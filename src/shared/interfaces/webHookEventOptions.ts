@@ -1,1 +1,1 @@
-export type webHookEventOptions = 'InvoiceCreated' | 'InvoiceReceivedPayment' | 'InvoiceProcessing' | 'InvoiceEffffxpired' | 'InvoiceSettled' | 'InvoiceInvalid';
+export type webHookEventOptions = 'InvoiceCreated' | 'InvoiceReceivedPayment' | 'InvoiceProcessing' | 'InvoiceExpired' | 'InvoiceSettled' | 'InvoiceInvalid';

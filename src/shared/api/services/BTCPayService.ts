@@ -1,6 +1,6 @@
 import http from '../BTCPayAPI'
 import dotenv from 'dotenv'
-import { IcreateStore, webHookEvents } from '../../interfaces'
+import { IcreateStore } from '../../interfaces'
 import { getEnviromentBaseURL, getWebhookSecret, isDevelopmentEnv } from '../../../functions'
 import { webHookEventOptions } from '../../interfaces/webHookEventOptions'
 
