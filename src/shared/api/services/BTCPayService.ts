@@ -2,7 +2,7 @@ import http from '../BTCPayAPI'
 import dotenv from 'dotenv'
 import { IcreateStore, webHookEvents } from '../../interfaces'
 import { getEnviromentBaseURL, getWebhookSecret, isDevelopmentEnv } from '../../../functions'
-import { webHookEventOptions } from '../../interfaces/webHookEvents'
+import { webHookEventOptions } from '../../interfaces/webHookEventOptions'
 
 dotenv.config()
 const { DEV_WEB_URL, PROD_WEB_URL } = process.env
