@@ -54,12 +54,12 @@ const createInvoice = (storeID: string, amount: string) => {
 	})
 }
 
-const createWebHook = (storeID: string, endpoint: string, authorizedEvents: webHookEvents) => {
+const createWebHook = (storeID: string, endpoint: string, webHookEvents: webHookEvents) => {
 	return http.post(`/api/v1/stores/${storeID}/webhooks`, {
 		enabled: true,
 		automaticRedelivery: true,
 		url: getEnviromentBaseURL() + endpoint,
-		authorizedEvents: { authorizedEvents },
+		authorizedEvents: { authorizedEvents: webHookEvents },
 		secret: getWebhookSecret()
 	})
 }
