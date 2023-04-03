@@ -17,6 +17,11 @@ const userSchema = new Schema({
 		allowNull: [false, 'can\'t be null'],
 		required: false,
 	},
+	role: {
+		type: String,
+		enum: userRoles,
+		default: userRoles.shopOwner
+	},
 	accountValidation: {
 		isEmailVerified: { type: Boolean, default: false },
 		isAccountBanned: { type: Boolean, default: false },
@@ -25,11 +30,6 @@ const userSchema = new Schema({
 		resetPasswordExpires: { type: Date },
 		emailVerificationToken: { type: String, default: null },
 	},
-	role: {
-		type: String,
-		enum: userRoles,
-		default: userRoles.shopOwner
-	},
 	personalDetails: {
 		firstName: { type: String, default: '' },
 		lastName: { type: String, default: '' },
@@ -37,6 +37,15 @@ const userSchema = new Schema({
 		address: { type: String, default: '' },
 		zipCode: { type: String, default: '' },
 		phone: { type: String, default: '' },
+	},
+	bankAccountDetails: {
+		businessName: { type: String, default: '' },
+		businessRegistrationNumber: { type: String, default: '' },
+		bankName: { type: String, default: '' },
+		bankCountry: { type: String, default: '' },
+		bankAccountNumber: { type: String, default: '' },
+		iban: { type: String, default: '' },
+		bic: { type: String, default: '' },
 	},
 	store: {
 		id: {
