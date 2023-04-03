@@ -62,7 +62,7 @@ const createWebHook = (storeID: string, endpoint: string, webHookEventOptions: A
 		url: getEnviromentBaseURL() + endpoint,
 		authorizedEvents: {
 			everything: false,
-			specificEvents: ['InvoiceSettled', 'InvoiceCreated', 'InvoiceExpired']
+			specificEvents: webHookEventOptions
 		},
 		secret: getWebhookSecret()
 	})
