@@ -1,8 +1,8 @@
-import { webClientURL } from '../shared/constants'
 import { getEnviroment } from './getEnviroment'
+import { baseURLOptions } from '../shared/constants'
 
-export const getEnvironmentBasedWebURL = () => {
-	const { development, staging, production } = webClientURL
+export const getServerEnviromentBasedBaseURL = () => {
+	const { development, staging, production } = baseURLOptions
 	switch (getEnviroment()) {
 	case development:
 		return development
