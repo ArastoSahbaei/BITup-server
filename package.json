@@ -10,7 +10,7 @@
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
     "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D",
     "deploy": "git push heroku master:main",
-    "heroku-staging-logs": "heroku logs --tail --app transbit-test"
+    "heroku-staging-logs": "heroku logs --tail --app transbit-staging"
   },
   "keywords": [],
   "author": "",
