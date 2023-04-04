@@ -1,12 +1,12 @@
 import { transporter, verifyEmailTransport } from '../configurations/NodeMailer'
-import { getWebURL } from './getWebURL'
+import { getEnvironmentBasedWebURL } from './getEnvironmentBasedWebURL'
 
 export const sendAccountValidationEmail = async (email: string, token: string) => {
 	const mailOptions = {
 		from: 'developmentwitharre@gmail.com', //TODO: change this to .env file
 		to: email,
 		subject: 'Bitup: Validate Your Account',
-		text: `Please click on the following link to verify your account: ${getWebURL()}/validate/${token}`,
+		text: `Please click on the following link to verify your account: ${getEnvironmentBasedWebURL()}/validate/${token}`,
 	}
 
 	verifyEmailTransport()

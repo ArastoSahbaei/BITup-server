@@ -1,10 +1,6 @@
-interface enviromentOptionsInterface {
-	development: string,
-	staging: string,
-	production: string,
-}
+import { EnviromentOptions } from '../interfaces'
 
-export const enviromentOptions: enviromentOptionsInterface = {
+export const enviromentOptions: EnviromentOptions = {
 	development: 'DEVELOPMENT',
 	staging: 'STAGING',
 	production: 'PRODUCTION',
