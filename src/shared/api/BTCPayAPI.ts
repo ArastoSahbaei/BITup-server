@@ -10,7 +10,7 @@ const token = () => {
 }
 
 const BitupAPI = Axios.create({
-	baseURL: getEnviromentBased_BTCPayBaseURL(),
+	baseURL: 'https://testnet.demo.btcpayserver.org',
 	headers: {
 		'Authorization': `token ${token()}`
 	}
