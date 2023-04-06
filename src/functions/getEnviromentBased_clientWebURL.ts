@@ -1,7 +1,7 @@
 import { webClientURL } from '../shared/constants'
 import { getEnviroment } from './getEnviroment'
 
-export const getEnvironmentBasedWebURL = () => {
+export const getEnviromentBased_clientWebURL = () => {
 	const { development, staging, production } = webClientURL
 	switch (getEnviroment()) {
 	case development:

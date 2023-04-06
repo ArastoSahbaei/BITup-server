@@ -1,7 +1,7 @@
 import { getEnviroment } from './getEnviroment'
 import { baseURLOptions } from '../shared/constants'
 
-export const getServerEnviromentBasedBaseURL = () => {
+export const getEnviromentBased_serverBaseURL = () => {
 	const { development, staging, production } = baseURLOptions
 	switch (getEnviroment()) {
 	case development:
