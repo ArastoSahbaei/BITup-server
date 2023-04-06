@@ -4,7 +4,7 @@ export { useHelmet } from './useHelmet'
 export { generateUUID } from './generateUUID'
 export { satoshiToUSD } from './satoshiToUSD'
 export { connectToPort } from './connectToPort'
-/* export { baseURL_BTCPay } from './baseURL_BTCPay' */
+export { baseURL_BTCPay } from './baseURL_BTCPay'
 export { signatureSHA256 } from './signatureSHA256'
 export { encryptPassword } from './encryptPassword'
 export { comparePasswords } from './comparePasswords'
