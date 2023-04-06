@@ -9,8 +9,11 @@ const token = () => {
 	return isDevelopmentEnv() ? DEV_BTCPAY_TOKEN : PROD_BTCPAY_TOKEN
 }
 
+const baseURL = getEnviromentBased_BTCPayBaseURL()
+console.log('Base URL:', baseURL)
+
 const BitupAPI = Axios.create({
-	baseURL: getEnviromentBased_BTCPayBaseURL(),
+	baseURL: baseURL,
 	headers: {
 		'Authorization': `token ${token()}`
 	}
