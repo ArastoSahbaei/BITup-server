@@ -7,7 +7,13 @@ export const webClientURL: EnviromentOptions = {
 }
 
 export const baseURLOptions: EnviromentOptions = {
-	development: 'https://transbit-test.herokuapp.com', //does not exists
+	development: '', //does not exists
 	staging: 'https://transbit-test.herokuapp.com',
 	production: '', //TODO: correct this url
+}
+
+export const BTCPayBaseURL: EnviromentOptions = {
+	development: '', //does not exists
+	staging: 'https://testnet.demo.btcpayserver.org',
+	production: 'https://mainnet.demo.btcpayserver.org',
 }
