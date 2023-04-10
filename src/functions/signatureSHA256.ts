@@ -1,13 +1,9 @@
-import dotenv from 'dotenv'
 import CryptoJS from 'crypto-js'
-import { isDevelopmentEnv } from './isDevelopmentEnv'
+import { getEnviromentBased_binanceSecret } from './getEnviromentBased_binanceSecret'
 
-dotenv.config()
-const { DEV_BINANCE_SECRET, PROD_BINANCE_SECRET } = process.env
-const env = isDevelopmentEnv() ? DEV_BINANCE_SECRET : PROD_BINANCE_SECRET
-
+const binanceEnviromentSecret = getEnviromentBased_binanceSecret()
 export const signatureSHA256 = (query: string) => {
-	const signature = CryptoJS.HmacSHA256(query, env).toString(CryptoJS.enc.Hex)
+	const signature = CryptoJS.HmacSHA256(query, binanceEnviromentSecret).toString(CryptoJS.enc.Hex)
 	return `&signature=${signature}`
 
 }
