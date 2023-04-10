@@ -1,7 +1,7 @@
 import http from '../BTCPayAPI'
 import dotenv from 'dotenv'
 import { IcreateStore } from '../../interfaces'
-import { getEnviromentBased_serverBaseURL, getWebhookSecret, isDevelopmentEnv } from '../../../functions'
+import { getEnviromentBased_BTCPayWebHookSecret, getEnviromentBased_serverBaseURL, isDevelopmentEnv } from '../../../functions'
 import { webHookEventOptions } from '../../interfaces/webHookEventOptions'
 
 dotenv.config()
@@ -64,7 +64,7 @@ const createWebHook = (storeID: string, endpoint: string, webHookEventOptions: A
 			everything: false,
 			specificEvents: webHookEventOptions
 		},
-		secret: getWebhookSecret()
+		secret: getEnviromentBased_BTCPayWebHookSecret()
 	})
 }
 

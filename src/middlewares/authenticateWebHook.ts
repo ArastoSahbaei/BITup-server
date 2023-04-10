@@ -1,8 +1,8 @@
 import crypto from 'crypto'
 import StatusCode from '../configurations/StatusCode'
-import { getWebhookSecret } from '../functions'
+import { getEnviromentBased_BTCPayWebHookSecret } from '../functions'
 
-const webhookSecret = getWebhookSecret()
+const webhookSecret = getEnviromentBased_BTCPayWebHookSecret()
 
 export const authenticateWebHook = (request, response, next) => {
 	const signatureHashAlg = 'sha256'
