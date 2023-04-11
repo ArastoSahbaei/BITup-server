@@ -8,7 +8,7 @@ export const webClientURL: EnviromentOptions = {
 
 export const baseURLOptions: EnviromentOptions = {
 	development: '', //does not exists
-	staging: 'https://transbit-test.herokuapp.com',
+	staging: 'https://transbit-staging.herokuapp.com',
 	production: '', //TODO: correct this url
 }
 

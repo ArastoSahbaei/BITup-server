@@ -60,10 +60,11 @@ export const calculcateSellingPrice = (satoshis: number, amountSEK: number) => {
 export const createNewSellOrder = async (amount: number) => {
 	try {
 		//TODO: Ensure that the amount is not sold for less than required, but higher is ok.
+		console.log('THIS IS THE AMOUNT:', amount)
 		const { data } = await BinanceService.createTrade(amount.toString(), 20000)
 		return data
 	} catch (error) {
-		console.log(error) //TODO: set status to error and send email
+		console.log('ERROR WHILE ATTEMPTING TO CREATE NEW SELL ORDER:', error) //TODO: set status to error and send email
 		return false
 	}
 }
