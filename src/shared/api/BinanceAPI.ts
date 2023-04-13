@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import dotenv from 'dotenv'
-import { isDevelopmentEnv } from '../../functions'
+import { getEnviromentBased_binanceBaseURL, isDevelopmentEnv } from '../../functions'
 
 dotenv.config()
 const { DEV_BINANCE_TOKEN, PROD_BINANCE_TOKEN } = process.env
@@ -21,7 +21,7 @@ const headers = {
 }
 
 const BinanceAPI = Axios.create({
-	baseURL: baseURL(),
+	baseURL: getEnviromentBased_binanceBaseURL(),
 	headers: headers
 })
 
