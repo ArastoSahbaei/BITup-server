@@ -3,6 +3,10 @@ import { getEnviromentBased_binanceSecret } from './getEnviromentBased_binanceSe
 
 const binanceEnviromentSecret = getEnviromentBased_binanceSecret()
 export const signatureSHA256 = (query: string) => {
+	console.log('binanceEnviromentSecret: ', binanceEnviromentSecret)
+	console.log('binanceEnviromentSecret: ', binanceEnviromentSecret)
+	console.log('binanceEnviromentSecret: ', binanceEnviromentSecret)
+	console.log('binanceEnviromentSecret: ', binanceEnviromentSecret)
 	const signature = CryptoJS.HmacSHA256(query, binanceEnviromentSecret).toString(CryptoJS.enc.Hex)
 	return `&signature=${signature}`
 
