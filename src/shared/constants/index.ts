@@ -1,2 +1,2 @@
 export { enviromentOptions } from './enviromentOptions'
-export { webClientURL, baseURLOptions, BTCPayBaseURL } from './URLs'
+export { webClientURL, baseURLOptions, BTCPayBaseURL, binanceBaseURL } from './URLs'

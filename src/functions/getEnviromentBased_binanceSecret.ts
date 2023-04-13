@@ -1,5 +1,8 @@
+import dotenv from 'dotenv'
 import { enviromentOptions } from '../shared/constants'
 import { getEnviroment } from './getEnviroment'
+
+dotenv.config()
 
 export const getEnviromentBased_binanceSecret = () => {
 	const { DEV_BINANCE_SECRET, STAGING_BINANCE_SECRET, PROD_BINANCE_SECRET } = process.env

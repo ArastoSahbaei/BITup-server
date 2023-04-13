@@ -17,3 +17,9 @@ export const BTCPayBaseURL: EnviromentOptions = {
 	staging: 'https://testnet.demo.btcpayserver.org',
 	production: 'https://mainnet.demo.btcpayserver.org',
 }
+
+export const binanceBaseURL: EnviromentOptions = {
+	development: 'https://testnet.binance.vision',
+	staging: 'https://testnet.binance.vision',
+	production: 'https://api.binance.com',
+}
