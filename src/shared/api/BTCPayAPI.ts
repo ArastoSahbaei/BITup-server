@@ -1,18 +1,18 @@
 import Axios from 'axios'
 import dotenv from 'dotenv'
-import { getEnviromentBased_BTCPayBaseURL, isDevelopmentEnv } from '../../functions'
+import { getEnviromentBased_BTCPayBaseURL, getEnviromentBased_BTCPayWebHookToken, isDevelopmentEnv } from '../../functions'
 
-dotenv.config()
-const { DEV_BTCPAY_TOKEN, PROD_BTCPAY_TOKEN } = process.env
+/* dotenv.config()
+const { DEV_BTCPAY_TOKEN, PROD_BTCPAY_TOKEN } = process.env */
 
-const token = () => {
+/* const token = () => {
 	return isDevelopmentEnv() ? DEV_BTCPAY_TOKEN : PROD_BTCPAY_TOKEN
-}
+} */
 
 const BitupAPI = Axios.create({
 	baseURL: getEnviromentBased_BTCPayBaseURL(),
 	headers: {
-		'Authorization': `token ${token()}`
+		'Authorization': `token ${getEnviromentBased_BTCPayWebHookToken()}`
 	}
 })
 
