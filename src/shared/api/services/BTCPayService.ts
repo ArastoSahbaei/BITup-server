@@ -1,12 +1,8 @@
 import http from '../BTCPayAPI'
-import dotenv from 'dotenv'
 import { IcreateStore } from '../../interfaces'
-import { getEnviromentBased_BTCPayWebHookSecret, getEnviromentBased_serverBaseURL, isDevelopmentEnv } from '../../../functions'
 import { webHookEventOptions } from '../../interfaces/webHookEventOptions'
+import { getEnviromentBased_BTCPayWebHookSecret, getEnviromentBased_clientWebURL, getEnviromentBased_serverBaseURL } from '../../../functions'
 
-dotenv.config()
-const { DEV_WEB_URL, PROD_WEB_URL } = process.env
-const baseURL = isDevelopmentEnv() ? DEV_WEB_URL : PROD_WEB_URL
 
 const createStore = (data: IcreateStore) => {
 	return http.post('/api/v1/stores', data)
@@ -25,7 +21,6 @@ const updateStoreRateSettings = (storeId: string) => {
 		effectiveScript: ''
 	})
 }
-
 
 const getStores = () => {
 	return http.get('/api/v1/stores')
@@ -49,7 +44,7 @@ const createInvoice = (storeID: string, amount: string) => {
 		amount: amount,
 		checkout: {
 			redirectAutomatically: true,
-			redirectURL: `${baseURL}/sell-order/store/${storeID}/invoice/{InvoiceId}`,
+			redirectURL: `${getEnviromentBased_clientWebURL()}/sell-order/store/${storeID}/invoice/{InvoiceId}`,
 			/* 	notificationUrl: `${baseURL}/sell-order/store/{storeId}/invoice/{InvoiceId}`, //TODO: this is better in production. will avoid re-direct. */
 		}
 	})
