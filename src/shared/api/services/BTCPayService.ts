@@ -1,8 +1,6 @@
 import http from '../BTCPayAPI'
-import { IcreateStore } from '../../interfaces'
-import { webHookEventOptions } from '../../interfaces/webHookEventOptions'
+import { IcreateStore, webHookEventOptions } from '../../interfaces'
 import { getEnviromentBased_BTCPayWebHookSecret, getEnviromentBased_clientWebURL, getEnviromentBased_serverBaseURL } from '../../../functions'
-
 
 const createStore = (data: IcreateStore) => {
 	return http.post('/api/v1/stores', data)
