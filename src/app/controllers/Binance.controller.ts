@@ -120,12 +120,12 @@ export const createBulkTrade = async () => {
 
 	const totalRoundedSats: number = getRoundedDecimals(summedSatoshis)
 	const isEligableForInstantSell: boolean = isAmountSufficient(totalRoundedSats, price)
-	if (!isEligableForInstantSell) { return }
 	const invoiceIds = orders.map(order => order.btcpay.invoiceId).reduce((accumulator, current) => {
 		accumulator.push(current)
 		return accumulator
 	}, [])
 	console.log('invoiceIds', invoiceIds)
+	if (!isEligableForInstantSell) { return }
 	const createdSellOrder = await createNewSellOrder(totalRoundedSats)
 	if (!createdSellOrder) { return }
 
