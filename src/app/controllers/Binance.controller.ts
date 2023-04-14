@@ -124,7 +124,7 @@ export const createBulkTrade = async () => {
 		accumulator.push(current)
 		return accumulator
 	}, [])
-	const invoiceIds2 = orders.map(({ btcpay: { invoiceId } }) => invoiceId).join(',')
+	const invoiceIds2 = orders.map(order => order.btcpay.invoiceId)
 
 	console.log('invoiceIds', invoiceIds)
 	console.log('invoiceIds2', invoiceIds2)
