@@ -19,3 +19,4 @@ export { getEnviromentBased_binanceBaseURL } from './getEnviromentBased_binanceB
 export { getEnviromentBased_binanceAPIToken } from './getEnviromentBased_binanceAPIToken'
 export { getEnviromentBased_BTCPayWebHookToken } from './getEnviromentBased_BTCPayWebHookToken'
 export { getEnviromentBased_BTCPayWebHookSecret } from './getEnviromentBased_BTCPayWebHookSecret'
+export { getEnviromentBased_authenticationSecret } from './getEnviromentBased_authenticationSecret'

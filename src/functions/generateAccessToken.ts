@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
-
-dotenv.config()
-const { TOKEN_SECRET } = process.env
+import { getEnviromentBased_authenticationSecret } from './getEnviromentBased_authenticationSecret'
 
 export const generateAccessToken = (email: string) => {
-	return jwt.sign({ email: email }, TOKEN_SECRET, { expiresIn: '1h' })
+	return jwt.sign({ email: email }, getEnviromentBased_authenticationSecret(), { expiresIn: '1h' })
 }

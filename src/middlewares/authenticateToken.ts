@@ -1,9 +1,6 @@
 import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
 import StatusCode from '../configurations/StatusCode'
-
-dotenv.config()
-const { TOKEN_SECRET } = process.env
+import { getEnviromentBased_authenticationSecret } from '../functions'
 
 export const authenticateToken = (request, response, next) => {
 	const authHeader = request.headers.authorization
@@ -12,7 +9,7 @@ export const authenticateToken = (request, response, next) => {
 		return response.sendStatus(StatusCode.UNAUTHORIZED)
 	}
 
-	jwt.verify(token, TOKEN_SECRET as string, (error: any, user: any) => {
+	jwt.verify(token, getEnviromentBased_authenticationSecret() as string, (error: any, user: any) => {
 		if (error) {
 			return response.sendStatus(StatusCode.FORBIDDEN)
 		}
