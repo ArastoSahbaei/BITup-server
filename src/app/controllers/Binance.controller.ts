@@ -120,34 +120,14 @@ export const createBulkTrade = async () => {
 
 	const totalRoundedSats: number = getRoundedDecimals(summedSatoshis)
 	const isEligableForInstantSell: boolean = isAmountSufficient(totalRoundedSats, price)
-	const invoiceIds = orders.map(order => order.btcpay.invoiceId).reduce((accumulator, current) => {
-		accumulator.push(current)
-		return accumulator
-	}, [])
-	const invoiceIds2 = orders.map(order => order.btcpay.invoiceId)
-
-	console.log('invoiceIds', invoiceIds)
-	console.log('invoiceIds2', invoiceIds2)
-
-	if (Array.isArray(invoiceIds)) {
-		console.log('invoiceIds is an array')
-	} else {
-		console.log('invoiceIds is not an array')
-	}
-	if (Array.isArray(invoiceIds2)) {
-		console.log('invoiceIds2 is an array')
-	} else {
-		console.log('invoiceIds2 is not an array')
-	}
 
 	if (!isEligableForInstantSell) { return }
 	const createdSellOrder = await createNewSellOrder(totalRoundedSats)
 	if (!createdSellOrder) { return }
 
 
-
-
 	//TODO: calculate the orders so that the total amount is sold for profit
+	const invoiceIds = orders.map(order => order.btcpay.invoiceId)
 
 	await saveTradeData(invoiceIds, {
 		status: invoiceStatus.completedTrade,
