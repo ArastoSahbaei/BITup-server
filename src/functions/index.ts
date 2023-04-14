@@ -17,5 +17,6 @@ export { getEnviromentBased_serverBaseURL } from './getEnviromentBased_serverBas
 export { getEnviromentBased_BTCPayBaseURL } from './getEnviromentBased_BTCPayBaseURL'
 export { getEnviromentBased_binanceSecret } from './getEnviromentBased_binanceSecret'
 export { getEnviromentBased_binanceBaseURL } from './getEnviromentBased_binanceBaseURL'
+export { getEnviromentBased_binanceAPIToken } from './getEnviromentBased_binanceAPIToken'
 export { getEnviromentBased_BTCPayWebHookToken } from './getEnviromentBased_BTCPayWebHookToken'
 export { getEnviromentBased_BTCPayWebHookSecret } from './getEnviromentBased_BTCPayWebHookSecret'
