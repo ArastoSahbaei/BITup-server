@@ -128,6 +128,18 @@ export const createBulkTrade = async () => {
 
 	console.log('invoiceIds', invoiceIds)
 	console.log('invoiceIds2', invoiceIds2)
+
+	if (Array.isArray(invoiceIds)) {
+		console.log('invoiceIds is an array')
+	} else {
+		console.log('invoiceIds is not an array')
+	}
+	if (Array.isArray(invoiceIds2)) {
+		console.log('invoiceIds2 is an array')
+	} else {
+		console.log('invoiceIds2 is not an array')
+	}
+
 	if (!isEligableForInstantSell) { return }
 	const createdSellOrder = await createNewSellOrder(totalRoundedSats)
 	if (!createdSellOrder) { return }
