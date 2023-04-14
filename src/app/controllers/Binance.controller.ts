@@ -117,8 +117,7 @@ export const createBulkTrade = async () => {
 	const roundedDecimals: number = getRoundedDecimals(totalSats)
 	const isEligableForInstantSell: boolean = isAmountSufficient(roundedDecimals, price)
 
-	console.log(orders.length)
-	console.log(totalSats)
+	console.log('totalSats in bulk order:', totalSats)
 
 	if (!isEligableForInstantSell) {
 		return
