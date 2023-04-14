@@ -124,13 +124,15 @@ export const createBulkTrade = async () => {
 		accumulator.push(current)
 		return accumulator
 	}, [])
+	const invoiceIds2 = orders.map(({ btcpay: { invoiceId } }) => invoiceId).join(',')
+
 	console.log('invoiceIds', invoiceIds)
+	console.log('invoiceIds2', invoiceIds2)
 	if (!isEligableForInstantSell) { return }
 	const createdSellOrder = await createNewSellOrder(totalRoundedSats)
 	if (!createdSellOrder) { return }
 
 
-	/* 	const invoiceIds = orders.map(({ btcpay: { invoiceId } }) => invoiceId).join(',') */
 
 
 	//TODO: calculate the orders so that the total amount is sold for profit
