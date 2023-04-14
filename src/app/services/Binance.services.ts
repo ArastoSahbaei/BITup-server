@@ -116,8 +116,23 @@ export const isAmountSufficient = (satoshis: number, rate: number) => {
 	const MIN_SATOSHIS = 0.00000050
 	const MIN_TRADE_VALUE_USD = 10
 	const tradeValueUSD = satoshis * rate
-	const minimumSatoshisRequired = satoshis >= MIN_SATOSHIS
-	const minimumUSDTradeValueRequired = tradeValueUSD >= MIN_TRADE_VALUE_USD
-	const isEligableForInstantSell: boolean = minimumSatoshisRequired && minimumUSDTradeValueRequired
-	return isEligableForInstantSell
+	return satoshis >= MIN_SATOSHIS && tradeValueUSD >= MIN_TRADE_VALUE_USD
+}
+
+export const calculateTotalSatsForBulksell = (orders: any) => {
+	const totalSats: number = orders.reduce((accumulator, order) => {
+		return accumulator + (order.btcpay.totalPaid || 0)
+	}, 0)
+	return totalSats
+}
+
+export const calculateTotalSatsForBulkSell = (bulkSellOrders: Array<any>): number => {
+	const totalSats: number = bulkSellOrders.reduce((accumulator: number, order: any) => {
+		const orderTotal: number = order.btcpay.totalPaid ?? 0
+		if (Number.isNaN(orderTotal)) {
+			throw new Error('Invalid input: order total is not a number')
+		}
+		return accumulator + orderTotal
+	}, 0)
+	return totalSats
 }
