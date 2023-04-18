@@ -109,6 +109,7 @@ const createTrade = async (request, response) => {
 
 export const createBulkTrade = async () => {
 	const orders: Array<any> = await getAllQueuedOrders()
+	console.log('this is le order', orders)
 	if (!orders.length) {
 		return console.log('\x1b[35m%s\x1b[0m', 'NO QUEUED ORDER TO BULK SELL')
 	}
