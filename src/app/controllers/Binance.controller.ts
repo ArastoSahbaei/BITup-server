@@ -107,12 +107,12 @@ const createTrade = async (request, response) => {
 	response.status(StatusCode.OK).send({ message: addedToQueue })
 }
 
-
-
 export const createBulkTrade = async () => {
 	const orders: Array<any> = await getAllQueuedOrders()
-	console.log(orders.length)
-	if (!orders.length) { return }
+	if (!orders.length) {
+		return console.log('no queued orders to bulk sell')
+	}
+	console.log(console.log(orders.length, 'no queued orders to bulk sell'))
 
 	const summedSatoshis: number = calculateTotalSatsForBulksell(orders)
 	console.log('totalSats in bulk order:', summedSatoshis)
@@ -121,12 +121,17 @@ export const createBulkTrade = async () => {
 	const totalRoundedSats: number = getRoundedDecimals(summedSatoshis)
 	const isEligableForInstantSell: boolean = isAmountSufficient(totalRoundedSats, price)
 
-	if (!isEligableForInstantSell) { return }
+	if (!isEligableForInstantSell) {
+		return console.log('not enough sats for bulk sell')
+	}
+
+	//TODO: calculate the orders so that the total amount is sold for profit - price of BTC might have gone down since the order was placed - totalFiatRequiredForProfit
 	const createdSellOrder = await createNewSellOrder(totalRoundedSats)
-	if (!createdSellOrder) { return }
+	if (!createdSellOrder) {
+		return console.log('could not create bulk sell order')
+	}
 
 
-	//TODO: calculate the orders so that the total amount is sold for profit
 	const invoiceIds = orders.map(order => order.btcpay.invoiceId)
 
 	await saveTradeData(invoiceIds, {
