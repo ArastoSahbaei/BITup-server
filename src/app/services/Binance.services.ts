@@ -119,13 +119,6 @@ export const isAmountSufficient = (satoshis: number, rate: number) => {
 	return satoshis >= MIN_SATOSHIS && tradeValueUSD >= MIN_TRADE_VALUE_USD
 }
 
-export const calculateTotalSatsForBulksell = (orders: any) => {
-	const totalSats: number = orders.reduce((accumulator, order) => {
-		return accumulator + (order.btcpay.totalPaid || 0)
-	}, 0)
-	return totalSats
-}
-
 export const calculateTotalSatsForBulkSell = (bulkSellOrders: Array<any>): number => {
 	const totalSats: number = bulkSellOrders.reduce((accumulator: number, order: any) => {
 		const orderTotal: number = order.btcpay.totalPaid ?? 0

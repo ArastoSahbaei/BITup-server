@@ -14,7 +14,7 @@ import {
 	addToQueue,
 	getAllQueuedOrders,
 	calculcateSellingPrice,
-	calculateTotalSatsForBulksell,
+	calculateTotalSatsForBulkSell,
 } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
@@ -114,7 +114,7 @@ export const createBulkTrade = async () => {
 	}
 
 	console.log('\x1b[35m%s\x1b[0m', `found ${orders.length} queued orders to bulk sell`)
-	const summedSatoshis: number = calculateTotalSatsForBulksell(orders)
+	const summedSatoshis: number = calculateTotalSatsForBulkSell(orders)
 	console.log('\x1b[35m%s\x1b[0m', `totalSats in bulk order: ${summedSatoshis}`)
 	const { price } = await getBitcoinPrice()
 
@@ -130,7 +130,6 @@ export const createBulkTrade = async () => {
 	if (!createdSellOrder) {
 		return console.log('could not create bulk sell order')
 	}
-
 
 	const invoiceIds = orders.map(order => order.btcpay.invoiceId)
 
