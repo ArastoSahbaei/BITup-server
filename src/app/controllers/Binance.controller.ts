@@ -112,7 +112,7 @@ export const createBulkTrade = async () => {
 	if (!orders.length) {
 		return console.log('no queued orders to bulk sell')
 	}
-	console.log(console.log(orders.length, 'no queued orders to bulk sell'))
+	console.log(console.log(`found ${orders.length} queued orders to bulk sell`))
 
 	const summedSatoshis: number = calculateTotalSatsForBulksell(orders)
 	console.log('totalSats in bulk order:', summedSatoshis)
