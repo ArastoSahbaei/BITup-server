@@ -110,12 +110,12 @@ const createTrade = async (request, response) => {
 export const createBulkTrade = async () => {
 	const orders: Array<any> = await getAllQueuedOrders()
 	if (!orders.length) {
-		return console.log('no queued orders to bulk sell')
+		return console.log('\x1b[35m%s\x1b[0m', 'no queued orders to bulk sell')
 	}
-	console.log(console.log(`found ${orders.length} queued orders to bulk sell`))
 
+	console.log('\x1b[35m%s\x1b[0m', `found ${orders.length} queued orders to bulk sell`)
 	const summedSatoshis: number = calculateTotalSatsForBulksell(orders)
-	console.log('totalSats in bulk order:', summedSatoshis)
+	console.log('\x1b[35m%s\x1b[0m', `totalSats in bulk order: ${summedSatoshis}`)
 	const { price } = await getBitcoinPrice()
 
 	const totalRoundedSats: number = getRoundedDecimals(summedSatoshis)
