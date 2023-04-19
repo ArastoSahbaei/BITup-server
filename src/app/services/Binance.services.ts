@@ -135,5 +135,4 @@ export const calculateBreakEvenExchangeRate = (orders: any) => {
 	const totalSats = data.reduce((acc, cur) => acc + cur.totalPaid, 0)
 	const averageRate = data.reduce((acc, cur) => acc + (cur.exchangeRate * cur.totalPaid), 0) / totalSats
 	return averageRate.toFixed(4)
-
 }
