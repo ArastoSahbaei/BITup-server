@@ -120,9 +120,8 @@ export const createBulkTrade = async () => {
 	console.log('\x1b[35m%s\x1b[0m', `TOTAL SUMMED SATOSHIS FROM ORDERS: ${summedSatoshis}`)
 	const { price } = await getBitcoinPrice()
 
-	//TODO: calculate the orders so that the total amount is sold for profit - price of BTC might have gone down since the order was placed - totalFiatRequiredForProfit GET MINIMUM SELL ORDER PRICE
 	const breakEvenExchangeRate = calculateBreakEvenExchangeRate(orders)
-	console.log('HAHAHAHHAHHA', breakEvenExchangeRate)
+	console.log('breakEvenExchangeRate:', breakEvenExchangeRate)
 
 	const totalRoundedSats: number = getRoundedDecimals(summedSatoshis)
 	const isEligableForInstantSell: boolean = isAmountSufficient(totalRoundedSats, price)
