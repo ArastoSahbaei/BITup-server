@@ -131,13 +131,8 @@ export const calculateTotalSatsForBulkSell = (bulkSellOrders: Array<any>): numbe
 }
 
 export const calculateMinimumSellAmount = (orders: any) => {
-	const exchangeRateAndAmount = orders.map(item => {
-		return {
-			exchangeRate: item.exchangeRate,
-			totalPaid: item.totalPaid
-		}
-	})
+	const x = orders.map(({ btcpay: { exchangeRate, totalPaid } }) => ({ exchangeRate, totalPaid }))
 
-	console.log('exchangeRateAndAmount', exchangeRateAndAmount)
+	console.log('HAHAHHAHAHAHAH', x)
 
 }
