@@ -16,6 +16,7 @@ import {
 	calculcateSellingPrice,
 	calculateTotalSatsForBulkSell,
 	calculateMinimumSellAmount,
+	calculateBreakEvenExchangeRate,
 } from '../services/Binance.services'
 
 const testConnectivity = async (request, response) => {
@@ -130,7 +131,12 @@ export const createBulkTrade = async () => {
 		return console.log('\x1b[35m%s\x1b[0m', 'NOT ENOUGH SATOSHIS TO CREATE BULK SELL-ORDER')
 	}
 
+
 	//TODO: calculate the orders so that the total amount is sold for profit - price of BTC might have gone down since the order was placed - totalFiatRequiredForProfit GET MINIMUM SELL ORDER PRICE
+	const breakEvenExchangeRate = calculateBreakEvenExchangeRate(orders)
+	console.log('HAHAHAHHAHHA', breakEvenExchangeRate)
+
+
 	const createdSellOrder = await createNewSellOrder(totalRoundedSats)
 	if (!createdSellOrder) {
 		return console.log('\x1b[35m%s\x1b[0m', 'DID NOT MANAGE TO CREATE BULK SELL ORDER')
