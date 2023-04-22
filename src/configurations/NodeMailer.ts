@@ -14,7 +14,7 @@ export const transporter = nodemailer.createTransport({
 	}
 })
 
-export const verifyEmailTransport = () => {
+/* export const verifyEmailTransport = () => {
 	transporter.verify(function (error: any, success: any) {
 		if (error) {
 			console.log(error)
@@ -22,4 +22,13 @@ export const verifyEmailTransport = () => {
 			console.log('Email transporter ready: ' + success)
 		}
 	})
+} */
+
+
+export const verifyEmailTransport = async () => {
+	try {
+		await transporter.verify()
+	} catch (error) {
+		throw new Error('Error occured during verification of email transporter')
+	}
 }
