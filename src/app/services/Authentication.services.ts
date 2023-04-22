@@ -54,6 +54,7 @@ export const changeExchangeRate = async (storeId: string) => {
 
 export const addWebHooks = async (storeId: string) => {
 	try {
+		//TODO: endpoint should be dynamic
 		const { data } = await BTCPayService.createWebHook(storeId, '/sell-order', ['InvoiceSettled'])
 		return data
 	} catch (error) {
