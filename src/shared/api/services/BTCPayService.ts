@@ -49,11 +49,6 @@ const createInvoice = (storeID: string, amount: string) => {
 }
 
 const createWebHook = (storeID: string, endpoint: string, webHookEventOptions: Array<webHookEventOptions>) => {
-	console.log(getEnviromentBased_serverBaseURL() + endpoint)
-	console.log(getEnviromentBased_serverBaseURL() + endpoint)
-	console.log(getEnviromentBased_serverBaseURL() + endpoint)
-	console.log(getEnviromentBased_serverBaseURL() + endpoint)
-	console.log(getEnviromentBased_serverBaseURL() + endpoint)
 	return http.post(`/api/v1/stores/${storeID}/webhooks`, {
 		enabled: true,
 		automaticRedelivery: true,

@@ -1,15 +1,14 @@
 import { getEnviroment } from './getEnviroment'
-import { baseURLOptions } from '../shared/constants'
+import { baseURLOptions, enviromentOptions } from '../shared/constants'
 
 export const getEnviromentBased_serverBaseURL = () => {
 	const { development, staging, production } = baseURLOptions
-	console.log('@@@@@#######!!YOU ARE IN: ', getEnviroment())
 	switch (getEnviroment()) {
-	case development:
+	case enviromentOptions.development:
 		return development
-	case staging:
+	case enviromentOptions.staging:
 		return staging
-	case production:
+	case enviromentOptions.production:
 		return production
 	default:
 		return null
