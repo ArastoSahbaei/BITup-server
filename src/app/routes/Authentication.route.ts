@@ -1,15 +1,26 @@
+import { endpoints } from './endpoints'
 import { Application } from 'express'
 import { authenticateToken } from '../../middlewares'
 import AuthenticationController from '../controllers/Authentication.controller'
 
+const {
+	login,
+	createUser,
+	verifyUserEmail,
+	retrieveLostAccount,
+	resetPasswordWithToken,
+	validateToken,
+	updatePassword
+} = endpoints.authentication
+
 const routes = (application: Application) => {
-	application.post('/login', AuthenticationController.login)
-	application.post('/register', AuthenticationController.createUser)
-	application.post('/emailverification', AuthenticationController.verifyUserEmail)
-	application.post('/retrieveaccount', AuthenticationController.retrieveLostAccount)
-	application.post('/resetpassword', AuthenticationController.resetPasswordWithToken)
-	application.post('/validate', authenticateToken, AuthenticationController.validateToken)
-	application.put('/update-password', authenticateToken, AuthenticationController.updatePassword)
+	application.post(login, AuthenticationController.login)
+	application.post(createUser, AuthenticationController.createUser)
+	application.post(verifyUserEmail, AuthenticationController.verifyUserEmail)
+	application.post(retrieveLostAccount, AuthenticationController.retrieveLostAccount)
+	application.post(resetPasswordWithToken, AuthenticationController.resetPasswordWithToken)
+	application.post(validateToken, authenticateToken, AuthenticationController.validateToken)
+	application.put(updatePassword, authenticateToken, AuthenticationController.updatePassword)
 }
 
 export default { routes }

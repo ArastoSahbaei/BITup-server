@@ -1,11 +1,19 @@
+import { endpoints } from './endpoints'
 import { Application } from 'express'
 import BTCPayController from '../controllers/BTCPay.controller'
 
+const {
+	getInvoices,
+	createInvoice,
+	getInvoice,
+	getInvoicePaymentMethods
+} = endpoints.BTCPay
+
 const routes = (application: Application) => {
-	application.post('/btcpay/invoices', BTCPayController.getInvoices)
-	application.post('/btcpay/invoices/create', BTCPayController.createInvoice)
-	application.get('/btcpay/invoices/:storeID/:invoiceID', BTCPayController.getInvoice)
-	application.get('/btcpay/store/:storeID/invoices/:invoiceID/payment-methods', BTCPayController.getInvoicePaymentMethods)
+	application.post(getInvoices, BTCPayController.getInvoices)
+	application.post(createInvoice, BTCPayController.createInvoice)
+	application.get(getInvoice, BTCPayController.getInvoice)
+	application.get(getInvoicePaymentMethods, BTCPayController.getInvoicePaymentMethods)
 }
 
 export default { routes }

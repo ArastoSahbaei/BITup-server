@@ -1,3 +1,4 @@
+//TODO: Add api prefix to all endpoints and update insomnia to match
 export const endpoints = {
 	authentication: {
 		login: '/login',
