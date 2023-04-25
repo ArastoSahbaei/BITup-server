@@ -1,5 +1,6 @@
 import BTCPayService from '../../shared/api/services/BTCPayService'
 import UserModel from '../models/User.model'
+import { endpoints } from '../routes'
 
 export const createNewStore = async (storeName: string) => {
 	try {
@@ -54,8 +55,7 @@ export const changeExchangeRate = async (storeId: string) => {
 
 export const addWebHooks = async (storeId: string) => {
 	try {
-		//TODO: endpoint should be dynamic
-		const { data } = await BTCPayService.createWebHook(storeId, '/sell-order', ['InvoiceSettled'])
+		const { data } = await BTCPayService.createWebHook(storeId, endpoints.binance.createTrade, ['InvoiceSettled'])
 		return data
 	} catch (error) {
 		console.log(error)
