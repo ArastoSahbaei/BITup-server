@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { comparePasswords } from '../../src/functions'
+import { comparePasswords } from 'src/functions'
 
 describe('comparePasswords function', () => {
 	let encryptedPassword: string

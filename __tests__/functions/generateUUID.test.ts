@@ -1,4 +1,4 @@
-import { generateUUID } from '../../src/functions'
+import { generateUUID } from 'src/functions'
 
 test('generateUUID should return a string with the correct format', () => {
 	const uuid = generateUUID()
