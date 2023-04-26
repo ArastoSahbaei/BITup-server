@@ -9,7 +9,7 @@
     "windows": "nodemon --exec npx ts-node ./Server.ts",
     "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D",
     "deploy": "git push heroku master:main",
-    "reinstall": "rm -rf node_modules && npm install",
+    "reinstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
     "heroku-staging-logs": "heroku logs --tail --app transbit-staging",
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
     "test": "npx jest --config=jest.config.ts"
@@ -20,6 +20,8 @@
   "devDependencies": {
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
+    "@types/babel__core": "^7.20.0",
+    "@types/babel__traverse": "7.0.4",
     "@types/bcrypt": "^5.0.0",
     "@types/cors": "^2.8.12",
     "@types/crypto-js": "^4.1.1",
@@ -35,7 +37,7 @@
     "jest": "^29.5.0",
     "nodemon": "^2.0.19",
     "ts-jest": "^29.1.0",
-    "typescript": "^4.7.4"
+    "typescript": "^4.9.5"
   },
   "dependencies": {
     "axios": "^0.27.2",
