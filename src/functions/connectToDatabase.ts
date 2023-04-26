@@ -9,7 +9,7 @@ const {
 } = process.env
 
 export const connectToDatabase = () => {
-	const DATABASE_URL = ENVIROMENT === 'DEVELOPMENT' ? DEV_DATABASE_URL : PROD_DATABASE_URL
+	const DATABASE_URL = ENVIROMENT === 'DEVELOPMENT' ? DEV_DATABASE_URL : PROD_DATABASE_URL //TODO: tbh this should also be getEnviromentBased function
 	try {
 		mongoose.connect(DATABASE_URL, {})
 		console.log(`✔️  SUCCESSFULLY CONNECTED TO THE ${ENVIROMENT} DATABASE..`)
