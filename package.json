@@ -10,7 +10,7 @@
     "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D",
     "deploy": "git push heroku master:main",
     "reinstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
-    "heroku-staging-logs": "heroku logs --tail --app transbit-staging",
+    "staging": "heroku logs --tail --app transbit-staging",
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
     "test": "npx jest --config=jest.config.ts"
   },
