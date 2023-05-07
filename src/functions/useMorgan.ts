@@ -1,8 +1,8 @@
 
+import { enviromentOptions } from 'src/shared/constants'
 import { Application } from 'express'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
-import { enviromentOptions } from 'src/shared/constants'
 
 dotenv.config()
 const { ENVIROMENT } = process.env
