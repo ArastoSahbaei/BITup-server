@@ -9,8 +9,9 @@
     "windows": "nodemon --exec npx ts-node ./Server.ts",
     "deleteBranches": "git branch | grep -v \"master\" | xargs git branch -D",
     "deploy": "git push heroku master:main",
-    "reinstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
     "staging": "heroku logs --tail --app transbit-staging",
+    "enviromentSecrets": "heroku config",
+    "reinstall": "rm -rf node_modules && rm -rf package-lock.json && npm install",
     "lint": "npx eslint src/ --ext .ts,.tsx,.js,.jsx,.json",
     "test": "npx jest --config=jest.config.ts"
   },
