@@ -1,4 +1,4 @@
-import { enviromentOptions } from '../shared/constants/enviromentOptions'
+import { enviromentOptions } from 'src/shared/constants'
 import { Application } from 'express'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
