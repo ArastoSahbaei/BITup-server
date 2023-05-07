@@ -1,6 +1,6 @@
-import { comparePasswords, encryptPassword, generateAccessToken, generateUUID, sendAccountValidationEmail, sendPasswordRecoveryEmail } from 'src/functions'
+import { comparePasswords, encryptPassword, generateAccessToken, generateUUID, sendAccountValidationEmail, sendPasswordRecoveryEmail } from '../../functions'
 import { addWallet, addWebHooks, changeExchangeRate, createNewStore, isEmailOccupied, isStoreNameOccupied } from '../services/Authentication.services'
-import StatusCode from 'src/configurations/StatusCode'
+import StatusCode from '../../configurations/StatusCode'
 import UserModel from '../models/User.model'
 import crypto from 'crypto'
 
