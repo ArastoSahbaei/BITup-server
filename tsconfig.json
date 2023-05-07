@@ -2,16 +2,14 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "src/*": ["./src/*"]
+      "src/*": ["src/*"]
     },
     "target": "es6",
     "module": "commonjs",
     "esModuleInterop": true,
-    "moduleResolution": "node",
     "sourceMap": true,
-    "outDir": "dist",
-    "strict": false,
-    "forceConsistentCasingInFileNames": true
+    "outDir": "dist"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
