@@ -1,15 +1,17 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "paths": {
       "src/*": ["./src/*"]
     },
+    "target": "es6",
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
+    "strict": true,
+    "forceConsistentCasingInFileNames": true
   },
-  "lib": ["es6"]
+  "include": ["src/**/*"]
 }
